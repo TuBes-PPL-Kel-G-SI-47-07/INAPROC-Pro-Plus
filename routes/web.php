@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
 // Group khusus ADMIN
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
+    Route::patch('/admin/users/{user}/role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
+    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 // Group khusus AUDITOR
