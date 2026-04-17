@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -45,6 +45,30 @@
                     @endif
                 </div>
             @endif
+        </div>
+    <div>
+            <x-input-label for="profile_picture" :value="__('Profile Picture')" />
+            @if($user->profile_picture)
+                <img src="{{ asset('storage/'.$user->profile_picture) }}" alt="Profile" class="h-20 w-20 rounded-full object-cover my-2">
+            @endif
+            <input id="profile_picture" name="profile_picture" type="file" class="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+            <x-input-error class="mt-2" :messages="$errors->get('profile_picture')" />
+        </div>
+        <div>
+            <x-input-label for="position" :value="__('Position')" />
+            <x-text-input id="position" name="position" type="text" class="mt-1 block w-full" :value="old('position', $user->position)" placeholder="Contoh: Senior Officer" autocomplete="organization-title" />
+            <x-input-error class="mt-2" :messages="$errors->get('position')" />
+        </div>
+        <div>
+            <x-input-label for="phone_number" :value="__('Phone Number')" />
+            <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full" :value="old('phone_number', $user->phone_number)" autocomplete="tel" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
+        </div>
+
+        <div>
+            <x-input-label for="address" :value="__('Address')" />
+            <textarea id="address" name="address" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('address', $user->address) }}</textarea>
+            <x-input-error class="mt-2" :messages="$errors->get('address')" />
         </div>
 
         <div class="flex items-center gap-4">

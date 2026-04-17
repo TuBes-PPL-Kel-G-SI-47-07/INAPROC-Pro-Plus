@@ -11,7 +11,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password'])]
+// Update bagian ini untuk PBI-02 [cite: 987]
+#[Fillable([
+    'name', 
+    'email', 
+    'password', 
+    'phone_number', 
+    'address', 
+    'profile_picture', 
+    'position'
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
