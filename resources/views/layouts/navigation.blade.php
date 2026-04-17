@@ -15,6 +15,24 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @role('admin')
+                    <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
+                        {{ __('Manajemen User') }}
+                    </x-nav-link>
+                    @endrole
+
+                    @role('auditor')
+                    <x-nav-link :href="route('auditor.index')" :active="request()->routeIs('auditor.index')">
+                        {{ __('Monitoring') }}
+                    </x-nav-link>
+                    @endrole
+
+                    @role('vendor')
+                    <x-nav-link :href="route('vendor.setup')" :active="request()->routeIs('vendor.setup')">
+                        {{ __('Profile Perusahaan') }}
+                    </x-nav-link>
+                    @endrole
                 </div>
             </div>
 
