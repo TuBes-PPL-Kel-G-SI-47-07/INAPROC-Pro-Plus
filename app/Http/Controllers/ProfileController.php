@@ -7,10 +7,21 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage; // Import Storage
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    /**
+     * Menampilkan halaman Setup Profil Perusahaan (PBI-02/PBI-04)
+     */
+    public function setup(): View
+    {
+        return view('profile.setup', [
+            'user' => Auth::user(),
+        ]);
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -24,39 +35,36 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-   // File: app/Http/Controllers/ProfileController.php
-
-public function update(ProfileUpdateRequest $request): RedirectResponse
-{
-    $user = $request->user();
-    
-    // 1. Ambil data yang sudah divalidasi
-    $data = $request->validated();
-
-    // 2. Logika khusus untuk Foto Profil (PBI-02)
-    if ($request->hasFile('profile_picture')) {
-        // Hapus foto lama jika ada untuk menghemat storage
-        if ($user->profile_picture) {
-            \Illuminate\Support\Facades\Storage::delete('public/' . $user->profile_picture);
-        }
+    public function update(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $user = $request->user();
         
-        // Simpan foto baru ke folder 'profiles' di disk public 
-        $data['profile_picture'] = $request->file('profile_picture')->store('profiles', 'public');
+        // 1. Ambil data yang sudah divalidasi
+        $data = $request->validated();
+
+        // 2. Logika khusus untuk Foto Profil (PBI-02)
+        if ($request->hasFile('profile_picture')) {
+            // Hapus foto lama jika ada untuk menghemat storage
+            if ($user->profile_picture) {
+                Storage::delete('public/' . $user->profile_picture);
+            }
+            
+            // Simpan foto baru ke folder 'profiles' di disk public 
+            $data['profile_picture'] = $request->file('profile_picture')->store('profiles', 'public');
+        }
+
+        // 3. Masukkan data ke model (fill) dan simpan
+        $user->fill($data);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    // 3. Masukkan data ke model (fill) dan simpan [cite: 782]
-    $user->fill($data);
-
-    if ($user->isDirty('email')) {
-        $user->email_verified_at = null;
-    }
-
-    $user->save();
-
-    // 4. Opsional: Tambahkan log Audit Trail di sini nantinya [cite: 191, 192]
-
-    return Redirect::route('profile.edit')->with('status', 'profile-updated');
-}
     /**
      * Delete the user's account.
      */

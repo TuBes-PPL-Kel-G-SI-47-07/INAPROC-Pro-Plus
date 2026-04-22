@@ -14,12 +14,16 @@ class PortfolioController extends Controller
      */
     public function index()
     {
-        // Mengambil data portofolio milik vendor yang sedang login [cite: 167, 688]
-        $portfolios = Portfolio::where('user_id', Auth::id())
-                        ->latest()
-                        ->get();
+        $user = Auth::user();
+        $portfolios = \App\Models\Portfolio::where('user_id', $user->id)->latest()->get();
+        
+        // Ambil skor survey terakhir untuk vendor ini
+        $latestSurvey = \App\Models\SurveyReport::where('user_id', $user->id)->latest()->first();
+        
+        // Data untuk admin
+        $surveyReports = \App\Models\SurveyReport::with(['vendor', 'surveyor'])->latest()->get();
 
-        return view('dashboard', compact('portfolios'));
+        return view('dashboard', compact('portfolios', 'surveyReports', 'latestSurvey'));
     }
 
     /**
