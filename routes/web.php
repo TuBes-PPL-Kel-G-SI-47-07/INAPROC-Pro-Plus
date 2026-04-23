@@ -44,8 +44,11 @@ Route::middleware(['auth', 'role:vendor'])->group(function () {
 
 // GROUP: AUDITOR (Monitoring Proyek)
 Route::middleware(['auth', 'role:auditor'])->group(function () {
-    // Pastikan MonitoringController sudah kamu buat jika ingin menggunakan route ini
-    // Route::get('/auditor/monitoring', [MonitoringController::class, 'index'])->name('auditor.index');
+    // Papar senarai laporan yang perlu disahkan
+    Route::get('/auditor/surveys', [SurveyReportController::class, 'index'])->name('auditor.surveys.index');
+    // Proses pengesahan (Approve/Reject)
+    Route::patch('/auditor/surveys/{survey}/verify', [SurveyReportController::class, 'verify'])->name('auditor.surveys.verify');
+    Route::get('/auditor/portfolios', [PortfolioController::class, 'auditorIndex'])->name('auditor.portfolios.index');
 });
 
 require __DIR__.'/auth.php';
