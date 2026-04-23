@@ -1,40 +1,45 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Dashboard Utama INAPROC+') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             
+            {{-- NOTIFIKASI SISTEM --}}
             @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl relative" role="alert">
-                    <span class="block sm:inline font-medium">{{ session('success') }}</span>
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded-xl shadow-sm animate-pulse" role="alert">
+                    <p class="font-bold">Berhasil!</p>
+                    <p class="text-sm">{{ session('success') }}</p>
                 </div>
             @endif
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-gray-100">
-                <div class="p-6 text-gray-900">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-3xl border border-gray-100">
+                <div class="p-8 text-gray-900">
                     
-                    {{-- SEKSI ADMIN / SURVEYOR --}}
+                    {{-- ========================================== --}}
+                    {{-- SEKSI ADMIN / SURVEYOR (PBI-04)           --}}
+                    {{-- ========================================== --}}
                     @role('admin')
                         <div class="mb-8">
-                            <h1 class="text-2xl font-extrabold text-gray-900">Halo Admin!</h1>
-                            <p class="text-gray-500">Panel kendali verifikasi lapangan sistem **INAPROC+**.</p>
+                            <h1 class="text-3xl font-black text-gray-900 tracking-tight">Halo, Administrator!</h1>
+                            <p class="text-gray-500 mt-1 font-medium">Kelola verifikasi lapangan dan pantau pengadaan sistem secara real-time.</p>
                         </div>
 
-                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
-                            <h3 class="text-lg font-bold mb-4 text-gray-800 flex items-center">
-                                <span class="mr-2 text-indigo-600">📋</span> {{ __('Input Laporan Survey Lapangan') }}
+                        <div class="bg-gray-50 p-8 rounded-3xl border border-gray-200 shadow-inner">
+                            <h3 class="text-lg font-bold mb-6 text-gray-800 flex items-center">
+                                <span class="mr-3 bg-indigo-600 text-white p-2 rounded-lg shadow-lg shadow-indigo-200">📋</span> 
+                                {{ __('Input Laporan Survey Lapangan') }}
                             </h3>
                             
-                            <form action="{{ route('survey.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                            <form action="{{ route('survey.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                                 @csrf
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <x-input-label for="user_id" :value="__('Pilih Vendor')" />
-                                        <select name="user_id" id="user_id" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500" required>
+                                        <x-input-label for="user_id" :value="__('Pilih Vendor Strategis')" />
+                                        <select name="user_id" id="user_id" class="mt-2 block w-full border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
                                             <option value="">-- Pilih Vendor --</option>
                                             @foreach(\App\Models\User::role('vendor')->get() as $vendor)
                                                 <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
@@ -42,183 +47,237 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <x-input-label for="office_condition" :value="__('Kondisi Kantor')" />
-                                        <select name="office_condition" id="office_condition" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm" required>
-                                            <option value="Layak">Layak / Sesuai</option>
-                                            <option value="Tidak Layak">Tidak Layak / Fiktif</option>
+                                        <x-input-label for="office_condition" :value="__('Status Kelayakan Kantor')" />
+                                        <select name="office_condition" id="office_condition" class="mt-2 block w-full border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500" required>
+                                            <option value="Layak">Layak / Sesuai Standar</option>
+                                            <option value="Tidak Layak">Tidak Layak / Lokasi Fiktif</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <x-input-label for="infrastructure_score" :value="__('Skor Infrastruktur (0-100)')" />
-                                        <x-text-input type="number" name="infrastructure_score" class="mt-1 block w-full rounded-lg" placeholder="70" required min="0" max="100" />
+                                        <x-input-label for="infrastructure_score" :value="__('Skor Infrastruktur Digital (0-100)')" />
+                                        <x-text-input type="number" name="infrastructure_score" class="mt-2 block w-full rounded-xl" placeholder="Contoh: 85" required min="0" max="100" />
                                     </div>
                                     <div>
-                                        <x-input-label for="survey_photo" :value="__('Bukti Foto Lokasi')" />
-                                        <input type="file" name="survey_photo" id="survey_photo" class="mt-1 block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-white" required>
+                                        <x-input-label for="survey_photo" :value="__('Unggah Bukti Geotagging')" />
+                                        <input type="file" name="survey_photo" id="survey_photo" class="mt-2 block w-full text-sm border border-gray-300 rounded-xl cursor-pointer bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" required>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <x-input-label for="notes" :value="__('Catatan Tambahan')" />
-                                    <textarea name="notes" rows="2" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500" placeholder="Catatan hasil audit..."></textarea>
+                                    <x-input-label for="notes" :value="__('Catatan Audit Lapangan')" />
+                                    <textarea name="notes" rows="3" class="mt-2 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Berikan detail temuan di lapangan..."></textarea>
                                 </div>
 
-                                <x-primary-button class="w-full justify-center py-3 bg-indigo-600 hover:bg-indigo-700">
-                                    {{ __('Simpan & Verifikasi Vendor') }}
+                                <x-primary-button class="w-full justify-center py-4 bg-indigo-600 hover:bg-indigo-700 shadow-xl shadow-indigo-100 transition-all rounded-2xl">
+                                    {{ __('Finalisasi & Verifikasi Vendor') }}
                                 </x-primary-button>
                             </form>
                         </div>
 
-                        {{-- RIWAYAT SURVEY --}}
-                        <div class="mt-10 pt-6 border-t border-gray-100">
-                            <h3 class="text-lg font-bold text-gray-800 mb-4">Log Review Vendor</h3>
-                            <div class="overflow-x-auto rounded-xl border border-gray-200">
+                        {{-- TABEL MONITORING (OUTPUT PBI-04) --}}
+                        <div class="mt-12">
+                            <h3 class="text-xl font-extrabold text-gray-900 mb-6">Log Aktivitas Survey Terbaru</h3>
+                            <div class="overflow-x-auto rounded-3xl border border-gray-100 shadow-sm">
                                 <table class="min-w-full bg-white text-sm">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="py-3 px-4 border-b text-left">Vendor</th>
-                                            <th class="py-3 px-4 border-b text-center">Skor</th>
-                                            <th class="py-3 px-4 border-b text-center">Foto</th>
-                                            <th class="py-3 px-4 border-b text-right">Status</th>
+                                    <thead class="bg-gray-50 border-b border-gray-100">
+                                        <tr class="text-gray-500 font-bold">
+                                            <th class="py-4 px-6 text-left uppercase tracking-wider">Vendor</th>
+                                            <th class="py-4 px-6 text-center uppercase tracking-wider">Skor Digital</th>
+                                            <th class="py-4 px-6 text-center uppercase tracking-wider">Bukti Visual</th>
+                                            <th class="py-4 px-6 text-right uppercase tracking-wider">Keputusan Akhir</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-gray-100">
+                                    <tbody class="divide-y divide-gray-50">
                                         @forelse($surveyReports ?? [] as $report)
-                                            <tr class="hover:bg-gray-50 transition">
-                                                <td class="py-3 px-4 font-semibold">{{ $report->vendor->name }}</td>
-                                                <td class="py-3 px-4 text-center">{{ $report->infrastructure_score }}%</td>
-                                                <td class="py-3 px-4 text-center">
-                                                    <img src="{{ asset('storage/' . $report->survey_photo) }}" class="h-8 w-12 object-cover mx-auto rounded shadow-sm">
+                                            <tr class="hover:bg-indigo-50/30 transition-colors">
+                                                <td class="py-4 px-6 font-bold text-gray-800">{{ $report->vendor->name }}</td>
+                                                <td class="py-4 px-6 text-center">
+                                                    <div class="flex items-center justify-center">
+                                                        <span class="text-indigo-600 font-black mr-1">{{ $report->infrastructure_score }}</span>
+                                                        <span class="text-gray-400 text-[10px]">%</span>
+                                                    </div>
                                                 </td>
-                                                <td class="py-3 px-4 text-right">
-                                                    <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase {{ $report->infrastructure_score >= 70 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+                                                <td class="py-4 px-6 text-center">
+                                                    <img src="{{ asset('storage/' . $report->survey_photo) }}" class="h-10 w-16 object-cover mx-auto rounded-lg shadow-sm border border-white">
+                                                </td>
+                                                <td class="py-4 px-6 text-right">
+                                                    <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest {{ $report->infrastructure_score >= 70 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
                                                         {{ $report->infrastructure_score >= 70 ? 'Verified' : 'Rejected' }}
                                                     </span>
                                                 </td>
                                             </tr>
                                         @empty
-                                            <tr><td colspan="4" class="py-10 text-center text-gray-400 italic">Belum ada laporan survey.</td></tr>
+                                            <tr><td colspan="4" class="py-12 text-center text-gray-400 font-medium italic">Data survey masih kosong.</td></tr>
                                         @endforelse
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
-                    {{-- SEKSI VENDOR (Digital Trust Card) --}}
+                    {{-- ========================================== --}}
+                    {{-- SEKSI VENDOR (PBI-03, PBI-04, PBI-06)      --}}
+                    {{-- ========================================== --}}
                     @else
                         @role('vendor')
-                            <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {{-- UNIK: Kartu Sertifikasi Digital --}}
-                                <div class="bg-gradient-to-br from-indigo-900 via-slate-900 to-black rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
-                                    <div class="relative z-10">
+                            {{-- IDENTITAS VENDOR & STATUS --}}
+                            <div class="mb-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                {{-- KARTU SERTIFIKASI DIGITAL (PBI-04) --}}
+                                <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 via-indigo-950 to-black rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden group">
+                                    <div class="relative z-10 h-full flex flex-col justify-between">
                                         <div class="flex justify-between items-start">
                                             <div>
-                                                <p class="text-xs font-mono text-indigo-300 tracking-widest uppercase">Verification Certificate</p>
-                                                <h2 class="text-3xl font-black mt-1 uppercase tracking-tighter">{{ Auth::user()->name }}</h2>
+                                                <p class="text-[10px] font-bold text-indigo-400 tracking-[0.3em] uppercase opacity-80">Digital Vendor Certificate</p>
+                                                <h2 class="text-4xl font-black mt-2 uppercase tracking-tighter leading-none group-hover:text-indigo-300 transition-colors">{{ Auth::user()->name }}</h2>
                                             </div>
                                             <div class="text-right">
-                                                <span class="text-[10px] bg-white/10 px-2 py-1 rounded border border-white/20 font-mono">ID: {{ Auth::user()->id }}{{ date('s') }}</span>
+                                                <span class="text-[9px] bg-white/5 px-3 py-1.5 rounded-full border border-white/10 font-mono tracking-tighter">UID: {{ Auth::user()->id }}-2026</span>
                                             </div>
                                         </div>
                                         
-                                        <div class="mt-12 flex items-center">
+                                        <div class="mt-16 flex items-center bg-white/5 p-6 rounded-3xl border border-white/5 backdrop-blur-sm">
                                             @if(Auth::user()->status == 'verified')
-                                                <div class="h-14 w-14 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/50">
-                                                    <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                                <div class="h-16 w-16 bg-green-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-green-500/40 transform rotate-3">
+                                                    <svg class="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                                                 </div>
-                                                <div class="ml-4">
-                                                    <p class="text-green-400 font-bold text-xl tracking-wide">STATUS: VERIFIED</p>
-                                                    <p class="text-xs text-gray-400">Terverifikasi oleh Tim Auditor INAPROC+</p>
+                                                <div class="ml-6">
+                                                    <p class="text-green-400 font-black text-2xl tracking-tight uppercase">Status: Verified</p>
+                                                    <p class="text-xs text-indigo-200/60 font-medium">Selamat! Perusahaan Anda lolos audit fisik INAPROC+.</p>
                                                 </div>
                                             @elseif(Auth::user()->status == 'rejected')
-                                                <div class="h-14 w-14 bg-red-500 rounded-full flex items-center justify-center">
-                                                    <span class="text-2xl font-black text-white">!</span>
+                                                <div class="h-16 w-16 bg-red-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-red-500/40">
+                                                    <span class="text-3xl font-black text-white">!</span>
                                                 </div>
-                                                <div class="ml-4">
-                                                    <p class="text-red-400 font-bold text-xl">STATUS: REJECTED</p>
-                                                    <p class="text-xs text-gray-400">Silakan hubungi admin untuk audit ulang.</p>
+                                                <div class="ml-6">
+                                                    <p class="text-red-400 font-black text-2xl tracking-tight uppercase">Status: Rejected</p>
+                                                    <p class="text-xs text-indigo-200/60 font-medium">Kelayakan kantor belum memenuhi standar minimal.</p>
                                                 </div>
                                             @else
-                                                <div class="h-14 w-14 bg-yellow-500 rounded-full flex items-center justify-center animate-pulse">
-                                                    <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                <div class="h-16 w-16 bg-yellow-500 rounded-2xl flex items-center justify-center animate-pulse shadow-2xl shadow-yellow-500/40">
+                                                    <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                                 </div>
-                                                <div class="ml-4">
-                                                    <p class="text-yellow-400 font-bold text-xl">STATUS: PENDING</p>
-                                                    <p class="text-xs text-gray-400">Menunggu antrian survey lapangan.</p>
+                                                <div class="ml-6">
+                                                    <p class="text-yellow-400 font-black text-2xl tracking-tight uppercase">Status: Pending</p>
+                                                    <p class="text-xs text-indigo-200/60 font-medium">Mohon tunggu petugas surveyor menjadwalkan kunjungan.</p>
                                                 </div>
                                             @endif
                                         </div>
                                     </div>
-                                    {{-- Dekorasi Abstract --}}
-                                    <div class="absolute -bottom-10 -right-10 h-40 w-40 bg-indigo-500/20 rounded-full blur-3xl"></div>
+                                    <div class="absolute -bottom-20 -right-20 h-64 w-64 bg-indigo-600/10 rounded-full blur-[80px]"></div>
                                 </div>
 
-                                {{-- Tips Section --}}
-                                <div class="bg-indigo-50 rounded-3xl p-8 border border-indigo-100 flex flex-col justify-center">
-                                    <h3 class="text-indigo-900 font-bold text-lg mb-3 flex items-center">
-                                        <span class="mr-2">💡</span> Tips Percepatan Verifikasi
+                                {{-- PENGUMUMAN & TIPS --}}
+                                <div class="bg-indigo-600 rounded-[2.5rem] p-8 text-white shadow-xl shadow-indigo-100 flex flex-col justify-center">
+                                    <h3 class="font-black text-xl mb-4 flex items-center italic">
+                                        <span class="mr-2 not-italic">🎯</span> Quick Info
                                     </h3>
-                                    <ul class="text-indigo-700/80 text-sm space-y-3 font-medium">
-                                        <li class="flex items-start"><span class="mr-2">🚀</span> Lengkapi data Geotagging Office (PBI-11).</li>
-                                        <li class="flex items-start"><span class="mr-2">📷</span> Unggah portofolio dengan resolusi tinggi.</li>
-                                        <li class="flex items-start"><span class="mr-2">🏢</span> Siapkan dokumen fisik saat petugas datang.</li>
-                                    </ul>
+                                    <div class="space-y-4">
+                                        <div class="flex items-start">
+                                            <span class="bg-white/20 p-2 rounded-lg mr-3 text-sm">1</span>
+                                            <p class="text-xs font-medium leading-relaxed">Update Geotagging Office pada menu profil untuk akurasi survey.</p>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <span class="bg-white/20 p-2 rounded-lg mr-3 text-sm">2</span>
+                                            <p class="text-xs font-medium leading-relaxed">Pastikan Pagu Budget tersedia sebelum mengajukan pengadaan baru.</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            {{-- INPUT PORTOFOLIO --}}
-                            <div class="mt-10">
-                                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                    <span class="mr-2">🖼️</span> {{ __('Unggah Portofolio Proyek') }}
-                                </h3>
-                                <form action="{{ route('portfolio.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 max-w-xl bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                            {{-- ========================================== --}}
+                            {{-- FORM PENGADAAN BARANG (PBI-06)            --}}
+                            {{-- ========================================== --}}
+                            <div class="mt-12 bg-gray-50 p-8 rounded-[2rem] border-2 border-dashed border-gray-200">
+                                <div class="mb-8">
+                                    <h3 class="text-2xl font-black text-gray-900 flex items-center">
+                                        <span class="mr-3 bg-white p-2 rounded-xl shadow-sm text-indigo-600">📦</span> 
+                                        {{ __('Pengajuan Pengadaan (PBI-06)') }}
+                                    </h3>
+                                    <p class="text-sm text-gray-500 mt-2">Daftarkan barang atau jasa yang ingin diajukan ke proses lelang/pengadaan.</p>
+                                </div>
+
+                                <form action="{{ route('procurement.store') }}" method="POST" class="space-y-6">
                                     @csrf
-                                    <div>
-                                        <x-input-label for="title" :value="__('Nama Proyek')" />
-                                        <x-text-input id="title" name="title" type="text" class="mt-1 block w-full rounded-lg" required placeholder="Contoh: Pengadaan CCTV" />
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <div>
+                                            <x-input-label for="item_name" :value="__('Item / Jasa')" />
+                                            <x-text-input id="item_name" name="item_name" type="text" class="mt-2 block w-full rounded-2xl border-none shadow-sm focus:ring-2 focus:ring-indigo-500" required placeholder="Contoh: Alat Tulis Kantor" />
+                                        </div>
+                                        <div>
+                                            <x-input-label for="quantity" :value="__('Kuantitas (Qty)')" />
+                                            <x-text-input id="quantity" name="quantity" type="number" class="mt-2 block w-full rounded-2xl border-none shadow-sm" required min="1" placeholder="100" />
+                                        </div>
+                                        <div>
+                                            <x-input-label for="price" :value="__('Estimasi Harga Satuan')" />
+                                            <div class="relative">
+                                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">Rp</span>
+                                                <x-text-input id="price" name="price" type="number" class="mt-2 block w-full rounded-2xl border-none shadow-sm pl-12" required min="0" placeholder="50.000" />
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div>
-                                        <x-input-label for="description" :value="__('Deskripsi')" />
-                                        <textarea id="description" name="description" rows="2" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500" placeholder="Detail proyek..."></textarea>
+                                        <x-input-label for="description" :value="__('Deskripsi Singkat')" />
+                                        <textarea id="description" name="description" rows="2" class="mt-2 block w-full border-none rounded-2xl shadow-sm focus:ring-2 focus:ring-indigo-500" placeholder="Jelaskan spesifikasi singkat atau alasan urgensi..."></textarea>
                                     </div>
-                                    <div>
-                                        <x-input-label for="portfolio_file" :value="__('Bukti Visual')" />
-                                        <input type="file" name="portfolio_file" id="portfolio_file" class="mt-1 block w-full text-sm rounded-lg" required>
+
+                                    <div class="flex justify-end">
+                                        <x-primary-button class="bg-indigo-600 hover:bg-indigo-700 py-4 px-10 rounded-2xl shadow-lg shadow-indigo-200 transition-all active:scale-95">
+                                            {{ __('Ajukan Pengadaan Sekarang') }}
+                                        </x-primary-button>
                                     </div>
-                                    <x-primary-button class="bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200">
-                                        {{ __('Unggah Bukti Nyata') }}
-                                    </x-primary-button>
                                 </form>
                             </div>
 
-                            {{-- RIWAYAT PORTOFOLIO --}}
-                            <div class="mt-12 pt-8 border-t border-gray-100">
-                                <h3 class="text-lg font-bold text-gray-900 mb-6">Galeri Portofolio Anda</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    @forelse($portfolios ?? [] as $item)
-                                        <div class="group relative bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-                                            @if($item->file_type === 'video')
-                                                <video class="w-full h-44 object-cover" controls><source src="{{ asset('storage/' . $item->file_path) }}" type="video/mp4"></video>
-                                            @else
-                                                <img src="{{ asset('storage/' . $item->file_path) }}" class="w-full h-44 object-cover group-hover:scale-105 transition duration-500">
-                                            @endif
-                                            <div class="p-4">
-                                                <h4 class="font-bold text-gray-800 text-sm truncate uppercase">{{ $item->title }}</h4>
-                                                <p class="text-[11px] text-gray-500 mt-1 line-clamp-1">{{ $item->description }}</p>
+                            {{-- UPLOAD PORTOFOLIO (PBI-03) --}}
+                            <div class="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-12">
+                                {{-- Form Upload --}}
+                                <div class="lg:col-span-1">
+                                    <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
+                                        <span class="mr-3 text-indigo-600">🖼️</span> {{ __('Update Visual Portfolio') }}
+                                    </h3>
+                                    <form action="{{ route('portfolio.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                                        @csrf
+                                        <div>
+                                            <x-input-label for="title" :value="__('Judul Proyek')" />
+                                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full rounded-xl" required />
+                                        </div>
+                                        <div>
+                                            <x-input-label for="portfolio_file" :value="__('File Visual')" />
+                                            <input type="file" name="portfolio_file" id="portfolio_file" class="mt-1 block w-full text-xs" required>
+                                        </div>
+                                        <x-primary-button class="w-full justify-center rounded-xl bg-slate-900">Upload</x-primary-button>
+                                    </form>
+                                </div>
+
+                                {{-- Galeri --}}
+                                <div class="lg:col-span-2">
+                                    <h3 class="text-xl font-black text-gray-900 mb-6">Galeri Hasil Kerja</h3>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        @forelse($portfolios ?? [] as $item)
+                                            <div class="group relative aspect-square rounded-3xl overflow-hidden shadow-md border-4 border-white">
+                                                @if($item->file_type === 'video')
+                                                    <video class="w-full h-full object-cover" muted><source src="{{ asset('storage/' . $item->file_path) }}" type="video/mp4"></video>
+                                                @else
+                                                    <img src="{{ asset('storage/' . $item->file_path) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                                @endif
+                                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                                                    <p class="text-white text-[10px] font-bold text-center leading-tight">{{ $item->title }}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @empty
-                                        <div class="col-span-full py-16 text-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-                                            <p class="text-gray-400 font-medium">Belum ada portofolio visual.</p>
-                                        </div>
-                                    @endforelse
+                                        @empty
+                                            <div class="col-span-full py-12 text-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-100">
+                                                <p class="text-gray-400 text-xs font-bold uppercase tracking-widest italic">Belum Ada Portfolio</p>
+                                            </div>
+                                        @endforelse
+                                    </div>
                                 </div>
                             </div>
                         @endrole
                     @endrole
+
                 </div>
             </div>
         </div>
