@@ -16,6 +16,14 @@
                 </div>
             @endif
 
+            {{-- ERROR BUDGET (PBI-07) --}}
+            @if($errors->has('budget_error'))
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-xl shadow-sm" role="alert">
+                    <p class="font-bold">Gagal Mengajukan!</p>
+                    <p class="text-sm">{{ $errors->first('budget_error') }}</p>
+                </div>
+            @endif
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-3xl border border-gray-100">
                 <div class="p-8 text-gray-900">
                     
@@ -77,7 +85,7 @@
                             </form>
                         </div>
 
-                        {{-- TABEL MONITORING (OUTPUT PBI-04) --}}
+                        {{-- TABEL MONITORING --}}
                         <div class="mt-12">
                             <h3 class="text-xl font-extrabold text-gray-900 mb-6">Log Aktivitas Survey Terbaru</h3>
                             <div class="overflow-x-auto rounded-3xl border border-gray-100 shadow-sm">
@@ -117,14 +125,11 @@
                             </div>
                         </div>
 
-                    {{-- ========================================== --}}
-                    {{-- SEKSI VENDOR (PBI-03, PBI-04, PBI-06)      --}}
-                    {{-- ========================================== --}}
                     @else
                         @role('vendor')
                             {{-- IDENTITAS VENDOR & STATUS --}}
                             <div class="mb-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                {{-- KARTU SERTIFIKASI DIGITAL (PBI-04) --}}
+                                {{-- KARTU SERTIFIKASI DIGITAL --}}
                                 <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 via-indigo-950 to-black rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden group">
                                     <div class="relative z-10 h-full flex flex-col justify-between">
                                         <div class="flex justify-between items-start">
@@ -168,18 +173,18 @@
                                     <div class="absolute -bottom-20 -right-20 h-64 w-64 bg-indigo-600/10 rounded-full blur-[80px]"></div>
                                 </div>
 
-                                {{-- PENGUMUMAN & TIPS --}}
+                                {{-- QUICK INFO --}}
                                 <div class="bg-indigo-600 rounded-[2.5rem] p-8 text-white shadow-xl shadow-indigo-100 flex flex-col justify-center">
                                     <h3 class="font-black text-xl mb-4 flex items-center italic">
                                         <span class="mr-2 not-italic">🎯</span> Quick Info
                                     </h3>
                                     <div class="space-y-4">
                                         <div class="flex items-start">
-                                            <span class="bg-white/20 p-2 rounded-lg mr-3 text-sm">1</span>
+                                            <span class="bg-white/20 p-2 rounded-lg mr-3 text-sm font-bold">1</span>
                                             <p class="text-xs font-medium leading-relaxed">Update Geotagging Office pada menu profil untuk akurasi survey.</p>
                                         </div>
                                         <div class="flex items-start">
-                                            <span class="bg-white/20 p-2 rounded-lg mr-3 text-sm">2</span>
+                                            <span class="bg-white/20 p-2 rounded-lg mr-3 text-sm font-bold">2</span>
                                             <p class="text-xs font-medium leading-relaxed">Pastikan Pagu Budget tersedia sebelum mengajukan pengadaan baru.</p>
                                         </div>
                                     </div>
@@ -187,19 +192,33 @@
                             </div>
 
                             {{-- ========================================== --}}
-                            {{-- FORM PENGADAAN BARANG (PBI-06)            --}}
+                            {{-- FORM PENGADAAN BARANG (PBI-06 & PBI-07)   --}}
                             {{-- ========================================== --}}
                             <div class="mt-12 bg-gray-50 p-8 rounded-[2rem] border-2 border-dashed border-gray-200">
                                 <div class="mb-8">
                                     <h3 class="text-2xl font-black text-gray-900 flex items-center">
                                         <span class="mr-3 bg-white p-2 rounded-xl shadow-sm text-indigo-600">📦</span> 
-                                        {{ __('Pengajuan Pengadaan (PBI-06)') }}
+                                        {{ __('Pengajuan Pengadaan Cerdas') }}
                                     </h3>
-                                    <p class="text-sm text-gray-500 mt-2">Daftarkan barang atau jasa yang ingin diajukan ke proses lelang/pengadaan.</p>
+                                    <p class="text-sm text-gray-500 mt-2">Sistem akan melakukan <b>Automated Pagu Check</b> untuk memastikan ketersediaan dana.</p>
                                 </div>
 
                                 <form action="{{ route('procurement.store') }}" method="POST" class="space-y-6">
                                     @csrf
+                                    
+                                    {{-- DROPDOWN PAGU (PBI-07) --}}
+                                    <div class="max-w-md">
+                                        <x-input-label for="budget_id" :value="__('Pilih Sumber Dana (Pagu)')" />
+                                        <select name="budget_id" id="budget_id" class="mt-2 block w-full border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500" required>
+                                            <option value="">-- Pilih Pagu Anggaran --</option>
+                                            @foreach(\App\Models\Budget::all() as $budget)
+                                                <option value="{{ $budget->id }}">
+                                                    {{ $budget->nama_pagu }} (Sisa: Rp {{ number_format($budget->sisa_pagu) }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         <div>
                                             <x-input-label for="item_name" :value="__('Item / Jasa')" />
@@ -219,7 +238,7 @@
                                     </div>
 
                                     <div>
-                                        <x-input-label for="description" :value="__('Deskripsi Singkat')" />
+                                        <x-input-label for="description" :value="__('Justifikasi Kebutuhan')" />
                                         <textarea id="description" name="description" rows="2" class="mt-2 block w-full border-none rounded-2xl shadow-sm focus:ring-2 focus:ring-indigo-500" placeholder="Jelaskan spesifikasi singkat atau alasan urgensi..."></textarea>
                                     </div>
 
@@ -233,7 +252,6 @@
 
                             {{-- UPLOAD PORTOFOLIO (PBI-03) --}}
                             <div class="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-12">
-                                {{-- Form Upload --}}
                                 <div class="lg:col-span-1">
                                     <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
                                         <span class="mr-3 text-indigo-600">🖼️</span> {{ __('Update Visual Portfolio') }}
@@ -252,7 +270,6 @@
                                     </form>
                                 </div>
 
-                                {{-- Galeri --}}
                                 <div class="lg:col-span-2">
                                     <h3 class="text-xl font-black text-gray-900 mb-6">Galeri Hasil Kerja</h3>
                                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
