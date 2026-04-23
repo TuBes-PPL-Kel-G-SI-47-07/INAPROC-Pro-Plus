@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\SurveyReportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProcurementRequestController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,6 +28,9 @@ Route::middleware('auth')->group(function () {
     
     // Fitur PBI-04: Survey Report (Endpoint penyimpanan data)
     Route::post('/survey-report', [SurveyReportController::class, 'store'])->name('survey.store');
+
+    // Fitur PBI-06: Procurement Request (Endpoint penyimpanan data)
+    Route::post('/procurement', [ProcurementRequestController::class, 'store'])->name('procurement.store');
 });
 
 // GROUP: ADMIN (Manajemen User & Akses Sistem)
