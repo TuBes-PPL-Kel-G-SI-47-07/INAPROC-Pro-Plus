@@ -84,7 +84,49 @@
                                 </x-primary-button>
                             </form>
                         </div>
+                        {{-- FORM KONFIGURASI BOBOT TENDER (PBI-08) --}}
+                        <div class="mt-8 bg-white p-8 rounded-3xl border border-indigo-100 shadow-sm">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-black text-gray-900 flex items-center">
+                                    <span class="mr-3 bg-indigo-50 p-2 rounded-xl text-indigo-600">⚖️</span> 
+                                    {{ __('Konfigurasi Bobot Penilaian Tender') }}
+                                </h3>
+                                <span class="text-[10px] bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full font-bold uppercase">Sprint 2: PBI-08</span>
+                            </div>
 
+                            @if($errors->has('total_weight'))
+                                <div class="mb-4 p-4 bg-red-50 text-red-700 rounded-2xl border border-red-100 flex items-center">
+                                    <span class="mr-2">⚠️</span> {{ $errors->first('total_weight') }}
+                                </div>
+                            @endif
+
+                            <form action="{{ route('tender-config.store') }}" method="POST" class="space-y-6">
+                                @csrf
+                                <div>
+                                    <x-input-label for="judul_tender" :value="__('Nama Paket Tender / Proyek')" />
+                                    <x-text-input name="judul_tender" class="mt-2 block w-full bg-gray-50 border-none rounded-2xl" placeholder="Contoh: Pengadaan Server Cloud Tahap 1" required />
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div class="p-6 bg-blue-50/50 rounded-3xl border border-blue-100">
+                                        <x-input-label class="text-blue-700 font-bold" :value="__('Bobot Harga (%)')" />
+                                        <x-text-input type="number" name="weight_harga" class="mt-2 w-full border-none rounded-xl" value="40" required min="0" max="100" />
+                                    </div>
+                                    <div class="p-6 bg-purple-50/50 rounded-3xl border border-purple-100">
+                                        <x-input-label class="text-purple-700 font-bold" :value="__('Bobot Teknis (%)')" />
+                                        <x-text-input type="number" name="weight_teknis" class="mt-2 w-full border-none rounded-xl" value="40" required min="0" max="100" />
+                                    </div>
+                                    <div class="p-6 bg-emerald-50/50 rounded-3xl border border-emerald-100">
+                                        <x-input-label class="text-emerald-700 font-bold" :value="__('Bobot Integritas (%)')" />
+                                        <x-text-input type="number" name="weight_integritas" class="mt-2 w-full border-none rounded-xl" value="20" required min="0" max="100" />
+                                    </div>
+                                </div>
+
+                                <x-primary-button class="w-full justify-center py-4 bg-indigo-600 hover:bg-indigo-700 shadow-xl shadow-indigo-100 rounded-2xl transition-all">
+                                    {{ __('Tetapkan Bobot Penilaian') }}
+                                </x-primary-button>
+                            </form>
+                        </div>
                         {{-- TABEL MONITORING --}}
                         <div class="mt-12">
                             <h3 class="text-xl font-extrabold text-gray-900 mb-6">Log Aktivitas Survey Terbaru</h3>
