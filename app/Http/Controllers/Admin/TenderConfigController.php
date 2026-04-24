@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\TenderConfig;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ProcurementFile;
 
 class TenderConfigController extends Controller
 {
@@ -15,6 +17,7 @@ class TenderConfigController extends Controller
             'weight_harga' => 'required|integer|min:0|max:100',
             'weight_teknis' => 'required|integer|min:0|max:100',
             'weight_integritas' => 'required|integer|min:0|max:100',
+            'tor_file' => 'required|mimes:pdf,docx|max:5120'
         ]);
 
         // Validasi total bobot harus 100%
@@ -26,8 +29,18 @@ class TenderConfigController extends Controller
             ])->withInput();
         }
 
-        TenderConfig::create($request->all());
+        $tender = TenderConfig::create($request->all());
 
-        return redirect()->back()->with('success', 'PBI-08: Konfigurasi Bobot Tender Berhasil Disimpan.');
-    }
+        if ($request->hasFile('tor_file')) {
+            $path = $request->file('tor_file')->store('procurement_docs', 'public');
+            
+            ProcurementFile::create([
+                'tender_config_id' => $tender->id,
+                'file_name' => $request->file('tor_file')->getClientOriginalName(),
+                'file_path' => $path,
+            ]);
+        }
+
+    return redirect()->back()->with('success', 'Paket Tender & Dokumen TOR Berhasil Diterbitkan.');
+}
 }
