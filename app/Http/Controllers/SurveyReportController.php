@@ -40,4 +40,39 @@ class SurveyReportController extends Controller
 
         return redirect()->back()->with('success', 'Laporan survey berhasil disimpan. Status vendor otomatis diperbarui menjadi ' . strtoupper($status) . '!');
     }
+
+    /**
+     * Menampilkan senarai laporan untuk disahkan oleh Auditor
+     */
+    public function index()
+    {
+        // Mengambil semua data survey beserta relasi vendor dan surveyor (jika ada)
+        // Kita paparkan data yang terbaru di atas
+        $surveys = SurveyReport::with(['user', 'vendor', 'surveyor'])->latest()->get();
+        #$surveys = SurveyReport::all();
+
+        return view('auditor.surveys.index', compact('surveys'));
+        #return view('auditor.index', compact('surveys'));
+    }
+
+    /**
+     * Memproses kelulusan atau penolakan laporan
+     */
+    public function verify(Request $request, SurveyReport $survey)
+    {
+        // Validasi input dari butang approve/reject
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+            'auditor_notes' => $request->status === 'rejected' ? 'required|string|min:5' : 'nullable|string', // Wajib diisi jika status ditolak (boleh ditambah logikanya nanti)
+        ]);
+
+        // Kemas kini data dalam database
+        $survey->update([
+            'status' => $request->status,
+            'auditor_notes' => $request->auditor_notes,
+        ]);
+
+        // Kembali ke halaman sebelumnya dengan mesej berjaya
+        return back()->with('success', 'Status laporan Geotagging berhasil diperbarui!');
+    }
 }

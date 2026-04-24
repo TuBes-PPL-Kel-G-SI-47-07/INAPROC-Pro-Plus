@@ -23,8 +23,11 @@
                     @endrole
 
                     @role('auditor')
-                    <x-nav-link :href="route('auditor.index')" :active="request()->routeIs('auditor.index')">
+                    <x-nav-link :href="route('auditor.surveys.index')" :active="request()->routeIs('auditor.surveys.index')">
                         {{ __('Monitoring') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('auditor.portfolios.index')" :active="request()->routeIs('auditor.portfolios.index')">
+                        {{ __('Portfolio') }}
                     </x-nav-link>
                     @endrole
 

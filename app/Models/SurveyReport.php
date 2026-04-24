@@ -15,7 +15,9 @@ class SurveyReport extends Model
         'office_condition',
         'infrastructure_score',
         'notes',
-        'survey_photo'
+        'survey_photo',
+        'status',         
+        'auditor_notes'
     ];
 
     // Relasi ke Vendor yang disurvey
@@ -28,5 +30,10 @@ class SurveyReport extends Model
     public function surveyor()
     {
         return $this->belongsTo(User::class, 'surveyor_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
