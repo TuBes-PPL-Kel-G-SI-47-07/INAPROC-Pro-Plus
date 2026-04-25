@@ -12,15 +12,21 @@ class ProcurementRequest extends Model
     protected $fillable = [
         'user_id',
         'item_name',
+        'description',
         'quantity',
         'price',
         'total_price',
-        'description',
         'status',
+        'budget_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function budget()
+{
+    return $this->belongsTo(Budget::class, 'budget_id', 'id');
+}
 }
