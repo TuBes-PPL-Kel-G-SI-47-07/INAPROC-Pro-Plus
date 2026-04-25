@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\SurveyReportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProcurementRequestController;
+use App\Http\Controllers\Admin\TenderConfigController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,6 +29,9 @@ Route::middleware('auth')->group(function () {
     
     // Fitur PBI-04: Survey Report (Endpoint penyimpanan data)
     Route::post('/survey-report', [SurveyReportController::class, 'store'])->name('survey.store');
+
+    // Fitur PBI-06: Procurement Request (Endpoint penyimpanan data)
+    Route::post('/procurement', [ProcurementRequestController::class, 'store'])->name('procurement.store');
 });
 
 // GROUP: ADMIN (Manajemen User & Akses Sistem)
@@ -50,5 +55,8 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     Route::patch('/auditor/surveys/{survey}/verify', [SurveyReportController::class, 'verify'])->name('auditor.surveys.verify');
     Route::get('/auditor/portfolios', [PortfolioController::class, 'auditorIndex'])->name('auditor.portfolios.index');
 });
+    Route::post('/tender-config', [TenderConfigController::class, 'store'])
+        ->middleware(['auth', 'role:admin'])
+        ->name('tender-config.store');
 
 require __DIR__.'/auth.php';
