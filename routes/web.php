@@ -50,7 +50,13 @@ Route::middleware('auth')->group(function () {
     // PBI-04: Survey Report Processing
     Route::post('/survey-report', [SurveyReportController::class, 'store'])->name('survey.store');
 
-    // PBI-06 & 07: Procurement & Smart Budget Check
+    // Fitur PBI-06: Procurement Request (Riwayat Pengadaan)
+    Route::get('/procurement', [ProcurementRequestController::class, 'index'])->name('procurement.index');
+});
+
+// GROUP: PEMOHON (Pengajuan Pengadaan)
+Route::middleware(['auth', 'role:pemohon'])->group(function () {
+    Route::get('/procurement/create', [ProcurementRequestController::class, 'create'])->name('procurement.create');
     Route::post('/procurement', [ProcurementRequestController::class, 'store'])->name('procurement.store');
 
     // PBI-10: Sealed Bidding Encryption (Submit Penawaran)
@@ -85,6 +91,7 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     
     // Audit Portofolio Vendor
     Route::get('/auditor/portfolios', [PortfolioController::class, 'auditorIndex'])->name('auditor.portfolios.index');
+    Route::patch('/procurement/{id}/verify', [ProcurementRequestController::class, 'verify'])->name('procurement.verify');
 });
 
 require __DIR__.'/auth.php';

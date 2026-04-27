@@ -11,6 +11,7 @@ class ProcurementRequest extends Model
 
     protected $fillable = [
         'user_id',
+        'budget_id',
         'item_name',
         'description',
         'quantity',
@@ -26,7 +27,7 @@ class ProcurementRequest extends Model
     }
 
     public function budget()
-{
-    return $this->belongsTo(Budget::class, 'budget_id', 'id');
-}
+    {
+        return $this->belongsTo(Budget::class);
+    }
 }
