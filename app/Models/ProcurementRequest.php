@@ -13,11 +13,12 @@ class ProcurementRequest extends Model
         'user_id',
         'budget_id',
         'item_name',
+        'description',
         'quantity',
         'price',
         'total_price',
-        'description',
         'status',
+        'budget_id',
     ];
 
     public function user()
