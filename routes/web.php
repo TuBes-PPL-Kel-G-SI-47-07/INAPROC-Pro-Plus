@@ -30,7 +30,13 @@ Route::middleware('auth')->group(function () {
     // Fitur PBI-04: Survey Report (Endpoint penyimpanan data)
     Route::post('/survey-report', [SurveyReportController::class, 'store'])->name('survey.store');
 
-    // Fitur PBI-06: Procurement Request (Endpoint penyimpanan data)
+    // Fitur PBI-06: Procurement Request (Riwayat Pengadaan)
+    Route::get('/procurement', [ProcurementRequestController::class, 'index'])->name('procurement.index');
+});
+
+// GROUP: PEMOHON (Pengajuan Pengadaan)
+Route::middleware(['auth', 'role:pemohon'])->group(function () {
+    Route::get('/procurement/create', [ProcurementRequestController::class, 'create'])->name('procurement.create');
     Route::post('/procurement', [ProcurementRequestController::class, 'store'])->name('procurement.store');
 });
 
@@ -54,6 +60,7 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     // Proses pengesahan (Approve/Reject)
     Route::patch('/auditor/surveys/{survey}/verify', [SurveyReportController::class, 'verify'])->name('auditor.surveys.verify');
     Route::get('/auditor/portfolios', [PortfolioController::class, 'auditorIndex'])->name('auditor.portfolios.index');
+    Route::patch('/procurement/{id}/verify', [ProcurementRequestController::class, 'verify'])->name('procurement.verify');
 });
     Route::post('/tender-config', [TenderConfigController::class, 'store'])
         ->middleware(['auth', 'role:admin'])

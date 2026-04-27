@@ -13,6 +13,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'vendor']);
         Role::create(['name' => 'auditor']);
