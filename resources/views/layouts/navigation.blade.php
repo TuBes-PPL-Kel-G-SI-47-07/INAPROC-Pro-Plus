@@ -29,11 +29,24 @@
                     <x-nav-link :href="route('auditor.portfolios.index')" :active="request()->routeIs('auditor.portfolios.index')">
                         {{ __('Portfolio') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('procurement.index')" :active="request()->routeIs('procurement.index')">
+                        {{ __('Persetujuan Pengadaan') }}
+                    </x-nav-link>
                     @endrole
 
                     @role('vendor')
                     <x-nav-link :href="route('vendor.setup')" :active="request()->routeIs('vendor.setup')">
                         {{ __('Profile Perusahaan') }}
+                    </x-nav-link>
+                    @endrole
+
+                    @role('pemohon')
+                    <x-nav-link :href="route('procurement.create')" :active="request()->routeIs('procurement.create')">
+                        {{ __('Ajukan Pengadaan') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('procurement.index')" :active="request()->routeIs('procurement.index')">
+                        {{ __('Riwayat Pengadaan') }}
                     </x-nav-link>
                     @endrole
                 </div>
