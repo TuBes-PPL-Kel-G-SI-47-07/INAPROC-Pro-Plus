@@ -11,7 +11,7 @@ class Bid extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tender_config_id', 
+        'tender_id', 
         'user_id', 
         'encrypted_price', 
         'hash_key', 
@@ -28,10 +28,10 @@ class Bid extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Relasi ke Tender Config
-    public function tenderConfig()
+    // Relasi ke Tender
+    public function tender()
     {
-        return $this->belongsTo(TenderConfig::class);
+        return $this->belongsTo(Tender::class);
     }
 
     // Accessor untuk Enkripsi (PBI-10)

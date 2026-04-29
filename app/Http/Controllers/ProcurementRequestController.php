@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Budget;
 use App\Models\ProcurementRequest;
+use App\Models\Tender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -105,6 +106,8 @@ class ProcurementRequestController extends Controller
             $procurement->status = $request->status;
             $procurement->save();
 
+            // PBI: Auto-create Tender jika di-approve (DIHAPUS - Tender dibuat oleh Admin saat publikasi)
+
             DB::commit();
             return back()->with('success', 'Status pengadaan diperbarui dan Pagu disesuaikan.');
 
@@ -117,5 +120,35 @@ class ProcurementRequestController extends Controller
     public function show(ProcurementRequest $procurementRequest)
     {
         return view('procurement.show', ['request' => $procurementRequest->load(['user', 'budget'])]);
+    }
+
+    public function generateSPK($id)
+    {
+        $procurement = ProcurementRequest::with(['user', 'budget', 'vendor', 'tender.bids'])->findOrFail($id);
+        
+        // Pengecekan Keamanan: Pastikan Vendor hanya bisa mencetak SPK jika dia pemenangnya
+        if (Auth::user()->hasRole('vendor')) {
+            if ($procurement->vendor_id !== Auth::id()) {
+                abort(403, 'UNAUTHORIZED: Anda bukan pemenang tender ini atau pengadaan ini milik entitas lain.');
+            }
+        } elseif (!Auth::user()->hasRole('admin') && !Auth::user()->hasRole('auditor')) {
+            if ($procurement->user_id !== Auth::id()) {
+                abort(403, 'UNAUTHORIZED: Anda tidak memiliki akses untuk mencetak SPK pengadaan ini.');
+            }
+        }
+
+        // Ambil data bid pemenang untuk harga riil
+        $winnerBid = null;
+        if ($procurement->tender) {
+            $winnerBid = $procurement->tender->bids()->where('status', 'winner')->first();
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('procurement.spk_pdf', compact('procurement', 'winnerBid'));
+        
+        $vendorName = $procurement->vendor ? $procurement->vendor->name : ($procurement->user ? $procurement->user->name : 'Unknown-Vendor');
+        $timestamp = now()->format('YmdHis');
+        $fileName = 'SPK-' . \Illuminate\Support\Str::slug($procurement->item_name) . '-' . \Illuminate\Support\Str::slug($vendorName) . '-' . $timestamp . '.pdf';
+        
+        return $pdf->stream($fileName);
     }
 }

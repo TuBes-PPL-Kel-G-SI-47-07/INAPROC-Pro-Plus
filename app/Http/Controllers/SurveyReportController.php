@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class SurveyReportController extends Controller
 {
+    public function create($vendor_id)
+    {
+        $vendor = User::findOrFail($vendor_id);
+        
+        return view('auditor.survey_form', compact('vendor'));
+    }
+
     /**
      * Menyimpan laporan survey lapangan dan otomatisasi verifikasi (PBI-04)
      */
@@ -38,7 +45,43 @@ class SurveyReportController extends Controller
         $status = ($request->infrastructure_score >= 70) ? 'verified' : 'rejected';
         User::where('id', $request->user_id)->update(['status' => $status]);
 
-        return redirect()->back()->with('success', 'Laporan survey berhasil disimpan. Status vendor otomatis diperbarui menjadi ' . strtoupper($status) . '!');
+        // Auto-Scoring Recalculation: Hitung ulang semua bid milik vendor ini
+        $bids = \App\Models\Bid::where('user_id', $request->user_id)->get();
+        if ($bids->count() > 0) {
+            $bidController = app(\App\Http\Controllers\BidController::class);
+            foreach ($bids as $bid) {
+                // Jangan panggil calculateScore langsung karena return redirect, ekstrak logika atau hitung ulang manual
+                $config = \App\Models\TenderConfig::latest()->first();
+                if ($config) {
+                    $decryptedPrice = (float) $bid->getDecryptedPrice();
+                    $allBids = \App\Models\Bid::where('tender_id', $bid->tender_id)->get();
+                    $minPrice = $allBids->min(function($b) { return (float) $b->getDecryptedPrice(); });
+                    $scoreHarga = $decryptedPrice > 0 ? ($minPrice / $decryptedPrice) * 100 : 0;
+                    
+                    $infra = $request->infrastructure_score;
+                    $office = $request->office_condition;
+                    $officeText = strtolower(trim($office));
+                    if ($officeText == 'layak') $officeVal = 100;
+                    elseif ($officeText == 'cukup layak') $officeVal = 50;
+                    else $officeVal = 0;
+                    
+                    $scoreTeknis = ($infra + $officeVal) / 2;
+                    $scoreIntegritas = 85; 
+                    $finalScore = ($scoreHarga * $config->weight_harga / 100) + 
+                                  ($scoreTeknis * $config->weight_teknis / 100) + 
+                                  ($scoreIntegritas * $config->weight_integritas / 100);
+                    
+                    $bid->update([
+                        'score_harga' => $scoreHarga,
+                        'score_teknis' => $scoreTeknis,
+                        'score_integritas' => $scoreIntegritas,
+                        'final_score' => $finalScore
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Laporan survey berhasil disimpan dan skor vendor diperbarui!');
     }
 
     /**

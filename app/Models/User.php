@@ -39,4 +39,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function surveyReport()
+    {
+        return $this->hasOne(SurveyReport::class, 'user_id');
+    }
 }

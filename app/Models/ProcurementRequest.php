@@ -18,7 +18,7 @@ class ProcurementRequest extends Model
         'price',
         'total_price',
         'status',
-        'budget_id',
+        'vendor_id',
     ];
 
     public function user()
@@ -29,5 +29,15 @@ class ProcurementRequest extends Model
     public function budget()
     {
         return $this->belongsTo(Budget::class);
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(User::class, 'vendor_id');
+    }
+
+    public function tender()
+    {
+        return $this->hasOne(Tender::class);
     }
 }
