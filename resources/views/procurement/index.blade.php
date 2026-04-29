@@ -22,9 +22,7 @@
                             <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Pagu</th>
                             <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Total Harga</th>
                             <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            @if(auth()->user()->hasRole('auditor'))
                             <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
-                            @endif
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -41,8 +39,8 @@
                                     {{ ucfirst($request->status) }}
                                 </span>
                             </td>
-                            @if(auth()->user()->hasRole('auditor') && $request->status == 'pending')
                             <td class="px-6 py-4">
+                                @if(auth()->user()->hasRole('auditor') && $request->status == 'pending')
                                     <form action="{{ route('procurement.verify', $request->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PATCH')
@@ -56,8 +54,14 @@
                                         <input type="hidden" name="status" value="approved">
                                         <button type="submit" class="text-green-600 hover:text-green-900">Approve</button>
                                     </form>
+                                @endif
+
+                                @if($request->status == 'approved')
+                                    <a href="{{ route('procurement.spk', $request->id) }}" target="_blank" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+                                        Cetak SPK
+                                    </a>
+                                @endif
                             </td>
-                            @endif
                         </tr>
                         @endforeach
                     </tbody>

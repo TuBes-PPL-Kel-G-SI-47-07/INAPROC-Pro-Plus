@@ -25,16 +25,31 @@ Route::get('/', function () {
  * DASHBOARD UTAMA (Integrasi PBI-03 & PBI-12)
  * Menggabungkan data Portfolio (Vendor) dan Competitive Matrix (Admin)
  */
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (\Illuminate\Http\Request $request) {
     // Data untuk Vendor: Menampilkan hasil kerja mereka sendiri (PBI-03)
-    $portfolios = Portfolio::where('user_id', auth()->id())->get();
+    $portfolios = App\Models\Portfolio::where('user_id', auth()->id())->get();
 
-    // Data untuk Admin: Menampilkan peringkat vendor berdasarkan skor DSS (PBI-12)
-    $competitiveMatrix = Bid::with('user.surveyReport')
+    // Ambil parameter filter tender_id
+    $filterTenderId = $request->query('tender_id');
+
+    // Data untuk Admin/Auditor: Menampilkan peringkat vendor berdasarkan skor DSS (PBI-12)
+    $competitiveMatrix = App\Models\Bid::with('user.surveyReport')
+        ->when($filterTenderId, function($query) use ($filterTenderId) {
+            return $query->where('tender_id', $filterTenderId);
+        })
         ->orderBy('final_score', 'desc')
         ->get();
 
-    return view('dashboard', compact('portfolios', 'competitiveMatrix'));
+    // Data Log Aktivitas Sistem (Untuk Auditor & Admin)
+    $activityLogs = \App\Models\ActivityLog::with('user')->latest()->take(5)->get();
+
+    // Data semua tender aktif atau tertutup untuk dropdown filter
+    $allTenders = \App\Models\Tender::latest()->get();
+
+    // Data pengadaan yang sudah diapprove tapi belum dibuatkan tender
+    $approvedProcurements = \App\Models\ProcurementRequest::doesntHave('tender')->where('status', 'approved')->get();
+
+    return view('dashboard', compact('portfolios', 'competitiveMatrix', 'activityLogs', 'allTenders', 'filterTenderId', 'approvedProcurements'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // GROUP: AUTH (Fitur General & Operasional)
@@ -52,6 +67,7 @@ Route::middleware('auth')->group(function () {
 
     // Fitur PBI-06: Procurement Request (Riwayat Pengadaan)
     Route::get('/procurement', [ProcurementRequestController::class, 'index'])->name('procurement.index');
+    Route::get('/procurement/{id}/spk', [ProcurementRequestController::class, 'generateSPK'])->name('procurement.spk');
 });
 
 // GROUP: PEMOHON (Pengajuan Pengadaan)
@@ -59,8 +75,7 @@ Route::middleware(['auth', 'role:pemohon'])->group(function () {
     Route::get('/procurement/create', [ProcurementRequestController::class, 'create'])->name('procurement.create');
     Route::post('/procurement', [ProcurementRequestController::class, 'store'])->name('procurement.store');
 
-    // PBI-10: Sealed Bidding Encryption (Submit Penawaran)
-    Route::post('/bid', [BidController::class, 'store'])->name('bid.store');
+
 });
 
 // GROUP: ADMIN (Penerbitan & Evaluasi)
@@ -81,6 +96,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:vendor'])->group(function () {
     // PBI-02: Initial Profile Setup
     Route::get('/vendor/profile-setup', [ProfileController::class, 'setup'])->name('vendor.setup');
+    
+    // PBI-10: Sealed Bidding Encryption (Submit Penawaran)
+    Route::post('/bid', [BidController::class, 'store'])->name('bid.store');
+
+    // Riwayat Penawaran Vendor
+    Route::get('/vendor/bids', [BidController::class, 'vendorBids'])->name('vendor.bids');
 });
 
 // GROUP: AUDITOR (Integritas & Validasi)
@@ -92,6 +113,12 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     // Audit Portofolio Vendor
     Route::get('/auditor/portfolios', [PortfolioController::class, 'auditorIndex'])->name('auditor.portfolios.index');
     Route::patch('/procurement/{id}/verify', [ProcurementRequestController::class, 'verify'])->name('procurement.verify');
+
+    // Menetapkan Pemenang Tender
+    Route::post('/bid/{id}/winner', [App\Http\Controllers\BidController::class, 'setWinner'])->name('bid.setWinner');
+    
+    // Form Input Survey Auditor
+    Route::get('/auditor/surveys/create/{vendor_id}', [SurveyReportController::class, 'create'])->name('auditor.surveys.create');
 });
 
 require __DIR__.'/auth.php';

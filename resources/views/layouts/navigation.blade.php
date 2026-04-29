@@ -38,6 +38,10 @@
                     <x-nav-link :href="route('vendor.setup')" :active="request()->routeIs('vendor.setup')">
                         {{ __('Profile Perusahaan') }}
                     </x-nav-link>
+                    
+                    <x-nav-link :href="route('vendor.bids')" :active="request()->routeIs('vendor.bids')">
+                        {{ __('Riwayat Penawaran') }}
+                    </x-nav-link>
                     @endrole
 
                     @role('pemohon')
