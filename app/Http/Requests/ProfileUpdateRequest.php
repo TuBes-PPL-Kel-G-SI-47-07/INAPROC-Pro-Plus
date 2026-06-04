@@ -16,16 +16,15 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        
-    {
-return [
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', \Illuminate\Validation\Rule::unique(User::class)->ignore($this->user()->id)],
-        'phone_number' => ['nullable', 'string', 'max:15'], // Tambahkan ini [cite: 491]
-        'address' => ['nullable', 'string'],               // Tambahkan ini [cite: 491]
-        'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'], // Maks 2MB [cite: 503]
-        'position' => ['nullable', 'string', 'max:255'],
-    ];
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'phone_number' => ['nullable', 'string', 'max:15'],
+            'address' => ['nullable', 'string'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'position' => ['nullable', 'string', 'max:255'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
+        ];
     }
-}
 }

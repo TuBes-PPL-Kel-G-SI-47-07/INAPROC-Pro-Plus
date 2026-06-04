@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\TenderConfigController;
 use App\Http\Controllers\BidController; 
 use App\Http\Controllers\ProjectProgressController;
 use App\Http\Controllers\BastSubmissionController;
+use App\Http\Controllers\AuditorAnalyticsController;
 use App\Models\Bid;
 use App\Models\Portfolio;
 use App\Models\ActivityLog;
@@ -125,6 +126,10 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     
     // Form Input Survey Auditor
     Route::get('/auditor/surveys/create/{vendor_id}', [SurveyReportController::class, 'create'])->name('auditor.surveys.create');
+});
+
+Route::middleware(['auth', 'role:auditor|admin'])->group(function () {
+    Route::get('/auditor/analytics', [AuditorAnalyticsController::class, 'index'])->name('auditor.analytics');
 });
 
 // Project Progress Routes (PBI 15)
