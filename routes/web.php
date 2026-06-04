@@ -121,4 +121,18 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     Route::get('/auditor/surveys/create/{vendor_id}', [SurveyReportController::class, 'create'])->name('auditor.surveys.create');
 });
 
+// Project Progress Routes (PBI 15)
+Route::middleware('auth')->group(function () {
+    Route::get('/progress', [App\Http\Controllers\ProjectProgressController::class, 'index'])->name('progress.index');
+    Route::get('/progress/{id}', [App\Http\Controllers\ProjectProgressController::class, 'show'])->name('progress.show');
+});
+
+Route::middleware(['auth', 'role:vendor'])->group(function () {
+    Route::post('/progress', [App\Http\Controllers\ProjectProgressController::class, 'store'])->name('progress.store');
+});
+
+Route::middleware(['auth', 'role:auditor'])->group(function () {
+    Route::post('/progress/{id}/verify', [App\Http\Controllers\ProjectProgressController::class, 'verify'])->name('progress.verify');
+});
+
 require __DIR__.'/auth.php';
