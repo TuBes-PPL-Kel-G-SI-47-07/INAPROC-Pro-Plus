@@ -51,4 +51,9 @@ class ProcurementRequest extends Model
     {
         return $this->hasOne(Tender::class);
     }
+
+    public function progresses()
+    {
+        return $this->hasMany(ProjectProgress::class, 'procurement_request_id')->orderBy('percentage', 'asc');
+    }
 }
