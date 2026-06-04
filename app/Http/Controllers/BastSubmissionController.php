@@ -20,7 +20,7 @@ class BastSubmissionController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $project = ProcurementRequest::with('progresses')->findOrFail($request->procurement_request_id);
+        $project = ProcurementRequest::query()->with('progresses')->findOrFail($request->procurement_request_id);
 
         if ($project->vendor_id !== Auth::id()) {
             abort(403, 'UNAUTHORIZED: Anda bukan pelaksana proyek ini.');
@@ -39,7 +39,7 @@ class BastSubmissionController extends Controller
         $path = $file->store('bast_documents', 'public');
 
         // Save BAST
-        BastSubmission::updateOrCreate(
+        BastSubmission::query()->updateOrCreate(
             ['procurement_request_id' => $project->id],
             [
                 'vendor_id' => Auth::id(),
@@ -51,7 +51,7 @@ class BastSubmissionController extends Controller
         );
 
         // Audit Trail Log [cite: 599, 600]
-        ActivityLog::create([
+        ActivityLog::query()->create([
             'user_id' => Auth::id(),
             'action' => 'BAST Submitted',
             'description' => "Vendor mengunggah dokumen BAST untuk Proyek #{$project->id}.",
@@ -62,10 +62,11 @@ class BastSubmissionController extends Controller
 
     public function download($id)
     {
-        $bast = BastSubmission::findOrFail($id);
+        $bast = BastSubmission::query()->findOrFail($id);
         $project = $bast->procurementRequest;
 
         // Auth check
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         if ($user->hasRole('vendor') && $project->vendor_id !== $user->id) {
             abort(403, 'UNAUTHORIZED: Anda tidak memiliki akses ke dokumen ini.');
@@ -81,14 +82,14 @@ class BastSubmissionController extends Controller
             'auditor_notes' => 'nullable|string',
         ]);
 
-        $bast = BastSubmission::findOrFail($id);
+        $bast = BastSubmission::query()->findOrFail($id);
         $bast->update([
             'status' => $request->status,
             'auditor_notes' => $request->auditor_notes,
         ]);
 
         // Audit Trail Log [cite: 599, 600]
-        ActivityLog::create([
+        ActivityLog::query()->create([
             'user_id' => Auth::id(),
             'action' => 'BAST Verified',
             'description' => "Auditor memverifikasi dokumen BAST Proyek #{$bast->procurement_request_id} dengan status: {$request->status}",

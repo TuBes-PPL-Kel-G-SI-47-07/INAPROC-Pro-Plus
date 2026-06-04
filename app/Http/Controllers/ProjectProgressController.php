@@ -14,17 +14,18 @@ class ProjectProgressController extends Controller
 {
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if ($user->hasRole('vendor')) {
             // Projects won by this vendor
-            $projects = ProcurementRequest::where('vendor_id', $user->id)
+            $projects = ProcurementRequest::query()->where('vendor_id', $user->id)
                 ->where('status', 'approved')
                 ->latest()
                 ->get();
         } else {
             // Admin, Auditor, or Pemohon see all projects with a vendor assigned
-            $projects = ProcurementRequest::whereNotNull('vendor_id')
+            $projects = ProcurementRequest::query()->whereNotNull('vendor_id')
                 ->where('status', 'approved')
                 ->latest()
                 ->get();
@@ -35,9 +36,10 @@ class ProjectProgressController extends Controller
 
     public function show($id)
     {
-        $project = ProcurementRequest::with(['user', 'vendor', 'progresses.vendor'])->findOrFail($id);
+        $project = ProcurementRequest::query()->with(['user', 'vendor', 'progresses.vendor'])->findOrFail($id);
         
         // Authorization check
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         if ($user->hasRole('vendor') && $project->vendor_id !== $user->id) {
             abort(403, 'UNAUTHORIZED: Anda bukan pemenang tender/proyek ini.');
@@ -55,7 +57,7 @@ class ProjectProgressController extends Controller
             'progress_photo' => 'required|image|max:5120', // Max 5MB [cite: 503, 648]
         ]);
 
-        $project = ProcurementRequest::findOrFail($request->procurement_request_id);
+        $project = ProcurementRequest::query()->findOrFail($request->procurement_request_id);
 
         if ($project->vendor_id !== Auth::id()) {
             abort(403, 'UNAUTHORIZED: Anda bukan pelaksana proyek ini.');
@@ -85,7 +87,7 @@ class ProjectProgressController extends Controller
         }
 
         // Simpan ke database
-        $progress = ProjectProgress::create([
+        $progress = ProjectProgress::query()->create([
             'procurement_request_id' => $project->id,
             'vendor_id' => Auth::id(),
             'percentage' => $request->percentage,
@@ -98,7 +100,7 @@ class ProjectProgressController extends Controller
         ]);
 
         // Audit Trail Log [cite: 599, 600, 802]
-        ActivityLog::create([
+        ActivityLog::query()->create([
             'user_id' => Auth::id(),
             'action' => 'Progress Updated',
             'description' => "Vendor mengunggah progres {$request->percentage}% untuk Proyek #{$project->id}. Status: {$status}",
@@ -118,14 +120,14 @@ class ProjectProgressController extends Controller
             'auditor_notes' => 'nullable|string',
         ]);
 
-        $progress = ProjectProgress::findOrFail($id);
+        $progress = ProjectProgress::query()->findOrFail($id);
         $progress->update([
             'status' => $request->status,
             'auditor_notes' => $request->auditor_notes,
         ]);
 
         // Audit Trail Log [cite: 599, 600]
-        ActivityLog::create([
+        ActivityLog::query()->create([
             'user_id' => Auth::id(),
             'action' => 'Progress Verified',
             'description' => "Auditor memverifikasi progres {$progress->percentage}% Proyek #{$progress->procurement_request_id} dengan status: {$request->status}",
