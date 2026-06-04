@@ -72,7 +72,9 @@ class BastSubmissionController extends Controller
             abort(403, 'UNAUTHORIZED: Anda tidak memiliki akses ke dokumen ini.');
         }
 
-        return Storage::disk('public')->download($bast->file_path);
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+        return $disk->download($bast->file_path);
     }
 
     public function verify(Request $request, $id)
