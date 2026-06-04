@@ -130,6 +130,7 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
 
 Route::middleware(['auth', 'role:auditor|admin'])->group(function () {
     Route::get('/auditor/analytics', [AuditorAnalyticsController::class, 'index'])->name('auditor.analytics');
+    Route::get('/procurement/{id}/forensic-pdf', [ProcurementRequestController::class, 'exportForensicPDF'])->name('procurement.forensic-pdf');
 });
 
 // Project Progress Routes (PBI 15)

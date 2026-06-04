@@ -17,6 +17,21 @@
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 relative z-10 space-y-8">
             
+            {{-- FORENSIC PDF BUTTON FOR AUDITOR/ADMIN --}}
+            @hasanyrole('admin|auditor')
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-6 rounded-[2rem] border border-gray-100 shadow-lg gap-4">
+                    <div>
+                        <h4 class="font-black text-gray-900 text-sm">Forensic Audit Panel</h4>
+                        <p class="text-xs text-gray-500 mt-1">Unduh seluruh berkas riwayat lelang, progres visual, geotagging, dan log audit trail dalam format dokumen hukum PDF resmi.</p>
+                    </div>
+                    <div>
+                        <a href="{{ route('procurement.forensic-pdf', $project->id) }}" class="inline-flex items-center bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-6 py-3.5 rounded-2xl shadow-lg transition-all tracking-wider border border-slate-950">
+                            <span class="mr-2 text-sm">📄</span> Ekspor Laporan Forensik (PDF)
+                        </a>
+                    </div>
+                </div>
+            @endhasanyrole
+
             {{-- ACTIONS MESSAGES --}}
             @if(session('success'))
                 <div class="bg-indigo-900 border-l-4 border-indigo-500 text-indigo-100 px-6 py-4 rounded-3xl shadow-xl animate-pulse flex items-center justify-between" role="alert">
