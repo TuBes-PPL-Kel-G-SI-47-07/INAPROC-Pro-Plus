@@ -21,6 +21,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// PBI-14: Public Digital Signature Verification Route
+Route::get('/verify/spk/{uuid}', [ProcurementRequestController::class, 'verifySpk'])->name('procurement.verify_spk');
+
 /**
  * DASHBOARD UTAMA (Integrasi PBI-03 & PBI-12)
  * Menggabungkan data Portfolio (Vendor) dan Competitive Matrix (Admin)

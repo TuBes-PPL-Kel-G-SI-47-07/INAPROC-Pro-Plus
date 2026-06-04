@@ -10,6 +10,7 @@ class ProcurementRequest extends Model
     use HasFactory;
 
     protected $fillable = [
+        'uuid',
         'user_id',
         'budget_id',
         'item_name',
@@ -20,6 +21,16 @@ class ProcurementRequest extends Model
         'status',
         'vendor_id',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
 
     public function user()
     {
