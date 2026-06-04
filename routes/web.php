@@ -7,6 +7,8 @@ use App\Http\Controllers\SurveyReportController;
 use App\Http\Controllers\ProcurementRequestController;
 use App\Http\Controllers\Admin\TenderConfigController;
 use App\Http\Controllers\BidController; 
+use App\Http\Controllers\ProjectProgressController;
+use App\Http\Controllers\BastSubmissionController;
 use App\Models\Bid;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Route;
@@ -115,7 +117,7 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     Route::patch('/procurement/{id}/verify', [ProcurementRequestController::class, 'verify'])->name('procurement.verify');
 
     // Menetapkan Pemenang Tender
-    Route::post('/bid/{id}/winner', [App\Http\Controllers\BidController::class, 'setWinner'])->name('bid.setWinner');
+    Route::post('/bid/{id}/winner', [BidController::class, 'setWinner'])->name('bid.setWinner');
     
     // Form Input Survey Auditor
     Route::get('/auditor/surveys/create/{vendor_id}', [SurveyReportController::class, 'create'])->name('auditor.surveys.create');
@@ -123,22 +125,22 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
 
 // Project Progress Routes (PBI 15)
 Route::middleware('auth')->group(function () {
-    Route::get('/progress', [App\Http\Controllers\ProjectProgressController::class, 'index'])->name('progress.index');
-    Route::get('/progress/{id}', [App\Http\Controllers\ProjectProgressController::class, 'show'])->name('progress.show');
+    Route::get('/progress', [ProjectProgressController::class, 'index'])->name('progress.index');
+    Route::get('/progress/{id}', [ProjectProgressController::class, 'show'])->name('progress.show');
 });
 
 Route::middleware(['auth', 'role:auditor'])->group(function () {
-    Route::post('/progress/{id}/verify', [App\Http\Controllers\ProjectProgressController::class, 'verify'])->name('progress.verify');
-    Route::post('/bast/{id}/verify', [App\Http\Controllers\BastSubmissionController::class, 'verify'])->name('bast.verify');
+    Route::post('/progress/{id}/verify', [ProjectProgressController::class, 'verify'])->name('progress.verify');
+    Route::post('/bast/{id}/verify', [BastSubmissionController::class, 'verify'])->name('bast.verify');
 });
 
 Route::middleware(['auth', 'role:vendor'])->group(function () {
-    Route::post('/progress', [App\Http\Controllers\ProjectProgressController::class, 'store'])->name('progress.store');
-    Route::post('/bast', [App\Http\Controllers\BastSubmissionController::class, 'store'])->name('bast.store');
+    Route::post('/progress', [ProjectProgressController::class, 'store'])->name('progress.store');
+    Route::post('/bast', [BastSubmissionController::class, 'store'])->name('bast.store');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/bast/{id}/download', [App\Http\Controllers\BastSubmissionController::class, 'download'])->name('bast.download');
+    Route::get('/bast/{id}/download', [BastSubmissionController::class, 'download'])->name('bast.download');
 });
 
 require __DIR__.'/auth.php';
