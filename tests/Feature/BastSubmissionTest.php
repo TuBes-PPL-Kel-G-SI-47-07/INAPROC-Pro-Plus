@@ -22,9 +22,9 @@ class BastSubmissionTest extends TestCase
         parent::setUp();
 
         // Create roles
-        Role::findOrCreate('vendor');
-        Role::findOrCreate('auditor');
-        Role::findOrCreate('pemohon');
+        Role::query()->firstOrCreate(['name' => 'vendor', 'guard_name' => 'web']);
+        Role::query()->firstOrCreate(['name' => 'auditor', 'guard_name' => 'web']);
+        Role::query()->firstOrCreate(['name' => 'pemohon', 'guard_name' => 'web']);
     }
 
     public function test_vendor_cannot_upload_bast_if_progress_below_100()
@@ -128,7 +128,9 @@ class BastSubmissionTest extends TestCase
         ]);
 
         $bast = BastSubmission::query()->first();
-        Storage::disk('public')->assertExists($bast->file_path);
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+        $disk->assertExists($bast->file_path);
     }
 
     public function test_auditor_can_approve_or_reject_bast()

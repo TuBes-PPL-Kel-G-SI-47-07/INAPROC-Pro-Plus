@@ -15,6 +15,7 @@ use App\Models\ActivityLog;
 use App\Models\Tender;
 use App\Models\ProcurementRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,14 +33,14 @@ Route::get('/', function () {
  */
 Route::get('/dashboard', function (\Illuminate\Http\Request $request) {
     // Data untuk Vendor: Menampilkan hasil kerja mereka sendiri (PBI-03)
-    $portfolios = Portfolio::query()->where('user_id', auth()->id())->get();
+    $portfolios = Portfolio::query()->where('user_id', Auth::id())->get();
 
     // Ambil parameter filter tender_id
     $filterTenderId = $request->query('tender_id');
 
     // Data untuk Admin/Auditor: Menampilkan peringkat vendor berdasarkan skor DSS (PBI-12)
     $competitiveMatrix = Bid::query()->with('user.surveyReport')
-        ->when($filterTenderId, function($query) use ($filterTenderId) {
+        ->when($filterTenderId, function(\Illuminate\Database\Eloquent\Builder $query) use ($filterTenderId) {
             return $query->where('tender_id', $filterTenderId);
         })
         ->orderBy('final_score', 'desc')

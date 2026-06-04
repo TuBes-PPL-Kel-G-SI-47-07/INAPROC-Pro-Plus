@@ -63,6 +63,7 @@ class ProjectProgressController extends Controller
             abort(403, 'UNAUTHORIZED: Anda bukan pelaksana proyek ini.');
         }
 
+        /** @var \Illuminate\Http\UploadedFile $file */
         $file = $request->file('progress_photo');
         $tempPath = $file->getRealPath();
 

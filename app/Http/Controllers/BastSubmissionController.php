@@ -35,6 +35,7 @@ class BastSubmissionController extends Controller
             return redirect()->back()->withErrors('Gagal: Dokumen BAST hanya dapat diunggah setelah progres pengerjaan yang disetujui mencapai 100%.');
         }
 
+        /** @var \Illuminate\Http\UploadedFile $file */
         $file = $request->file('bast_file');
         $path = $file->store('bast_documents', 'public');
 
