@@ -134,6 +134,10 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     Route::post('/bast/{id}/verify', [BastSubmissionController::class, 'verify'])->name('bast.verify');
 });
 
+Route::middleware(['auth', 'role:pemohon'])->group(function () {
+    Route::post('/bast/{id}/verify-pemohon', [BastSubmissionController::class, 'verifyPemohon'])->name('bast.verify_pemohon');
+});
+
 Route::middleware(['auth', 'role:vendor'])->group(function () {
     Route::post('/progress', [ProjectProgressController::class, 'store'])->name('progress.store');
     Route::post('/bast', [BastSubmissionController::class, 'store'])->name('bast.store');

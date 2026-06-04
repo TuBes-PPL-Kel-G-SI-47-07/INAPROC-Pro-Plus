@@ -14,6 +14,8 @@ use App\Models\ProcurementRequest;
  * @property string $file_path
  * @property string|null $description
  * @property string $status
+ * @property string $pemohon_status
+ * @property string|null $pemohon_notes
  * @property string|null $auditor_notes
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
@@ -32,6 +34,8 @@ class BastSubmission extends Model
         'file_path',
         'description',
         'status',
+        'pemohon_status',
+        'pemohon_notes',
         'auditor_notes',
     ];
 

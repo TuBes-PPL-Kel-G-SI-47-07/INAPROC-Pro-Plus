@@ -175,4 +175,103 @@ class BastSubmissionTest extends TestCase
             'auditor_notes' => 'Pekerjaan fisik telah diperiksa secara menyeluruh dan BAST disetujui.',
         ]);
     }
+
+    public function test_pemohon_can_verify_bast_after_auditor_approval()
+    {
+        $vendor = User::factory()->create();
+        $vendor->assignRole('vendor');
+
+        $pemohon = User::factory()->create();
+        $pemohon->assignRole('pemohon');
+
+        $budget = Budget::create([
+            'nama_pagu' => 'Pagu Test',
+            'nominal_awal' => 10000000,
+            'sisa_pagu' => 10000000,
+        ]);
+
+        $project = ProcurementRequest::create([
+            'user_id' => $pemohon->id,
+            'budget_id' => $budget->id,
+            'item_name' => 'Project BAST Test',
+            'quantity' => 1,
+            'price' => 5000000,
+            'total_price' => 5000000,
+            'status' => 'approved',
+            'vendor_id' => $vendor->id,
+        ]);
+
+        $bast = BastSubmission::create([
+            'procurement_request_id' => $project->id,
+            'vendor_id' => $vendor->id,
+            'file_path' => 'bast_documents/bast.pdf',
+            'description' => 'Selesai serah terima',
+            'status' => 'approved',
+            'pemohon_status' => 'pending',
+        ]);
+
+        $response = $this->actingAs($pemohon)->post(route('bast.verify_pemohon', $bast->id), [
+            'status' => 'approved',
+            'pemohon_notes' => 'Barang telah diterima sesuai dengan spesifikasi dan dalam kondisi baik.',
+        ]);
+
+        $response->assertRedirect();
+        
+        $this->assertDatabaseHas('bast_submissions', [
+            'id' => $bast->id,
+            'pemohon_status' => 'approved',
+            'pemohon_notes' => 'Barang telah diterima sesuai dengan spesifikasi dan dalam kondisi baik.',
+        ]);
+
+        $project->refresh();
+        $this->assertEquals('completed', $project->status);
+    }
+
+    public function test_unauthorized_user_cannot_verify_as_pemohon()
+    {
+        $vendor = User::factory()->create();
+        $vendor->assignRole('vendor');
+
+        $pemohon = User::factory()->create();
+        $pemohon->assignRole('pemohon');
+
+        $otherUser = User::factory()->create();
+        $otherUser->assignRole('pemohon');
+
+        $budget = Budget::create([
+            'nama_pagu' => 'Pagu Test',
+            'nominal_awal' => 10000000,
+            'sisa_pagu' => 10000000,
+        ]);
+
+        $project = ProcurementRequest::create([
+            'user_id' => $pemohon->id,
+            'budget_id' => $budget->id,
+            'item_name' => 'Project BAST Test',
+            'quantity' => 1,
+            'price' => 5000000,
+            'total_price' => 5000000,
+            'status' => 'approved',
+            'vendor_id' => $vendor->id,
+        ]);
+
+        $bast = BastSubmission::create([
+            'procurement_request_id' => $project->id,
+            'vendor_id' => $vendor->id,
+            'file_path' => 'bast_documents/bast.pdf',
+            'description' => 'Selesai serah terima',
+            'status' => 'approved',
+            'pemohon_status' => 'pending',
+        ]);
+
+        $response = $this->actingAs($otherUser)->post(route('bast.verify_pemohon', $bast->id), [
+            'status' => 'approved',
+            'pemohon_notes' => 'Mencoba menyetujui.',
+        ]);
+
+        $response->assertStatus(403);
+        
+        $bast->refresh();
+        $this->assertEquals('pending', $bast->pemohon_status);
+    }
 }

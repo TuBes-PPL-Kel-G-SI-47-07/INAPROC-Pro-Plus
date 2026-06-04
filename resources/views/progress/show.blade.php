@@ -134,18 +134,39 @@
                             </h3>
                             
                             <div class="space-y-4">
-                                <div class="p-5 bg-gray-50 rounded-2xl border border-gray-100/80">
-                                    <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Status BAST</span>
+                                {{-- PROJECT COMPLETION BANNER --}}
+                                @if($bast->status === 'approved' && $bast->pemohon_status === 'approved')
+                                    <div class="p-6 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-[2rem] border border-green-400/20 shadow-lg text-center space-y-2">
+                                        <span class="text-3xl block">🏆</span>
+                                        <h4 class="font-black text-sm uppercase tracking-wider">Proyek Selesai</h4>
+                                        <p class="text-[10px] text-green-100 font-semibold leading-relaxed">
+                                            Seluruh tahapan verifikasi BAST telah disetujui oleh Auditor dan Pemohon. Proyek ini resmi dinyatakan selesai.
+                                        </p>
+                                    </div>
+                                @endif
+
+                                <div class="p-5 bg-gray-50 rounded-2xl border border-gray-100/80 space-y-3">
+                                    <div class="flex justify-between items-center pb-2 border-b border-gray-200/50">
+                                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Inspeksi Auditor</span>
                                         @if($bast->status === 'approved')
                                             <span class="bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Approved</span>
                                         @elseif($bast->status === 'rejected')
                                             <span class="bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Rejected</span>
                                         @else
-                                            <span class="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest animate-pulse">Pending Review</span>
+                                            <span class="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest animate-pulse">Pending</span>
                                         @endif
                                     </div>
-                                    <p class="text-xs text-gray-500 font-medium leading-relaxed">{{ $bast->description ?? 'Tidak ada deskripsi BAST.' }}</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Verifikasi Pemohon</span>
+                                        @if($bast->pemohon_status === 'approved')
+                                            <span class="bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Approved</span>
+                                        @elseif($bast->pemohon_status === 'rejected')
+                                            <span class="bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Rejected</span>
+                                        @else
+                                            <span class="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest animate-pulse">Pending</span>
+                                        @endif
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-medium leading-relaxed pt-2 border-t border-gray-200/50">{{ $bast->description ?? 'Tidak ada deskripsi BAST.' }}</p>
                                     
                                     <a href="{{ route('bast.download', $bast->id) }}" class="mt-4 flex items-center justify-center gap-2 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-xs uppercase tracking-widest transition-all">
                                         <span>📥</span> Unduh Dokumen BAST
@@ -160,35 +181,73 @@
                                     </div>
                                 @endif
 
-                                {{-- AUDITOR VERIFY FORM FOR BAST (PBI-18 Ground Work) --}}
+                                {{-- PEMOHON NOTES FOR BAST --}}
+                                @if($bast->pemohon_notes)
+                                    <div class="p-4 bg-blue-50 text-blue-900 border border-blue-100 rounded-2xl text-xs font-semibold">
+                                        <p class="font-black mb-1">Catatan Pemohon:</p>
+                                        <p class="italic">"{{ $bast->pemohon_notes }}"</p>
+                                    </div>
+                                @endif
+
+                                {{-- AUDITOR VERIFY FORM --}}
                                 @role('auditor')
                                     @if($bast->status === 'pending')
                                         <div class="border-t border-gray-50 pt-6">
-                                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4">Verifikasi BAST</h4>
+                                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4">Verifikasi Inspeksi Auditor</h4>
                                             <form action="{{ route('bast.verify', $bast->id) }}" method="POST" class="space-y-4">
                                                 @csrf
                                                 <div>
                                                     <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Tentukan Keputusan</label>
                                                     <select name="status" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-bold" required>
-                                                        <option value="approved">Setujui BAST (Proyek Selesai)</option>
+                                                        <option value="approved">Setujui BAST (Inspeksi Fisik Selesai)</option>
                                                         <option value="rejected">Tolak BAST (Minta Revisi)</option>
                                                     </select>
                                                 </div>
                                                 <div>
-                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Catatan Final</label>
-                                                    <textarea name="auditor_notes" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-semibold resize-none h-20" placeholder="Tulis catatan persetujuan/penolakan BAST..." required></textarea>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Catatan Inspeksi</label>
+                                                    <textarea name="auditor_notes" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-semibold resize-none h-20" placeholder="Tulis catatan hasil inspeksi fisik..." required></textarea>
                                                 </div>
                                                 <button type="submit" class="w-full py-4 bg-slate-900 hover:bg-green-600 text-white font-black text-xs rounded-xl tracking-widest uppercase transition-all shadow-md">
-                                                    Simpan Keputusan Final
+                                                    Simpan Keputusan Auditor
                                                 </button>
                                             </form>
                                         </div>
                                     @endif
                                 @endrole
 
+                                {{-- PEMOHON VERIFY FORM --}}
+                                @if($bast->status === 'approved' && $bast->pemohon_status === 'pending')
+                                    @if($project->user_id === Auth::id())
+                                        <div class="border-t border-gray-50 pt-6">
+                                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4">Verifikasi Penerimaan Pemohon</h4>
+                                            <form action="{{ route('bast.verify_pemohon', $bast->id) }}" method="POST" class="space-y-4">
+                                                @csrf
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Tentukan Keputusan</label>
+                                                    <select name="status" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-bold" required>
+                                                        <option value="approved">Setujui & Terima Pekerjaan</option>
+                                                        <option value="rejected">Tolak & Minta Revisi</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Catatan Penerimaan</label>
+                                                    <textarea name="pemohon_notes" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-semibold resize-none h-20" placeholder="Tulis catatan penerimaan barang/jasa..." required></textarea>
+                                                </div>
+                                                <button type="submit" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl tracking-widest uppercase transition-all shadow-md">
+                                                    Kirim Keputusan Akhir
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <div class="p-4 bg-amber-50/50 border border-amber-200/50 rounded-2xl text-center">
+                                            <p class="text-[10px] text-amber-700 font-bold uppercase tracking-wider animate-pulse">Menunggu Verifikasi Akhir oleh Pemohon</p>
+                                        </div>
+                                    @endif
+                                @endif
+
                                 {{-- VENDOR RE-UPLOAD FORM IF REJECTED --}}
                                 @role('vendor')
-                                    @if($project->vendor_id === Auth::id() && $bast->status === 'rejected')
+                                    @if($project->vendor_id === Auth::id() && ($bast->status === 'rejected' || $bast->pemohon_status === 'rejected'))
                                         <div class="border-t border-gray-50 pt-6">
                                             <h4 class="text-xs font-black text-red-500 uppercase tracking-widest mb-4">Unggah Ulang Dokumen BAST</h4>
                                             <form action="{{ route('bast.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">

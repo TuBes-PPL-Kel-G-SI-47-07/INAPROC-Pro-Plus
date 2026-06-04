@@ -97,6 +97,70 @@ class BastSubmissionController extends Controller
             'description' => "Auditor memverifikasi dokumen BAST Proyek #{$bast->procurement_request_id} dengan status: {$request->status}",
         ]);
 
+        // Check if both Auditor and Pemohon approved the BAST
+        if ($bast->status === 'approved' && $bast->pemohon_status === 'approved') {
+            $project = $bast->procurementRequest;
+            $project->update(['status' => 'completed']);
+
+            if ($project->tender) {
+                $project->tender->update(['status' => 'completed']);
+            }
+
+            ActivityLog::query()->create([
+                'user_id' => Auth::id(),
+                'action' => 'Project Completed',
+                'description' => "Proyek #{$project->id} dinyatakan selesai setelah inspeksi final oleh Auditor dan verifikasi akhir oleh Pemohon.",
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Status dokumen BAST berhasil diperbarui!');
+    }
+
+    public function verifyPemohon(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+            'pemohon_notes' => 'nullable|string',
+        ]);
+
+        $bast = BastSubmission::query()->findOrFail($id);
+        $project = $bast->procurementRequest;
+
+        // Authorize: Only the Pemohon of this procurement request can verify
+        if ($project->user_id !== Auth::id()) {
+            abort(403, 'UNAUTHORIZED: Anda bukan pemohon untuk proyek ini.');
+        }
+
+        $bast->update([
+            'pemohon_status' => $request->status,
+            'pemohon_notes' => $request->pemohon_notes,
+        ]);
+
+        // Audit Trail Log for Pemohon verification
+        ActivityLog::query()->create([
+            'user_id' => Auth::id(),
+            'action' => 'BAST Verified by Pemohon',
+            'description' => "Pemohon memverifikasi dokumen BAST Proyek #{$bast->procurement_request_id} dengan status: {$request->status}",
+        ]);
+
+        // Check if both Auditor and Pemohon approved the BAST
+        if ($bast->status === 'approved' && $bast->pemohon_status === 'approved') {
+            // Mark project/procurement request as completed
+            $project->update(['status' => 'completed']);
+
+            // Mark tender as completed
+            if ($project->tender) {
+                $project->tender->update(['status' => 'completed']);
+            }
+
+            // Log final completion
+            ActivityLog::query()->create([
+                'user_id' => Auth::id(),
+                'action' => 'Project Completed',
+                'description' => "Proyek #{$project->id} dinyatakan selesai setelah inspeksi final oleh Auditor dan verifikasi akhir oleh Pemohon.",
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Status verifikasi pemohon berhasil diperbarui!');
     }
 }
