@@ -10,6 +10,26 @@ use App\Models\Tender;
 use App\Models\ProjectProgress;
 use App\Models\BastSubmission;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $budget_id
+ * @property string $item_name
+ * @property string|null $description
+ * @property int $quantity
+ * @property float $price
+ * @property float $total_price
+ * @property string $status
+ * @property int|null $vendor_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Models\User $user
+ * @property-read \App\Models\Budget $budget
+ * @property-read \App\Models\User|null $vendor
+ * @property-read \App\Models\Tender|null $tender
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProjectProgress[] $progresses
+ * @property-read \App\Models\BastSubmission|null $bastSubmission
+ */
 class ProcurementRequest extends Model
 {
     use HasFactory;

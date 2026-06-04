@@ -7,6 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\ProcurementRequest;
 
+/**
+ * @property int $id
+ * @property int $procurement_request_id
+ * @property int $vendor_id
+ * @property string $file_path
+ * @property string|null $description
+ * @property string $status
+ * @property string|null $auditor_notes
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Models\ProcurementRequest $procurementRequest
+ * @property-read \App\Models\User $vendor
+ */
 class BastSubmission extends Model
 {
     use HasFactory;
