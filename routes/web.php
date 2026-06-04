@@ -127,12 +127,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/progress/{id}', [App\Http\Controllers\ProjectProgressController::class, 'show'])->name('progress.show');
 });
 
-Route::middleware(['auth', 'role:vendor'])->group(function () {
-    Route::post('/progress', [App\Http\Controllers\ProjectProgressController::class, 'store'])->name('progress.store');
-});
-
 Route::middleware(['auth', 'role:auditor'])->group(function () {
     Route::post('/progress/{id}/verify', [App\Http\Controllers\ProjectProgressController::class, 'verify'])->name('progress.verify');
+    Route::post('/bast/{id}/verify', [App\Http\Controllers\BastSubmissionController::class, 'verify'])->name('bast.verify');
+});
+
+Route::middleware(['auth', 'role:vendor'])->group(function () {
+    Route::post('/progress', [App\Http\Controllers\ProjectProgressController::class, 'store'])->name('progress.store');
+    Route::post('/bast', [App\Http\Controllers\BastSubmissionController::class, 'store'])->name('bast.store');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/bast/{id}/download', [App\Http\Controllers\BastSubmissionController::class, 'download'])->name('bast.download');
 });
 
 require __DIR__.'/auth.php';

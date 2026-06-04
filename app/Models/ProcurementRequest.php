@@ -45,4 +45,9 @@ class ProcurementRequest extends Model
     {
         return $this->hasMany(ProjectProgress::class, 'procurement_request_id')->orderBy('percentage', 'asc');
     }
+
+    public function bastSubmission()
+    {
+        return $this->hasOne(BastSubmission::class, 'procurement_request_id');
+    }
 }
