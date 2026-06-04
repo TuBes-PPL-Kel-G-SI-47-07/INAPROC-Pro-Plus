@@ -31,16 +31,17 @@ class BastSubmissionTest extends TestCase
     {
         Storage::fake('public');
 
+        /** @var \App\Models\User $vendor */
         $vendor = User::factory()->create();
         $vendor->assignRole('vendor');
 
-        $budget = Budget::create([
+        $budget = Budget::query()->create([
             'nama_pagu' => 'Pagu Test',
             'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
-        $project = ProcurementRequest::create([
+        $project = ProcurementRequest::query()->create([
             'user_id' => $vendor->id,
             'budget_id' => $budget->id,
             'item_name' => 'Project BAST Test',
@@ -52,7 +53,7 @@ class BastSubmissionTest extends TestCase
         ]);
 
         // Progress is only 50%
-        ProjectProgress::create([
+        ProjectProgress::query()->create([
             'procurement_request_id' => $project->id,
             'vendor_id' => $vendor->id,
             'percentage' => 50,
@@ -79,16 +80,17 @@ class BastSubmissionTest extends TestCase
     {
         Storage::fake('public');
 
+        /** @var \App\Models\User $vendor */
         $vendor = User::factory()->create();
         $vendor->assignRole('vendor');
 
-        $budget = Budget::create([
+        $budget = Budget::query()->create([
             'nama_pagu' => 'Pagu Test',
             'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
-        $project = ProcurementRequest::create([
+        $project = ProcurementRequest::query()->create([
             'user_id' => $vendor->id,
             'budget_id' => $budget->id,
             'item_name' => 'Project BAST Test',
@@ -100,7 +102,7 @@ class BastSubmissionTest extends TestCase
         ]);
 
         // Approved progress reaches 100%
-        ProjectProgress::create([
+        ProjectProgress::query()->create([
             'procurement_request_id' => $project->id,
             'vendor_id' => $vendor->id,
             'percentage' => 100,
@@ -125,25 +127,27 @@ class BastSubmissionTest extends TestCase
             'status' => 'pending',
         ]);
 
-        $bast = BastSubmission::first();
+        $bast = BastSubmission::query()->first();
         Storage::disk('public')->assertExists($bast->file_path);
     }
 
     public function test_auditor_can_approve_or_reject_bast()
     {
+        /** @var \App\Models\User $vendor */
         $vendor = User::factory()->create();
         $vendor->assignRole('vendor');
 
+        /** @var \App\Models\User $auditor */
         $auditor = User::factory()->create();
         $auditor->assignRole('auditor');
 
-        $budget = Budget::create([
+        $budget = Budget::query()->create([
             'nama_pagu' => 'Pagu Test',
             'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
-        $project = ProcurementRequest::create([
+        $project = ProcurementRequest::query()->create([
             'user_id' => $vendor->id,
             'budget_id' => $budget->id,
             'item_name' => 'Project BAST Test',
@@ -154,7 +158,7 @@ class BastSubmissionTest extends TestCase
             'vendor_id' => $vendor->id,
         ]);
 
-        $bast = BastSubmission::create([
+        $bast = BastSubmission::query()->create([
             'procurement_request_id' => $project->id,
             'vendor_id' => $vendor->id,
             'file_path' => 'bast_documents/bast.pdf',
@@ -178,19 +182,21 @@ class BastSubmissionTest extends TestCase
 
     public function test_pemohon_can_verify_bast_after_auditor_approval()
     {
+        /** @var \App\Models\User $vendor */
         $vendor = User::factory()->create();
         $vendor->assignRole('vendor');
 
+        /** @var \App\Models\User $pemohon */
         $pemohon = User::factory()->create();
         $pemohon->assignRole('pemohon');
 
-        $budget = Budget::create([
+        $budget = Budget::query()->create([
             'nama_pagu' => 'Pagu Test',
             'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
-        $project = ProcurementRequest::create([
+        $project = ProcurementRequest::query()->create([
             'user_id' => $pemohon->id,
             'budget_id' => $budget->id,
             'item_name' => 'Project BAST Test',
@@ -201,7 +207,7 @@ class BastSubmissionTest extends TestCase
             'vendor_id' => $vendor->id,
         ]);
 
-        $bast = BastSubmission::create([
+        $bast = BastSubmission::query()->create([
             'procurement_request_id' => $project->id,
             'vendor_id' => $vendor->id,
             'file_path' => 'bast_documents/bast.pdf',
@@ -229,22 +235,25 @@ class BastSubmissionTest extends TestCase
 
     public function test_unauthorized_user_cannot_verify_as_pemohon()
     {
+        /** @var \App\Models\User $vendor */
         $vendor = User::factory()->create();
         $vendor->assignRole('vendor');
 
+        /** @var \App\Models\User $pemohon */
         $pemohon = User::factory()->create();
         $pemohon->assignRole('pemohon');
 
+        /** @var \App\Models\User $otherUser */
         $otherUser = User::factory()->create();
         $otherUser->assignRole('pemohon');
 
-        $budget = Budget::create([
+        $budget = Budget::query()->create([
             'nama_pagu' => 'Pagu Test',
             'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
-        $project = ProcurementRequest::create([
+        $project = ProcurementRequest::query()->create([
             'user_id' => $pemohon->id,
             'budget_id' => $budget->id,
             'item_name' => 'Project BAST Test',
@@ -255,7 +264,7 @@ class BastSubmissionTest extends TestCase
             'vendor_id' => $vendor->id,
         ]);
 
-        $bast = BastSubmission::create([
+        $bast = BastSubmission::query()->create([
             'procurement_request_id' => $project->id,
             'vendor_id' => $vendor->id,
             'file_path' => 'bast_documents/bast.pdf',

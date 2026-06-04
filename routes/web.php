@@ -11,6 +11,9 @@ use App\Http\Controllers\ProjectProgressController;
 use App\Http\Controllers\BastSubmissionController;
 use App\Models\Bid;
 use App\Models\Portfolio;
+use App\Models\ActivityLog;
+use App\Models\Tender;
+use App\Models\ProcurementRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,13 +32,13 @@ Route::get('/', function () {
  */
 Route::get('/dashboard', function (\Illuminate\Http\Request $request) {
     // Data untuk Vendor: Menampilkan hasil kerja mereka sendiri (PBI-03)
-    $portfolios = App\Models\Portfolio::where('user_id', auth()->id())->get();
+    $portfolios = Portfolio::query()->where('user_id', auth()->id())->get();
 
     // Ambil parameter filter tender_id
     $filterTenderId = $request->query('tender_id');
 
     // Data untuk Admin/Auditor: Menampilkan peringkat vendor berdasarkan skor DSS (PBI-12)
-    $competitiveMatrix = App\Models\Bid::with('user.surveyReport')
+    $competitiveMatrix = Bid::query()->with('user.surveyReport')
         ->when($filterTenderId, function($query) use ($filterTenderId) {
             return $query->where('tender_id', $filterTenderId);
         })
@@ -43,13 +46,13 @@ Route::get('/dashboard', function (\Illuminate\Http\Request $request) {
         ->get();
 
     // Data Log Aktivitas Sistem (Untuk Auditor & Admin)
-    $activityLogs = \App\Models\ActivityLog::with('user')->latest()->take(5)->get();
+    $activityLogs = ActivityLog::query()->with('user')->latest()->take(5)->get();
 
     // Data semua tender aktif atau tertutup untuk dropdown filter
-    $allTenders = \App\Models\Tender::latest()->get();
+    $allTenders = Tender::query()->latest()->get();
 
     // Data pengadaan yang sudah diapprove tapi belum dibuatkan tender
-    $approvedProcurements = \App\Models\ProcurementRequest::doesntHave('tender')->where('status', 'approved')->get();
+    $approvedProcurements = ProcurementRequest::query()->doesntHave('tender')->where('status', 'approved')->get();
 
     return view('dashboard', compact('portfolios', 'competitiveMatrix', 'activityLogs', 'allTenders', 'filterTenderId', 'approvedProcurements'));
 })->middleware(['auth', 'verified'])->name('dashboard');
