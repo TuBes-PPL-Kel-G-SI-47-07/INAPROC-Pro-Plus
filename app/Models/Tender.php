@@ -26,4 +26,14 @@ class Tender extends Model
     {
         return $this->hasMany(Bid::class);
     }
+
+    public function tenderConfig()
+    {
+        return $this->hasOne(TenderConfig::class);
+    }
+
+    public function procurementFiles()
+    {
+        return $this->hasMany(ProcurementFile::class);
+    }
 }

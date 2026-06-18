@@ -45,4 +45,10 @@ class Bid extends Model
     {
         return Crypt::decryptString($this->encrypted_price);
     }
+
+    // Relasi ke Contract
+    public function contract()
+    {
+        return $this->hasOne(Contract::class);
+    }
 }
