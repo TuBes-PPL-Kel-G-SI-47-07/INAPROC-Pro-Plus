@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
+use App\Traits\Auditable;
 
 class Bid extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $fillable = [
         'tender_id', 

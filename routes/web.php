@@ -121,7 +121,11 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     Route::patch('/auditor/surveys/{survey}/verify', [SurveyReportController::class, 'verify'])->name('auditor.surveys.verify');
     
     // PBI-16: Auditor Monitoring Dashboard
-    Route::get('/auditor/monitoring', [AuditorController::class, 'monitoring'])->name('auditor.monitoring');
+    Route::get('/auditor/monitoring', [App\Http\Controllers\AuditorController::class, 'monitoring'])->name('auditor.monitoring');
+    
+    // PBI-19: Immutable Audit Trail Log
+    Route::get('/auditor/audit-trail', [\App\Http\Controllers\AuditTrailController::class, 'index'])->name('auditor.audit-trail.index');
+    Route::post('/auditor/audit-trail/verify', [\App\Http\Controllers\AuditTrailController::class, 'verify'])->name('auditor.audit-trail.verify');
     
     // Audit Portofolio Vendor
     Route::get('/auditor/portfolios', [PortfolioController::class, 'auditorIndex'])->name('auditor.portfolios.index');

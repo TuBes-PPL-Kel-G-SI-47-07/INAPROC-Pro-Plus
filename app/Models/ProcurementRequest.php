@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Auditable;
 use App\Models\User;
 use App\Models\Budget;
 use App\Models\Tender;
@@ -32,7 +33,7 @@ use App\Models\BastSubmission;
  */
 class ProcurementRequest extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $fillable = [
         'uuid',
