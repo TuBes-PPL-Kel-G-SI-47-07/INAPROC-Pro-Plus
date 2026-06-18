@@ -125,6 +125,65 @@
 
             </div>
 
+            {{-- COMPLETED PROJECTS & FORENSIC REPORTS --}}
+            <div class="bg-white p-8 rounded-[3rem] border border-gray-100 shadow-xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                    <div>
+                        <h3 class="text-xl font-black text-gray-900 flex items-center">
+                            <span class="mr-3 bg-indigo-50 p-2.5 rounded-2xl text-indigo-600">📁</span>
+                            {{ __('Daftar Proyek Selesai & Laporan Forensik') }}
+                        </h3>
+                        <p class="text-xs text-gray-500 mt-1">Daftar paket pengadaan yang telah menyelesaikan seluruh tahapan inspeksi BAST oleh Auditor dan Pemohon.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-3xl border border-slate-100">
+                    <table class="min-w-full divide-y divide-slate-100 text-sm">
+                        <thead class="bg-slate-50 font-bold text-slate-600 uppercase text-[10px] tracking-wider">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left">Paket Pengadaan</th>
+                                <th scope="col" class="px-6 py-4 text-left">Unit Pemohon</th>
+                                <th scope="col" class="px-6 py-4 text-left">Pelaksana (Vendor)</th>
+                                <th scope="col" class="px-6 py-4 text-right">Nilai Kontrak</th>
+                                <th scope="col" class="px-6 py-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+                            @forelse($completedRequests as $request)
+                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col">
+                                            <span class="font-bold text-slate-900">{{ $request->item_name }}</span>
+                                            <span class="text-[10px] text-slate-400 font-mono">ID: #{{ $request->id }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-xs text-slate-600">
+                                        {{ $request->user->name ?? 'N/A' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-xs text-slate-600">
+                                        {{ $request->vendor->name ?? 'N/A' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right font-black text-indigo-600 font-mono">
+                                        Rp {{ number_format($request->total_price, 0, ',', '.') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        <a href="{{ route('procurement.forensic-pdf', $request->id) }}" class="inline-flex items-center bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-black uppercase px-4 py-2.5 rounded-xl shadow-lg transition-all tracking-wider">
+                                            <span class="mr-2">📄</span> Ekspor PDF
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-12 text-center text-slate-400 font-bold italic">
+                                        Belum ada proyek yang berstatus selesai.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             {{-- GEOSPATIAL MAP CARD --}}
             <div class="bg-white p-8 rounded-[3rem] border border-gray-100 shadow-xl">
                 <h3 class="text-xl font-black text-gray-900 mb-2 flex items-center">

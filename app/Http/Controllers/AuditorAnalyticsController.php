@@ -131,6 +131,13 @@ class AuditorAnalyticsController extends Controller
             ->latest()
             ->paginate(15);
 
+        // 6. Completed Projects List
+        $completedRequests = ProcurementRequest::query()
+            ->where('status', 'completed')
+            ->with(['user', 'vendor', 'budget'])
+            ->latest()
+            ->get();
+
         return view('auditor.analytics', compact(
             'totalTenders',
             'completedProjects',
@@ -138,7 +145,8 @@ class AuditorAnalyticsController extends Controller
             'budgetsData',
             'detectedAnomalies',
             'vendors',
-            'activityLogs'
+            'activityLogs',
+            'completedRequests'
         ));
     }
 }

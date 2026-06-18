@@ -8,6 +8,8 @@ use App\Models\Tender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ActivityLog;
 
 class ProcurementRequestController extends Controller
 {
@@ -150,6 +152,65 @@ class ProcurementRequestController extends Controller
         $fileName = 'SPK-' . \Illuminate\Support\Str::slug($procurement->item_name) . '-' . \Illuminate\Support\Str::slug($vendorName) . '-' . $timestamp . '.pdf';
         
         return $pdf->stream($fileName);
+    }
+
+public function exportForensicPDF($id)
+    {
+        $procurement = ProcurementRequest::with([
+            'user', 
+            'budget', 
+            'vendor', 
+            'tender.bids.user', 
+            'progresses', 
+            'bastSubmission'
+        ])->findOrFail($id);
+
+        // Access check: only auditor or admin
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->hasRole('auditor') && !$user->hasRole('admin')) {
+            abort(403, 'UNAUTHORIZED: Hanya Auditor dan Admin yang dapat mencetak laporan forensik.');
+        }
+
+        // Fetch activity logs for this project/procurement
+        $activityLogs = ActivityLog::query()
+            ->with('user')
+            ->where('description', 'like', "%Proyek #{$id}%")
+            ->orWhere('description', 'like', "%Project #{$id}%")
+            ->latest()
+            ->get();
+
+        // Convert progress photo paths to Base64 to ensure they load properly in Dompdf
+        $imagesBase64 = [];
+        foreach ($procurement->progresses as $progress) {
+            if ($progress->photo_path) {
+                try {
+                    if (Storage::disk('public')->exists($progress->photo_path)) {
+                        $path = Storage::disk('public')->path($progress->photo_path);
+                        $type = pathinfo($path, PATHINFO_EXTENSION);
+                        $data = file_get_contents($path);
+                        $imagesBase64[$progress->id] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                    }
+                } catch (\Exception $e) {
+                    // Fail silently for single image read error
+                }
+            }
+        }
+
+        // Log this action in immutable logs
+        ActivityLog::query()->create([
+            'user_id' => Auth::id(),
+            'action' => 'Forensic Exported',
+            'description' => "Auditor mencetak Laporan Audit Forensik PDF untuk Proyek #{$id}.",
+            'table_affected' => 'procurement_requests',
+        ]);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('procurement.forensic_pdf', compact('procurement', 'activityLogs', 'imagesBase64'));
+        
+        $timestamp = now()->format('YmdHis');
+        $fileName = 'FORENSIC-REPORT-PROYEK-' . $id . '-' . \Illuminate\Support\Str::slug($procurement->item_name) . '-' . $timestamp . '.pdf';
+        
+        return $pdf->download($fileName);
     }
 
     /**
