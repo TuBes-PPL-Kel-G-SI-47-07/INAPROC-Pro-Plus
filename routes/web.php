@@ -6,9 +6,8 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\SurveyReportController;
 use App\Http\Controllers\ProcurementRequestController;
 use App\Http\Controllers\Admin\TenderConfigController;
-use App\Http\Controllers\BidController; 
-use App\Http\Controllers\ProjectProgressController;
-use App\Http\Controllers\BastSubmissionController;
+use App\Http\Controllers\BidController;
+use App\Http\Controllers\AuditorController;
 use App\Models\Bid;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// PBI-14: Public Digital Signature Verification Route
+Route::get('/verify/spk/{uuid}', [ProcurementRequestController::class, 'verifySpk'])->name('procurement.verify_spk');
 
 /**
  * DASHBOARD UTAMA (Integrasi PBI-03 & PBI-12)
@@ -111,6 +113,9 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     // Validasi Laporan Survey
     Route::get('/auditor/surveys', [SurveyReportController::class, 'index'])->name('auditor.surveys.index');
     Route::patch('/auditor/surveys/{survey}/verify', [SurveyReportController::class, 'verify'])->name('auditor.surveys.verify');
+    
+    // PBI-16: Auditor Monitoring Dashboard
+    Route::get('/auditor/monitoring', [AuditorController::class, 'monitoring'])->name('auditor.monitoring');
     
     // Audit Portofolio Vendor
     Route::get('/auditor/portfolios', [PortfolioController::class, 'auditorIndex'])->name('auditor.portfolios.index');

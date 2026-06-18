@@ -200,9 +200,13 @@
                 Dikeluarkan di: Jakarta<br>
                 Pada Tanggal: {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
                 <strong>Pejabat Pembuat Komitmen (PPK)</strong>
-                <br><br><br><br><br>
+                <br><br>
+                <div style="margin: 0 auto; text-align: center; width: 75px; height: 75px;">
+                    <img src="data:image/svg+xml;base64,{!! base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(75)->errorCorrection('H')->generate(url('/verify/spk/' . $procurement->uuid))) !!}" alt="QR Code Verification" style="width: 75px; height: 75px; display: block;">
+                </div>
+                <br>
                 <div class="signature-line"></div><br>
-                <strong>NAMA AUDITOR / PPK</strong><br>
+                <strong>AUDITOR UTAMA</strong><br>
                 NIP. 19800101 200501 1 001
             </td>
         </tr>
