@@ -17,6 +17,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $email
  * @property string|null $phone_number
  * @property string|null $address
+ * @property float|null $latitude
+ * @property float|null $longitude
  * @property string|null $profile_picture
  * @property string|null $position
  * @property string $status
@@ -32,7 +34,9 @@ use Spatie\Permission\Traits\HasRoles;
     'phone_number', 
     'address', 
     'profile_picture', 
-    'position'
+    'position',
+    'latitude',
+    'longitude'
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable

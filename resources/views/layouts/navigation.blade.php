@@ -38,6 +38,12 @@
                     </x-nav-link>
                     @endrole
 
+                    @hasanyrole('admin|auditor')
+                    <x-nav-link :href="route('auditor.analytics')" :active="request()->routeIs('auditor.analytics')">
+                        {{ __('Executive Analytics') }}
+                    </x-nav-link>
+                    @endhasanyrole
+
                     @role('vendor')
                     <x-nav-link :href="route('vendor.setup')" :active="request()->routeIs('vendor.setup')">
                         {{ __('Profile Perusahaan') }}
@@ -115,6 +121,11 @@
             <x-responsive-nav-link :href="route('progress.index')" :active="request()->routeIs('progress.index') || request()->routeIs('progress.show')">
                 {{ __('Progres Proyek') }}
             </x-responsive-nav-link>
+            @hasanyrole('admin|auditor')
+            <x-responsive-nav-link :href="route('auditor.analytics')" :active="request()->routeIs('auditor.analytics')">
+                {{ __('Executive Analytics') }}
+            </x-responsive-nav-link>
+            @endhasanyrole
         </div>
 
         <!-- Responsive Settings Options -->
