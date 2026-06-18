@@ -12,7 +12,11 @@ use App\Http\Controllers\BastSubmissionController;
 use App\Http\Controllers\AuditorController;
 use App\Models\Bid;
 use App\Models\Portfolio;
+use App\Models\ActivityLog;
+use App\Models\Tender;
+use App\Models\ProcurementRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,27 +37,27 @@ Route::get('/verify/spk/{uuid}', [ProcurementRequestController::class, 'verifySp
  */
 Route::get('/dashboard', function (\Illuminate\Http\Request $request) {
     // Data untuk Vendor: Menampilkan hasil kerja mereka sendiri (PBI-03)
-    $portfolios = App\Models\Portfolio::where('user_id', auth()->id())->get();
+    $portfolios = Portfolio::query()->where('user_id', Auth::id())->get();
 
     // Ambil parameter filter tender_id
     $filterTenderId = $request->query('tender_id');
 
     // Data untuk Admin/Auditor: Menampilkan peringkat vendor berdasarkan skor DSS (PBI-12)
-    $competitiveMatrix = App\Models\Bid::with('user.surveyReport')
-        ->when($filterTenderId, function($query) use ($filterTenderId) {
+    $competitiveMatrix = Bid::query()->with('user.surveyReport')
+        ->when($filterTenderId, function(\Illuminate\Database\Eloquent\Builder $query) use ($filterTenderId) {
             return $query->where('tender_id', $filterTenderId);
         })
         ->orderBy('final_score', 'desc')
         ->get();
 
     // Data Log Aktivitas Sistem (Untuk Auditor & Admin)
-    $activityLogs = \App\Models\ActivityLog::with('user')->latest()->take(5)->get();
+    $activityLogs = ActivityLog::query()->with('user')->latest()->take(5)->get();
 
     // Data semua tender aktif atau tertutup untuk dropdown filter
-    $allTenders = \App\Models\Tender::latest()->get();
+    $allTenders = Tender::query()->latest()->get();
 
     // Data pengadaan yang sudah diapprove tapi belum dibuatkan tender
-    $approvedProcurements = \App\Models\ProcurementRequest::doesntHave('tender')->where('status', 'approved')->get();
+    $approvedProcurements = ProcurementRequest::query()->doesntHave('tender')->where('status', 'approved')->get();
 
     return view('dashboard', compact('portfolios', 'competitiveMatrix', 'activityLogs', 'allTenders', 'filterTenderId', 'approvedProcurements'));
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -124,7 +128,7 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     Route::patch('/procurement/{id}/verify', [ProcurementRequestController::class, 'verify'])->name('procurement.verify');
 
     // Menetapkan Pemenang Tender
-    Route::post('/bid/{id}/winner', [App\Http\Controllers\BidController::class, 'setWinner'])->name('bid.setWinner');
+    Route::post('/bid/{id}/winner', [BidController::class, 'setWinner'])->name('bid.setWinner');
     
     // Form Input Survey Auditor
     Route::get('/auditor/surveys/create/{vendor_id}', [SurveyReportController::class, 'create'])->name('auditor.surveys.create');
@@ -132,16 +136,26 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
 
 // Project Progress Routes (PBI 15)
 Route::middleware('auth')->group(function () {
-    Route::get('/progress', [App\Http\Controllers\ProjectProgressController::class, 'index'])->name('progress.index');
-    Route::get('/progress/{id}', [App\Http\Controllers\ProjectProgressController::class, 'show'])->name('progress.show');
-});
-
-Route::middleware(['auth', 'role:vendor'])->group(function () {
-    Route::post('/progress', [App\Http\Controllers\ProjectProgressController::class, 'store'])->name('progress.store');
+    Route::get('/progress', [ProjectProgressController::class, 'index'])->name('progress.index');
+    Route::get('/progress/{id}', [ProjectProgressController::class, 'show'])->name('progress.show');
 });
 
 Route::middleware(['auth', 'role:auditor'])->group(function () {
-    Route::post('/progress/{id}/verify', [App\Http\Controllers\ProjectProgressController::class, 'verify'])->name('progress.verify');
+    Route::post('/progress/{id}/verify', [ProjectProgressController::class, 'verify'])->name('progress.verify');
+    Route::post('/bast/{id}/verify', [BastSubmissionController::class, 'verify'])->name('bast.verify');
+});
+
+Route::middleware(['auth', 'role:pemohon'])->group(function () {
+    Route::post('/bast/{id}/verify-pemohon', [BastSubmissionController::class, 'verifyPemohon'])->name('bast.verify_pemohon');
+});
+
+Route::middleware(['auth', 'role:vendor'])->group(function () {
+    Route::post('/progress', [ProjectProgressController::class, 'store'])->name('progress.store');
+    Route::post('/bast', [BastSubmissionController::class, 'store'])->name('bast.store');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/bast/{id}/download', [BastSubmissionController::class, 'download'])->name('bast.download');
 });
 
 require __DIR__.'/auth.php';

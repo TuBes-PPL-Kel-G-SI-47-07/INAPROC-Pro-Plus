@@ -11,7 +11,20 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-// Update bagian ini untuk PBI-02 [cite: 987]
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string|null $phone_number
+ * @property string|null $address
+ * @property string|null $profile_picture
+ * @property string|null $position
+ * @property string $status
+ * @property-read \App\Models\SurveyReport|null $surveyReport
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method bool hasRole(string|array|\Spatie\Permission\Contracts\Role ...$roles)
+ * @method $this assignRole(string|array|\Spatie\Permission\Contracts\Role ...$roles)
+ */
 #[Fillable([
     'name', 
     'email', 

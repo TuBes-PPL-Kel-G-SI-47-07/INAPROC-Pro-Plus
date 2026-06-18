@@ -120,6 +120,207 @@
                         @endif
                     @endrole
 
+                    {{-- BAST SUBMISSION & STATUS CARD (PBI-17) --}}
+                    @php
+                        $bast = $project->bastSubmission;
+                    @endphp
+
+                    @if($bast)
+                        {{-- BAST STATUS DISPLAY CARD --}}
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-600/5 rounded-full blur-3xl"></div>
+                            <h3 class="text-lg font-black text-gray-900 mb-6 flex items-center">
+                                <span class="mr-3 text-xl">📄</span> Berita Acara (BAST)
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                {{-- PROJECT COMPLETION BANNER --}}
+                                @if($bast->status === 'approved' && $bast->pemohon_status === 'approved')
+                                    <div class="p-6 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-[2rem] border border-green-400/20 shadow-lg text-center space-y-2">
+                                        <span class="text-3xl block">🏆</span>
+                                        <h4 class="font-black text-sm uppercase tracking-wider">Proyek Selesai</h4>
+                                        <p class="text-[10px] text-green-100 font-semibold leading-relaxed">
+                                            Seluruh tahapan verifikasi BAST telah disetujui oleh Auditor dan Pemohon. Proyek ini resmi dinyatakan selesai.
+                                        </p>
+                                    </div>
+                                @endif
+
+                                <div class="p-5 bg-gray-50 rounded-2xl border border-gray-100/80 space-y-3">
+                                    <div class="flex justify-between items-center pb-2 border-b border-gray-200/50">
+                                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Inspeksi Auditor</span>
+                                        @if($bast->status === 'approved')
+                                            <span class="bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Approved</span>
+                                        @elseif($bast->status === 'rejected')
+                                            <span class="bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Rejected</span>
+                                        @else
+                                            <span class="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest animate-pulse">Pending</span>
+                                        @endif
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Verifikasi Pemohon</span>
+                                        @if($bast->pemohon_status === 'approved')
+                                            <span class="bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Approved</span>
+                                        @elseif($bast->pemohon_status === 'rejected')
+                                            <span class="bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Rejected</span>
+                                        @else
+                                            <span class="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest animate-pulse">Pending</span>
+                                        @endif
+                                    </div>
+                                    <p class="text-xs text-gray-500 font-medium leading-relaxed pt-2 border-t border-gray-200/50">{{ $bast->description ?? 'Tidak ada deskripsi BAST.' }}</p>
+                                    
+                                    <a href="{{ route('bast.download', $bast->id) }}" class="mt-4 flex items-center justify-center gap-2 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-xs uppercase tracking-widest transition-all">
+                                        <span>📥</span> Unduh Dokumen BAST
+                                    </a>
+                                </div>
+
+                                {{-- AUDITOR NOTES FOR BAST --}}
+                                @if($bast->auditor_notes)
+                                    <div class="p-4 bg-amber-50 text-amber-900 border border-amber-100 rounded-2xl text-xs font-semibold">
+                                        <p class="font-black mb-1">Catatan Auditor:</p>
+                                        <p class="italic">"{{ $bast->auditor_notes }}"</p>
+                                    </div>
+                                @endif
+
+                                {{-- PEMOHON NOTES FOR BAST --}}
+                                @if($bast->pemohon_notes)
+                                    <div class="p-4 bg-blue-50 text-blue-900 border border-blue-100 rounded-2xl text-xs font-semibold">
+                                        <p class="font-black mb-1">Catatan Pemohon:</p>
+                                        <p class="italic">"{{ $bast->pemohon_notes }}"</p>
+                                    </div>
+                                @endif
+
+                                {{-- AUDITOR VERIFY FORM --}}
+                                @role('auditor')
+                                    @if($bast->status === 'pending')
+                                        <div class="border-t border-gray-50 pt-6">
+                                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4">Verifikasi Inspeksi Auditor</h4>
+                                            <form action="{{ route('bast.verify', $bast->id) }}" method="POST" class="space-y-4">
+                                                @csrf
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Tentukan Keputusan</label>
+                                                    <select name="status" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-bold" required>
+                                                        <option value="approved">Setujui BAST (Inspeksi Fisik Selesai)</option>
+                                                        <option value="rejected">Tolak BAST (Minta Revisi)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Catatan Inspeksi</label>
+                                                    <textarea name="auditor_notes" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-semibold resize-none h-20" placeholder="Tulis catatan hasil inspeksi fisik..." required></textarea>
+                                                </div>
+                                                <button type="submit" class="w-full py-4 bg-slate-900 hover:bg-green-600 text-white font-black text-xs rounded-xl tracking-widest uppercase transition-all shadow-md">
+                                                    Simpan Keputusan Auditor
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @endif
+                                @endrole
+
+                                {{-- PEMOHON VERIFY FORM --}}
+                                @if($bast->status === 'approved' && $bast->pemohon_status === 'pending')
+                                    @if($project->user_id === Auth::id())
+                                        <div class="border-t border-gray-50 pt-6">
+                                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4">Verifikasi Penerimaan Pemohon</h4>
+                                            <form action="{{ route('bast.verify_pemohon', $bast->id) }}" method="POST" class="space-y-4">
+                                                @csrf
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Tentukan Keputusan</label>
+                                                    <select name="status" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-bold" required>
+                                                        <option value="approved">Setujui & Terima Pekerjaan</option>
+                                                        <option value="rejected">Tolak & Minta Revisi</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Catatan Penerimaan</label>
+                                                    <textarea name="pemohon_notes" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-semibold resize-none h-20" placeholder="Tulis catatan penerimaan barang/jasa..." required></textarea>
+                                                </div>
+                                                <button type="submit" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl tracking-widest uppercase transition-all shadow-md">
+                                                    Kirim Keputusan Akhir
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <div class="p-4 bg-amber-50/50 border border-amber-200/50 rounded-2xl text-center">
+                                            <p class="text-[10px] text-amber-700 font-bold uppercase tracking-wider animate-pulse">Menunggu Verifikasi Akhir oleh Pemohon</p>
+                                        </div>
+                                    @endif
+                                @endif
+
+                                {{-- VENDOR RE-UPLOAD FORM IF REJECTED --}}
+                                @role('vendor')
+                                    @if($project->vendor_id === Auth::id() && ($bast->status === 'rejected' || $bast->pemohon_status === 'rejected'))
+                                        <div class="border-t border-gray-50 pt-6">
+                                            <h4 class="text-xs font-black text-red-500 uppercase tracking-widest mb-4">Unggah Ulang Dokumen BAST</h4>
+                                            <form action="{{ route('bast.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                                                @csrf
+                                                <input type="hidden" name="procurement_request_id" value="{{ $project->id }}">
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Pilih File Baru</label>
+                                                    <input type="file" name="bast_file" class="block w-full text-xs text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-red-500 file:text-white" accept=".pdf,.docx,.jpg,.png" required>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Keterangan Revisi</label>
+                                                    <textarea name="description" rows="2" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-semibold resize-none" placeholder="Tuliskan keterangan mengenai dokumen baru..." required></textarea>
+                                                </div>
+                                                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl tracking-widest uppercase transition-all shadow-md">
+                                                    Kirim Ulang Dokumen
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @endif
+                                @endrole
+                            </div>
+                        </div>
+                    @else
+                        {{-- NO BAST SUBMITTED YET --}}
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-600/5 rounded-full blur-3xl"></div>
+                            <h3 class="text-lg font-black text-gray-900 mb-6 flex items-center">
+                                <span class="mr-3 text-xl">📄</span> Dokumen BAST
+                            </h3>
+                            
+                            @if($currentMaxProgress >= 100)
+                                @role('vendor')
+                                    @if($project->vendor_id === Auth::id())
+                                        {{-- Vendor can upload BAST --}}
+                                        <div class="space-y-4">
+                                            <p class="text-xs text-gray-500 font-semibold leading-relaxed">Selamat! Proyek telah mencapai progres 100%. Silakan unggah dokumen Berita Acara Serah Terima (BAST) untuk verifikasi audit.</p>
+                                            
+                                            <form action="{{ route('bast.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                                                @csrf
+                                                <input type="hidden" name="procurement_request_id" value="{{ $project->id }}">
+                                                
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Dokumen BAST (.pdf, .docx, .jpg, .png)</label>
+                                                    <input type="file" name="bast_file" class="block w-full text-xs text-gray-950 file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-indigo-600 file:text-white" accept=".pdf,.docx,.jpg,.png" required>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Catatan Tambahan</label>
+                                                    <textarea name="description" rows="2" class="w-full bg-gray-50 border-none rounded-xl text-xs py-3 px-4 font-semibold resize-none" placeholder="Tulis deskripsi atau catatan penyerahan..."></textarea>
+                                                </div>
+                                                
+                                                <button type="submit" class="w-full py-4 bg-green-600 hover:bg-green-700 text-white font-black rounded-2xl shadow-xl transition-all active:scale-[0.99] uppercase tracking-widest text-xs">
+                                                    Kirim Dokumen BAST
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <p class="text-xs text-amber-600 font-bold bg-amber-50 border border-amber-200/50 p-4 rounded-2xl">Menunggu Vendor mengunggah dokumen BAST.</p>
+                                    @endif
+                                @else
+                                    <p class="text-xs text-amber-600 font-bold bg-amber-50 border border-amber-200/50 p-4 rounded-2xl">Menunggu Vendor mengunggah dokumen BAST.</p>
+                                @endrole
+                            @else
+                                <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl text-center">
+                                    <span class="text-2xl mb-2 block">🔒</span>
+                                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">BAST Terkunci</p>
+                                    <p class="text-[10px] text-gray-400 font-semibold leading-normal">
+                                        Form BAST akan aktif setelah progres proyek yang disetujui oleh Auditor mencapai 100%.
+                                    </p>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
                 </div>
 
                 {{-- MIDDLE COLUMN: TIMELINE --}}

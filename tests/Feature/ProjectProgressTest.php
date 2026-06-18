@@ -36,6 +36,7 @@ class ProjectProgressTest extends TestCase
 
         $budget = Budget::create([
             'nama_pagu' => 'Pagu Test',
+            'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
@@ -79,6 +80,7 @@ class ProjectProgressTest extends TestCase
 
         $budget = Budget::create([
             'nama_pagu' => 'Pagu Test',
+            'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
@@ -106,6 +108,7 @@ class ProjectProgressTest extends TestCase
 
         $budget = Budget::create([
             'nama_pagu' => 'Pagu Test',
+            'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
@@ -155,6 +158,7 @@ class ProjectProgressTest extends TestCase
 
         $budget = Budget::create([
             'nama_pagu' => 'Pagu Test',
+            'nominal_awal' => 10000000,
             'sisa_pagu' => 10000000,
         ]);
 
