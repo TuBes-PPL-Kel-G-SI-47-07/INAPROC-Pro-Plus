@@ -1,0 +1,999 @@
+
+
+PROPOSAL PENGEMBANGAN PRODUK
+
+INAPROC+
+
+Disusun oleh 
+102022300382 - Firman Zuhdi Affandi
+102022300345 - Muhammad Devara
+
+4 April 2026
+Daftar Isi
+
+1. Pendahuluan1
+1.1 Latar Belakang1
+1.1.1 Urgensi Pengadaan Barang dan Jasa di Sektor Publik1
+1.1.2 Temuan Kasus: Defisit Profiling pada Sistem Eksisting2
+1.1.3 Relevansi dengan SDG ke-164
+1.1.4 Solusi yang Ditawarkan: INAPROC+6
+1.2 Tujuan8
+1.2.1 Pilar Akuntabilitas, Integritas, dan Penegakan SDG 168
+1.2.2 Pilar Transformasi Digital, Otomasi, dan Keunggulan Teknis8
+1.2.3 Pilar Keadilan Ekonomi, Persaingan Sehat, dan Kepercayaan Publik9
+1.3 Output10
+1.3.1 Output Perangkat Lunak (Sistem Aplikasi Fungsional)10
+1.3.2 Output Infrastruktur Data, Keamanan, dan Audit12
+1.3.3 Output Dokumentasi Teknis dan Manajerial (Standard PPL)13
+1.3.4 Batasan Sistem dan Parameter Keberhasilan (Scope & Constraints)14
+2. Deskripsi Produk16
+2.1 Usulan Solusi16
+2.2 Deskripsi Produk18
+2.2.1 Fungsi Utama dan Mekanisme Kerja19
+2.2.2 Keunggulan Kompetitif Produk22
+2.3 Proses Bisnis25
+2.3.1 Proses Bisnis Eksisting (Konvensional)26
+3. Kebutuhan Sistem1
+3.1 Kebutuhan Fungsional1
+3.1.1 Daftar Kebutuhan1
+3.1.2 Karakteristik Pengguna4
+3.2 Kebutuhan Non Fungsional5
+3.3 Kebutuhan Teknis6
+3.4 Kebutuhan Perangkat Keras (Hardware)8
+4. Rancangan Sistem9
+4.1 Use Case Diagram9
+4.1.1 Identifikasi Aktor dan Peran10
+4.1.2 Deskripsi Hubungan Fungsional10
+4.1.3 Analisis Aktivitas Aktor terhadap Use Case Kunci11
+4.2 Arsitektur Sistem12
+4.3 Rancangan ERD14
+4.4 Class Diagram17
+4.5 Mockup19
+5. Metode Pengembangan23
+5.1 Product Backlog Items (PBI)24
+5.2 Jadwal Pengembangan26
+5.3 Tim Pengembang27
+
+Pendahuluan
+Latar Belakang
+1.1.1 Urgensi Pengadaan Barang dan Jasa di Sektor Publik
+Pengadaan Barang dan Jasa (PBJ) pemerintah bukan sekadar aktivitas administratif rutin, melainkan pilar utama dalam pemenuhan infrastruktur strategis dan layanan publik yang menjadi urat nadi pertumbuhan ekonomi nasional. Secara statistik, PBJ menyerap porsi yang sangat signifikan dari Anggaran Pendapatan dan Belanja Negara (APBN) serta Anggaran Pendapatan dan Belanja Daerah (APBD) setiap tahunnya. Sebagai instrumen strategis pembangunan, efektivitas dan efisiensi dalam setiap siklus pengadaan berdampak langsung pada kualitas hidup masyarakat, mulai dari penyediaan fasilitas kesehatan, akses pendidikan, hingga konektivitas transportasi antarwilayah. Setiap rupiah yang dialokasikan dalam PBJ membawa mandat besar untuk mewujudkan kesejahteraan sosial yang berkeadilan.
+Namun, di balik perannya yang krusial, realitas empiris di lapangan menunjukkan bahwa sektor pengadaan barang dan jasa masih menjadi titik paling rawan terhadap praktik korupsi sistemik, kolusi, dan nepotisme (KKN). Sifatnya yang melibatkan perputaran uang dalam jumlah masif menjadikannya sasaran empuk bagi berbagai modus operandi kecurangan, mulai dari penyalahgunaan wewenang hingga manipulasi data. Kebocoran anggaran pada sektor ini tidak hanya menyebabkan kerugian finansial bagi negara, tetapi juga berdampak pada penurunan kualitas output fisik dan layanan yang diterima oleh publik. Proyek-proyek infrastruktur yang tidak tepat mutu atau terbengkalai sering kali merupakan akibat langsung dari proses pengadaan yang tidak berintegritas dan penuh dengan "permainan" di balik layar.
+Meskipun Pemerintah Indonesia telah melakukan transformasi digital besar-besaran dengan memperkenalkan sistem Inaproc sebagai tulang punggung digital pengadaan nasional, tantangan yang dihadapi belum sepenuhnya tuntas. Inaproc telah berhasil mendigitalisasi prosedur yang sebelumnya manual, namun dalam implementasi praktisnya, celah akuntabilitas masih terbuka lebar. Digitalisasi prosedur ternyata belum menjamin validitas substansi. Masalah yang sering kali muncul adalah sistem yang ada saat ini masih sangat bergantung pada kejujuran administratif pihak penyedia tanpa adanya filter verifikasi yang cerdas dan otomatis.
+Kondisi ini menciptakan paradoks digital: di satu sisi prosedur terlihat modern dan sistematis, namun di sisi lain, proses prakualifikasi dan verifikasi penyedia barang/jasa (vendor) masih rentan terhadap manipulasi. Celah ini memungkinkan vendor yang tidak memiliki kompetensi nyata, atau bahkan perusahaan yang bersifat fiktif, untuk tetap lolos dalam proses seleksi hanya dengan melengkapi dokumen-dokumen formalitas. Lemahnya sistem profiling yang terintegrasi menyebabkan pengawasan terhadap rekam jejak, kredibilitas, dan eksistensi riil vendor menjadi sulit dilakukan secara mendalam. Akibatnya, persaingan usaha yang sehat menjadi terdistorsi, dan negara sering kali terjebak dalam kontrak dengan penyedia jasa yang tidak memiliki integritas profesional.
+Oleh karena itu, penguatan integritas dalam sistem PBJ bukan lagi sebuah imbauan, melainkan suatu keharusan yang mendesak. Diperlukan sebuah paradigma baru dalam memandang keamanan sistem pengadaan—bukan hanya sebatas keamanan jaringan, tetapi keamanan integritas data penyedia. Tanpa adanya reformasi pada mekanisme verifikasi kredibilitas vendor, sistem digital pengadaan hanya akan menjadi alat untuk melegalkan praktik kecurangan yang terorganisir. Dibutuhkan sebuah sistem yang lebih cerdas, transparan, dan mampu melakukan validasi berlapis guna memastikan bahwa setiap penyedia jasa yang terlibat benar-benar memiliki kapasitas dan integritas yang dapat dipertanggungjawabkan di hadapan hukum dan publik.
+
+1.1.2 Temuan Kasus: Defisit Profiling pada Sistem Eksisting
+Berdasarkan analisis mendalam terhadap ekosistem sistem pengadaan nasional saat ini, ditemukan kelemahan yang sangat krusial pada aspek Profiling Perusahaan. Sistem yang ada cenderung bersifat administratif-statis dan formalitas belaka. Proses verifikasi kredibilitas vendor sering kali hanya bersandar pada validasi dokumen legalitas di atas kertas (seperti SIUP, TDP, atau NPWP) tanpa adanya mekanisme validasi fakta yang kuat di lapangan. Kesenjangan antara data administratif dan realitas fisik ini menciptakan celah keamanan yang masif, yang pada akhirnya memicu berbagai temuan kasus serius yang merusak integritas pengadaan:
+Fenomena "Vendor Hantu" dan Perusahaan Cangkang (Shell Companies)
+Salah satu temuan paling mengkhawatirkan adalah maraknya perusahaan yang secara legal terdaftar dalam sistem, namun secara fisik tidak memiliki eksistensi yang nyata. Perusahaan-perusahaan ini sering kali menggunakan alamat domisili fiktif atau alamat kantor bersama (virtual office) hanya untuk memenuhi syarat administrasi, tanpa memiliki aset operasional atau staf yang kompeten. Minimnya fitur pelacakan lokasi berbasis koordinat satelit (geotagging) serta ketiadaan kewajiban unggahan bukti visual kondisi kantor yang autentik mengakibatkan sistem tidak mampu membedakan antara vendor profesional yang memiliki infrastruktur memadai dengan perusahaan cangkang yang didirikan hanya untuk memenangkan tender tertentu. Akibatnya, risiko kegagalan proyek meningkat tajam karena pekerjaan diserahkan kepada entitas yang tidak memiliki kapasitas fisik untuk mengeksekusinya.
+Praktik "Pinjam Bendera" dan Erosi Akuntabilitas
+Kurangnya transparansi pada riwayat pengerjaan proyek yang terdokumentasi secara visual memudahkan praktik "pinjam bendera". Dalam skema ini, oknum penyedia jasa yang tidak memiliki kualifikasi teknis menggunakan identitas (bendera) perusahaan lain yang memiliki rekam jejak bagus di sistem untuk memenangkan tender. Karena sistem eksisting hanya mencatat riwayat proyek dalam bentuk teks laporan administratif, tanpa disertai dokumentasi visual (foto atau video) personil inti di lokasi proyek, maka identitas asli pelaksana pekerjaan di lapangan menjadi sangat kabur. Praktik ini tidak hanya mematikan kompetensi sehat di industri pengadaan, tetapi juga menghilangkan garis akuntabilitas ketika terjadi masalah kualitas pada hasil pekerjaan, karena pihak yang tercatat di sistem bukanlah pihak yang sebenarnya bekerja di lapangan.
+Ketidakpastian Kredibilitas dan Manipulasi Riwayat Proyek
+Selama ini, riwayat pengerjaan proyek dalam sistem pengadaan hanya tersaji dalam bentuk deretan teks dan angka laporan. Format yang sangat sederhana ini sangat rentan terhadap manipulasi dan klaim sepihak. Tanpa adanya sistem yang mewajibkan unggahan bukti nyata—seperti foto progres 0% hingga 100%, video serah terima, atau testimoni visual dari pemberi kerja sebelumnya—panitia seleksi hanya bekerja di atas asumsi keberhasilan. Hal ini menyulitkan tim penilai untuk melakukan verifikasi terhadap kualitas pengerjaan, ketepatan waktu, dan profesionalisme vendor di masa lalu. Dalam banyak kasus, vendor yang memiliki rapor buruk secara fisik masih bisa terlihat "bersih" di sistem hanya karena laporan teks yang mereka susun telah dimodifikasi sedemikian rupa.
+Risiko Kolusi dan Konsentrasi Proyek pada Kelompok Tertentu
+Defisit profiling juga berdampak pada sulitnya mendeteksi hubungan istimewa antar vendor. Tanpa data profil yang mendalam mengenai afiliasi, lokasi fisik yang berdekatan secara tidak wajar, atau kemiripan struktur biodata perusahaan, sistem gagal memberikan peringatan (early warning) terhadap indikasi kolusi atau "arisan tender". Praktik ini sering kali menyebabkan proyek-proyek besar hanya berputar di lingkaran kelompok vendor yang sama, yang secara fisik mungkin berada di bawah satu kendali meskipun secara legal menggunakan nama perusahaan yang berbeda. Hal ini secara sistematis menghambat masuknya vendor-vendor baru yang lebih kompetitif dan inovatif ke dalam ekosistem pengadaan.
+Secara keseluruhan, kelemahan pada aspek profiling ini menciptakan lingkungan pengadaan yang berisiko tinggi (high-risk environment). Tanpa adanya transformasi menuju sistem profiling yang dinamis dan berbasis bukti nyata, integritas pengadaan barang dan jasa akan selalu dihantui oleh ketidakpastian data penyedia jasa. Dibutuhkan sebuah sistem yang tidak hanya mencatat "siapa mereka" di atas kertas, tetapi juga mampu membuktikan "di mana mereka" dan "apa yang telah benar-benar mereka kerjakan" secara autentik.
+
+1.1.3 Relevansi dengan SDG ke-16
+Kelemahan sistemik pada mekanisme profiling penyedia barang dan jasa tidak hanya berhenti pada masalah teknis administratif, namun membawa dampak domino yang sangat luas terhadap tatanan sosial dan stabilitas ekonomi masyarakat. Ketika sebuah sistem pengadaan gagal memvalidasi integritas vendor, maka inefisiensi anggaran negara menjadi konsekuensi yang tidak terelakkan. Uang rakyat yang seharusnya dialokasikan untuk pembangunan puskesmas, perbaikan jalan desa, atau subsidi pendidikan, justru terserap ke dalam proyek-proyek yang dikelola oleh entitas fiktif atau tidak kompeten. Hal ini memicu risiko kegagalan proyek yang sangat tinggi, di mana hasil pekerjaan seringkali tidak mencapai standar mutu yang ditetapkan, terbengkalai, atau bahkan runtuh sebelum waktunya, yang pada akhirnya secara langsung merugikan masyarakat sebagai penerima manfaat akhir.
+Secara global, kondisi ini merupakan hambatan nyata bagi pencapaian Sustainable Development Goals (SDG) ke-16, yang mengusung visi "Perdamaian, Keadilan, dan Kelembagaan yang Kuat". Inti dari SDG 16 adalah menciptakan institusi publik yang transparan, akuntabel, dan bebas dari praktik kecurangan. Indonesia, sebagai bagian dari komunitas global, memiliki tanggung jawab moral untuk mengimplementasikan tata kelola yang bersih. Namun, tanpa adanya reformasi radikal pada sistem verifikasi penyedia jasa di gerbang utama pengadaan, penguatan kelembagaan publik yang dicita-citakan akan sulit terwujud. Sektor pengadaan adalah "benteng depan" penggunaan uang rakyat; jika benteng ini rapuh karena minimnya data profil yang akurat, maka seluruh ekosistem kelembagaan di bawahnya akan terpapar risiko korupsi yang masif.
+Lebih spesifik lagi, proyek Inaproc+ ini berkorelasi langsung dengan Target SDG 16.5, yaitu "Substansial mengurangi korupsi dan penyuapan dalam segala bentuknya". Korupsi dalam pengadaan barang dan jasa sering kali dimulai dari hubungan gelap antara oknum birokrasi dan vendor "titipan" yang identitasnya tidak transparan. Dengan menyediakan sistem profiling yang cerdas dan berbasis bukti nyata, kita secara langsung menutup ruang gerak bagi praktik penyuapan. Ketidakmampuan sistem eksisting untuk memverifikasi domisili fisik dan riwayat proyek secara visual telah memberikan perlindungan semu bagi para pelaku praktik "pinjam bendera" dan "perusahaan cangkang" untuk terus menggerus keuangan negara secara legal di atas kertas.
+Dampak sosial yang paling berbahaya dari pembiaran kelemahan sistem ini adalah erosi kepercayaan publik terhadap pemerintah. Ketika masyarakat melihat bahwa proyek-proyek publik dikerjakan secara asal-asalan oleh kontraktor yang tidak jelas asal-usulnya, muncul apatisme terhadap efektivitas pembangunan. Rasa ketidakadilan sosial akan tumbuh subur ketika vendor-vendor jujur dan berkompeten tersisih oleh vendor "orang dalam" yang hanya bermodalkan dokumen administratif tanpa kapasitas riil. Oleh karena itu, kehadiran sistem yang menjamin keadilan akses melalui transparansi profil bukan lagi sebuah kebutuhan fungsional semata, melainkan instrumen untuk memulihkan keadilan sosial.
+Dengan demikian, relevansi antara pengembangan Inaproc+ dan SDG ke-16 adalah sebuah garis lurus menuju pembangunan kelembagaan yang tangguh. Melalui sistem verifikasi yang ketat dan transparan, kita sedang membangun fondasi bagi institusi publik yang tidak hanya mampu memberikan pelayanan terbaik, tetapi juga mampu membuktikan akuntabilitasnya pada setiap rupiah yang dibelanjakan. Inovasi ini adalah langkah konkret untuk memastikan bahwa "Keadilan bagi Seluruh Rakyat Indonesia" tidak hanya menjadi semboyan, tetapi nyata dalam setiap proyek pembangunan yang dilakukan oleh negara.
+
+1.1.4 Solusi yang Ditawarkan: INAPROC+
+Menanggapi berbagai celah keamanan dan defisit akuntabilitas yang telah diidentifikasi pada sistem eksisting, diusulkan sebuah pengembangan revolusioner yang diberi nama INAPROC+. Proyek ini bukan sekadar pembaruan antarmuka, melainkan sebuah evolusi fundamental dari sistem pengadaan nasional yang berfokus pada penguatan pilar integritas penyedia jasa. INAPROC+ hadir dengan filosofi "Integritas Berbasis Bukti Nyata", di mana setiap entitas yang ingin terlibat dalam pengadaan barang dan jasa pemerintah harus melewati proses verifikasi yang jauh lebih ketat, cerdas, dan transparan melalui fitur unggulan Enhanced Vendor Integrity Profiling.
+Fitur Enhanced Vendor Integrity Profiling ini dirancang untuk mengubah profil vendor dari yang sebelumnya hanya berupa data administratif-statis menjadi data dinamis-faktual. Terobosan utama dalam sistem ini mencakup tiga lapisan verifikasi yang saling mengunci:
+Validasi Eksistensi Melalui Koordinat GPS (Geotagging Verification): Untuk mengeliminasi fenomena "Vendor Hantu" atau perusahaan cangkang, INAPROC+ mengintegrasikan teknologi pelacakan lokasi berbasis satelit. Setiap vendor diwajibkan untuk mendaftarkan titik koordinat fisik kantor operasional mereka. Sistem akan melakukan validasi silang antara alamat yang tertera pada dokumen legal dengan posisi GPS yang dilaporkan. Hal ini memastikan bahwa setiap vendor yang berkompetisi memiliki domisili fisik yang nyata dan dapat dikunjungi untuk keperluan audit lapangan kapan saja, sehingga meminimalisir risiko penggunaan alamat fiktif.
+Verifikasi Portofolio Melalui Bukti Visual Autentik: Berbeda dengan sistem konvensional yang hanya mencatat riwayat proyek dalam bentuk teks, INAPROC+ mewajibkan setiap vendor untuk mengunggah portofolio riwayat proyek yang disertai dengan bukti visual autentik berupa foto progres pengerjaan dan video serah terima hasil pekerjaan terdahulu. Dokumentasi ini berfungsi sebagai bukti nyata kompetensi vendor. Dengan adanya metadata pada setiap unggahan, sistem dapat memverifikasi keaslian dokumentasi tersebut, sehingga praktik "pinjam bendera" atau manipulasi riwayat pengerjaan dapat dideteksi secara dini. Panitia seleksi kini memiliki dasar yang kuat dalam menilai kualitas kerja vendor di masa lalu berdasarkan bukti fisik, bukan sekadar janji di atas kertas.
+Biodata Perusahaan yang Terverifikasi dan Terintegrasi: INAPROC+ menyediakan modul profil yang mendalam, mencakup data personil inti, kapasitas alat, hingga keterkaitan kepemilikan antar perusahaan. Dengan transparansi data yang lebih luas, sistem dapat mengidentifikasi adanya indikasi kolusi atau "arisan tender" jika ditemukan kemiripan profil atau afiliasi tersembunyi antar vendor dalam satu paket lelang. Hal ini menciptakan lingkungan kompetisi yang lebih adil bagi vendor-vendor kecil namun berkompeten untuk bersaing dengan pemain besar secara sehat.
+Melalui pendekatan profiling yang cerdas dan transparan ini, INAPROC+ memiliki visi besar untuk menciptakan gerbang masuk yang sangat selektif bagi para penyedia jasa. Dengan memperketat validasi di awal, sistem ini secara otomatis akan mengeliminasi vendor-vendor yang tidak berintegritas dan perusahaan fiktif yang selama ini menjadi parasit dalam anggaran negara. Tujuan akhirnya adalah terciptanya ekosistem pengadaan barang dan jasa yang bersih dari praktik KKN, di mana setiap pemenang tender adalah mereka yang benar-benar memiliki kapasitas, kredibilitas, dan rekam jejak yang dapat dipertanggungjawabkan.
+INAPROC+ adalah manifestasi dari penerapan teknologi informasi untuk keadilan sosial. Dengan sistem ini, kami tidak hanya membangun sebuah aplikasi web, tetapi kami sedang membangun standar baru bagi akuntabilitas publik di Indonesia. Transparansi yang ditawarkan oleh INAPROC+ akan mengembalikan kepercayaan masyarakat terhadap proses pembangunan nasional, memastikan bahwa setiap rupiah dari APBN dikelola oleh pihak yang tepat demi hasil yang maksimal bagi kesejahteraan rakyat.
+1.2 Tujuan
+Pengembangan sistem INAPROC+ dirancang bukan sekadar untuk menggantikan sistem yang sudah ada, melainkan untuk melakukan rekayasa ulang (re-engineering) terhadap fondasi kepercayaan dalam ekosistem pengadaan barang dan jasa di Indonesia. Proyek ini memiliki spektrum tujuan yang luas, mencakup aspek hukum, teknologi, hingga dampak sosial kemasyarakatan yang dijabarkan sebagai berikut:
+1.2.1 Pilar Akuntabilitas, Integritas, dan Penegakan SDG 16
+Tujuan utama dalam pilar ini adalah menempatkan INAPROC+ sebagai instrumen utama dalam mencapai tata kelola pemerintahan yang bersih dan berwibawa.
+Pencapaian Institusi yang Akuntabel Secara Global: Melalui penyelarasan dengan target Sustainable Development Goals (SDG) 16, tujuan ini berfokus pada pembangunan institusi yang efektif, akuntabel, dan transparan di semua tingkatan. INAPROC+ bertujuan untuk membuktikan bahwa teknologi informasi dapat menjadi benteng pertahanan utama terhadap penyalahgunaan wewenang. Dengan sistem yang memiliki catatan log yang tidak dapat dimanipulasi, institusi publik dapat mempertanggungjawabkan setiap proses pengambilan keputusan dalam pengadaan barang dan jasa kepada rakyat dan lembaga pengawas internasional.
+Reduksi Sistemik Praktik Korupsi, Kolusi, dan Nepotisme (KKN): Tujuan ini diarahkan untuk menutup celah-celah administratif yang selama bertahun-tahun menjadi pintu masuk bagi praktik "bawah meja". INAPROC+ dirancang untuk menghilangkan ruang gelap dalam proses seleksi vendor. Dengan memaksakan transparansi pada profil dan rekam jejak, sistem ini bertujuan untuk memastikan bahwa tidak ada lagi ruang bagi vendor "titipan" yang tidak memiliki kompetensi namun menang karena faktor kedekatan dengan pemegang kebijakan.
+Penguatan Integritas Melalui "Digital Integrity Lock": Membangun sebuah sistem yang mengunci integritas data penyedia jasa. Tujuan ini memastikan bahwa sekali data diinput dan diverifikasi (seperti lokasi kantor dan riwayat proyek), data tersebut menjadi dasar hukum yang kuat untuk audit di masa depan. Hal ini bertujuan untuk menciptakan efek jera bagi pihak-pihak yang mencoba memanipulasi informasi profil perusahaan untuk keuntungan pribadi.
+1.2.2 Pilar Transformasi Digital, Otomasi, dan Keunggulan Teknis
+Tujuan pada pilar ini berfokus pada kapabilitas teknis sistem dalam memproses data mentah menjadi informasi yang cerdas dan valid.
+Implementasi Verifikasi Eksistensi Vendor Berbasis Geospasial
+Secara operasional, INAPROC+ bertujuan untuk mengintegrasikan teknologi Geotagging dan koordinat GPS satelit ke dalam setiap profil vendor. Sasaran teknisnya adalah memastikan bahwa setiap entitas yang terdaftar memiliki keberadaan fisik yang dapat dibuktikan kebenarannya. Hal ini bertujuan untuk secara otomatis menyaring "Vendor Hantu" atau perusahaan cangkang (shell companies) yang hanya ada di atas kertas tanpa memiliki infrastruktur pendukung untuk melaksanakan pekerjaan proyek.
+Transformasi Rekam Jejak Visual sebagai Standar Kualifikasi
+Salah satu tujuan terobosan dalam sistem ini adalah menggantikan dominasi teks dalam penilaian rekam jejak dengan bukti visual autentik. INAPROC+ bertujuan untuk membangun sebuah repositori digital yang mewajibkan unggahan foto progres proyek (dari 0% hingga 100%) dan rekaman video serah terima pekerjaan. Tujuannya adalah memberikan objektivitas kepada panitia pengadaan agar dapat menilai kualitas kerja nyata seorang vendor di masa lalu, bukan sekadar menilai keindahan susunan kata dalam proposal teks.
+Pengembangan Algoritma Scoring dan Decision Support System (DSS)
+Sistem ini bertujuan untuk meminimalisir intervensi manusia dalam proses pemeringkatan vendor. Dengan mengembangkan algoritma Auto-Scoring yang menggabungkan parameter administratif, nilai penawaran, lokasi logistik, dan kredibilitas riwayat pengerjaan, INAPROC+ bertujuan untuk menghasilkan rekomendasi pemenang yang murni berbasis data (Data-Driven Decision Making). Hal ini bertujuan untuk menjamin bahwa pemenang tender adalah penyedia jasa yang secara teknis dan finansial paling optimal.
+Penyediaan Instrumen Audit Trail yang Responsif dan Real-Time
+Tujuan teknis lainnya adalah menciptakan transparansi proses yang menyeluruh melalui fitur Audit Trail. Sistem bertujuan untuk mencatat setiap interaksi, perubahan data, dan komunikasi antara vendor dan admin secara mendetail. Hal ini bertujuan untuk memudahkan auditor internal maupun eksternal dalam melakukan pelacakan terhadap potensi anomali harga atau penyimpangan prosedur saat proses pengadaan sedang berjalan, bukan hanya setelah proyek selesai.
+1.2.3 Pilar Keadilan Ekonomi, Persaingan Sehat, dan Kepercayaan Publik
+Pilar terakhir bertujuan untuk memberikan dampak ekonomi yang berkeadilan dan memulihkan martabat pengadaan publik.
+Demokratisasi Akses Pengadaan bagi Penyedia Jasa Kompeten: INAPROC+
+bertujuan untuk meruntuhkan tembok monopoli yang seringkali dikuasai oleh segelintir vendor besar yang memiliki "jalur khusus". Dengan sistem profil yang terbuka dan sistem seleksi yang objektif, tujuan operasionalnya adalah memberikan kesempatan yang sama kepada perusahaan kecil dan menengah yang memiliki kompetensi nyata untuk bersaing di tingkat nasional. Hal ini bertujuan untuk mendorong pertumbuhan ekonomi yang lebih inklusif.
+Eliminasi Praktik "Pinjam Bendera" dalam Ekosistem Nasional
+Sistem ini bertujuan untuk memutus mata rantai praktik ilegal di mana oknum tidak kompeten menggunakan identitas perusahaan lain yang berkualifikasi. Melalui verifikasi personil inti dan dokumentasi visual proyek yang ketat, INAPROC+ bertujuan untuk memastikan bahwa pihak yang menandatangani kontrak adalah pihak yang secara fisik mengerjakan proyek tersebut. Hal ini bertujuan untuk menjamin kualitas hasil pembangunan yang dibiayai oleh negara.
+Restorasi Kepercayaan Publik Terhadap Pembangunan Nasional
+Tujuan akhir dan yang paling fundamental adalah memulihkan kepercayaan rakyat terhadap efektivitas penggunaan uang pajak. Dengan menghadirkan hasil pembangunan yang berkualitas (karena dikerjakan oleh vendor yang valid dan kompeten), INAPROC+ bertujuan untuk membuktikan kepada masyarakat bahwa pemerintah serius dalam melakukan reformasi birokrasi. Hal ini bertujuan untuk meningkatkan dukungan publik terhadap program-program pembangunan jangka panjang pemerintah.
+Edukasi Integritas Bagi Pelaku Usaha
+Sistem ini juga bertujuan sebagai alat edukasi bagi para pelaku usaha untuk mulai berinvestasi pada kualitas pengerjaan dan dokumentasi riwayat proyek yang jujur. Dengan adanya standar tinggi dalam INAPROC+, vendor secara alami akan terdorong untuk memperbaiki standar operasional prosedur mereka jika ingin tetap kompetitif di pasar pengadaan pemerintah.
+1.3 Output
+Output dari proyek pengembangan INAPROC+ dirancang untuk menjadi solusi holistik yang mengintegrasikan kecanggihan rekayasa perangkat lunak dengan kebutuhan audit integritas yang ketat. Artefak yang dihasilkan tidak hanya terbatas pada kode program, tetapi mencakup ekosistem data dan dokumentasi formal yang memenuhi standar profesional pengembangan perangkat lunak (PPL). Output ini dijabarkan ke dalam pilar-pilar utama sebagai berikut:
+1.3.1 Output Perangkat Lunak (Sistem Aplikasi Fungsional)
+Produk utama dari proyek ini adalah aplikasi web enterprise-grade yang dibangun di atas framework Laravel. Output fungsional ini dirancang untuk menangani siklus hidup pengadaan secara end-to-end dengan rincian sebagai berikut:
+Dashboard Multi-Role dengan Arsitektur Role-Based Access Control (RBAC)
+Sistem akan menghasilkan antarmuka dinamis yang disesuaikan secara otomatis berdasarkan kredensial login pengguna. Output ini bukan sekadar perbedaan tampilan, melainkan penerapan middleware ketat yang membatasi akses data.
+Dashboard Admin/Panitia: Menyediakan kontrol pusat untuk manajemen tender, verifikasi dokumen vendor, dan pengelolaan parameter scoring.
+Dashboard Pemohon (Unit Kerja): Difokuskan pada efisiensi pengajuan kebutuhan (PR) dan pemantauan sisa pagu anggaran secara real-time.
+Dashboard Vendor: Dirancang sebagai pusat manajemen identitas perusahaan, portofolio multimedia, dan partisipasi lelang aktif.
+Dashboard Auditor: Menyediakan akses read-only tingkat tinggi ke seluruh log transaksi dan visualisasi data statistik untuk mendeteksi kecurangan.
+Modul Enhanced Vendor Profiling (EVP) dengan Integritas Data Berlapis
+Output ini merupakan inti dari terobosan INAPROC+. Modul ini menyediakan formulir entitas perusahaan yang kompleks yang mencakup:
+Geospasial Integration: Output berupa integrasi API pemetaan yang memungkinkan sistem menyimpan koordinat lintang dan bujur kantor vendor. Hal ini menghasilkan output validasi fisik yang mencegah pendaftaran perusahaan fiktif.
+Multimedia Portfolio Repository: Sistem penyimpanan file yang mampu menangani unggahan foto beresolusi tinggi dan video durasi pendek sebagai bukti riwayat kerja. Output teknisnya meliputi sistem hashing file untuk memastikan bukti visual yang diunggah tidak dimanipulasi di kemudian hari.
+Sistem Tender dan Bidding Digital (Smart Auction Engine)
+Aplikasi menghasilkan ruang lelang virtual yang otomatis. Outputnya mencakup:
+Automated Scheduling: Sistem penguncian penawaran otomatis berdasarkan waktu server yang presisi.
+Sealed Bidding Mechanism: Sebuah mekanisme di mana data penawaran harga vendor dienkripsi dalam database dan hanya dapat dibuka oleh panitia seleksi setelah masa lelang berakhir, menjamin kerahasiaan dan mencegah kebocoran informasi harga.
+Engine Otomasi Scoring (Decision Support Output)
+Output berupa algoritma penilaian yang transparan. Sistem akan memproses berbagai input—mulai dari kelengkapan administrasi, skor verifikasi visual, hingga nilai penawaran finansial—menjadi satu angka agregat. Hasil akhirnya adalah Matriks Komparasi Vendor yang dapat diunduh, memberikan alasan logis dan berbasis data mengapa seorang vendor dipilih menjadi pemenang.
+Digital Signature & SPK Generator Otomatis
+Sebagai tahap akhir transaksi, sistem akan menghasilkan dokumen Surat Perintah Kerja (SPK) secara dinamis. Output ini mengambil data dari database (nama pemenang, nilai kontrak, spesifikasi barang) dan menggabungkannya ke dalam template PDF resmi yang dilengkapi dengan tanda tangan digital sebagai bukti sah kesepakatan secara elektronik.
+1.3.2 Output Infrastruktur Data, Keamanan, dan Audit
+Di luar apa yang terlihat oleh pengguna, proyek ini menghasilkan infrastruktur teknis yang menjamin keberlangsungan dan keamanan data:
+Skema Database Relasional Terintegrasi dan Ternormalisasi
+Output teknis berupa arsitektur basis data MySQL yang dirancang untuk performa tinggi. Desain database ini mencakup hubungan antar tabel yang kompleks (seperti relasi many-to-many antara vendor dan tender) yang telah dioptimasi untuk melakukan kueri statistik yang berat tanpa membebani server. Ini mencakup skema untuk menyimpan history perubahan harga dan status barang.
+Sistem Audit Trail (Immutable Log System)
+Sistem akan menghasilkan rekaman aktivitas yang tidak dapat diubah (immutable). Setiap tindakan seperti "Admin mengubah status tender" atau "Vendor merevisi penawaran" akan dicatat secara mendetail (siapa, kapan, data lama, data baru, alamat IP). Output ini adalah instrumen utama bagi Auditor untuk melakukan investigasi forensik jika ditemukan indikasi penyimpangan.
+Executive Dashboard Analitik (Business Intelligence Tool)
+Output berupa modul visualisasi data yang canggih menggunakan library grafik modern.
+Grafik Efisiensi Anggaran: Menampilkan perbandingan antara pagu awal dengan nilai kontrak final.
+Heatmap Sebaran Vendor: Menampilkan lokasi vendor secara geografis untuk melihat sebaran mitra kerja.
+Anomali Detection Visual: Grafik yang menandai jika ada penawaran harga yang jauh di atas atau di bawah rata-rata harga pasar.
+Security Layer (Standar Keamanan Enterprise)
+Output keamanan mencakup implementasi protokol keamanan tingkat lanjut pada level kode:
+Bcrypt Encryption: Untuk pengamanan data kredensial.
+CSRF & XSS Protection: Filter otomatis untuk mencegah serangan injeksi skrip jahat.
+Middleware Authorization: Lapisan verifikasi yang memastikan setiap request ke server divalidasi otoritasnya terlebih dahulu.
+1.3.3 Output Dokumentasi Teknis dan Manajerial (Standard PPL)
+Sesuai dengan kaidah pengembangan perangkat lunak yang baik, proyek ini menghasilkan dokumentasi lengkap yang berfungsi sebagai panduan dan standar operasional:
+Dokumen Spesifikasi Kebutuhan Perangkat Lunak (SKPL/SRS)
+Dokumen ini menjelaskan secara detail 21 Product Backlog Items (PBI) yang dikerjakan. Isinya mencakup diagram Use Case, deskripsi aktor, serta kebutuhan performa sistem. Ini adalah output yang menjembatani antara kebutuhan bisnis dan implementasi teknis.
+Dokumen Perancangan Perangkat Lunak (DPPL/SDD)
+Output desain yang mendalam mencakup:
+Entity Relationship Diagram (ERD): Struktur data yang mendukung Join 3-4 tabel.
+Sequence Diagrams: Penjelasan alur interaksi antar objek dalam proses bidding dan audit.
+User Interface Mockups: Desain visual fidelitas tinggi yang menjadi acuan pembuatan front-end.
+Laporan Pengujian Otomatis (Automated Testing Suite)
+Output berupa kumpulan skrip pengujian berbasis Laravel Dusk. Laporan ini mencatat hasil simulasi pengguna nyata (seperti klik tombol, input form, dan upload file) yang dilakukan oleh robot penguji. Hal ini menjamin bahwa sistem stabil dan bebas dari bug kritis sebelum digunakan.
+Manual Book dan Dokumentasi API
+Output berupa buku panduan operasional untuk setiap jenis pengguna. Selain itu, dihasilkan dokumentasi endpoint API (jika ada) yang menjelaskan struktur data yang dikirim dan diterima oleh sistem, memudahkan pengembangan atau integrasi sistem di masa depan.
+Laporan Akhir Audit Pengadaan (Output PDF Formal)
+Sistem memiliki fungsi untuk mengekspor seluruh riwayat pengadaan per paket tender ke dalam satu file PDF yang rapi. Dokumen ini mencakup kronologi lelang, daftar penawar, hasil scoring, hingga bukti fisik yang diunggah. Output ini dirancang untuk menjadi dokumen legal yang siap diserahkan kepada instansi pemeriksa keuangan.
+1.3.4 Batasan Sistem dan Parameter Keberhasilan (Scope & Constraints)
+Untuk menjaga kualitas output di bawah pengembangan tim yang terdiri dari dua orang, ditetapkan batasan-batasan teknis sebagai berikut:
+Lingkup Validasi Data
+Sistem berfokus pada validasi integritas profil penyedia. Output validasi foto/video dilakukan dengan mengecek keaslian metadata file (tanggal dan koordinat asli foto) serta melalui sistem review manual oleh Admin yang didukung oleh dashboard informasi yang lengkap.
+Lingkup Manajemen Keuangan
+Output manajemen anggaran terbatas pada pemantauan pagu unit dan realisasi kontrak. Sistem tidak melakukan transaksi keuangan langsung ke bank, namun menghasilkan "Instruksi Pembayaran" yang dapat diintegrasikan dengan sistem keuangan eksternal.
+Kapasitas Simulasi
+Output dirancang untuk menangani simulasi ribuan data vendor dan tender guna membuktikan keandalan arsitektur database dan kecepatan kueri analitik pada dashboard Auditor.
+Deskripsi Produk
+Usulan Solusi
+Berdasarkan identifikasi masalah yang telah dipaparkan secara mendalam pada latar belakang—khususnya mengenai kerentanan sistem pengadaan eksisting terhadap fenomena vendor fiktif, praktik pinjam bendera, dan manipulasi profil administratif—maka solusi yang diusulkan adalah pengembangan INAPROC+.
+Proyek ini tidak diposisikan sebagai pengganti total (total replacement) dari sistem nasional yang sudah ada, melainkan sebagai sebuah Penguatan Infrastruktur Digital (Super-App Enhancement). INAPROC+ berfungsi sebagai lapisan kecerdasan tambahan (intelligence layer) yang dirancang untuk menambal celah-celah kritis dalam proses verifikasi dan audit yang selama ini menjadi titik lemah dalam ekosistem pengadaan barang dan jasa pemerintah.
+Strategi Penyelesaian Masalah Melalui Transformasi Teknologi
+Usulan solusi ini dikonstruksikan di atas empat pilar transformasi digital utama yang dirancang secara sistematis untuk menutup setiap celah potensi korupsi:
+1. Penyelesaian Defisit Profiling melalui Mekanisme Enhanced Vendor Profiling (EVP) 
+Solusi fundamental yang ditawarkan oleh INAPROC+ adalah perubahan paradigma dalam memandang profil penyedia jasa. Selama ini, profil vendor hanya dianggap sebagai kumpulan dokumen statis. Dalam INAPROC+, profil ditransformasikan menjadi entitas "Real-Time Verified Identity".
+Mekanisme Kerja: Sistem mewajibkan validasi data dua arah. Selain input teks administratif, sistem mengintegrasikan API Geospasial untuk mengunci koordinat GPS kantor operasional vendor.
+Validasi Faktual: Vendor diwajibkan mengunggah dokumentasi visual (foto dan video) yang diproses menggunakan ekstraksi metadata. Hal ini memastikan bahwa bukti fisik yang diberikan diambil pada lokasi dan waktu yang sesuai dengan klaim perusahaan. Dengan demikian, INAPROC+ secara proaktif mengeliminasi peluang bagi perusahaan cangkang (shell companies) untuk berkompetisi dalam tender publik.
+2. Objektivitas Seleksi melalui Automated Scoring Engine (Eliminating Human Bias)
+Masalah klasik dalam pengadaan konvensional adalah tingginya intervensi manusia pada tahap penilaian, yang sering kali menjadi pintu masuk bagi praktik gratifikasi atau penunjukan vendor "titipan".
+Mekanisme Kerja: INAPROC+ mengusulkan penerapan algoritma skoring otomatis yang bekerja berdasarkan parameter bobot yang telah dikunci di dalam sistem sebelum proses tender dimulai.
+Keadilan Sistem: Sistem akan melakukan kalkulasi secara mandiri terhadap skor administratif, skor teknis (berdasarkan portofolio visual), dan skor finansial (harga penawaran). Karena proses ini dilakukan oleh mesin (system-driven), peluang untuk melakukan negosiasi ilegal di luar sistem dapat ditekan secara signifikan, memastikan pemenang tender adalah entitas yang benar-benar memiliki skor tertinggi secara objektif.
+3. Transparansi Pasca-Tender melalui Continuous Monitoring Integrity
+Celah korupsi tidak berhenti saat pemenang tender ditetapkan; justru risiko terbesar sering terjadi pada tahap pelaksanaan proyek di mana barang yang dikirim tidak sesuai spesifikasi atau bahkan fiktif.
+Mekanisme Kerja: INAPROC+ memperluas fungsi pengawasannya hingga tahap serah terima. Solusi ini mewajibkan vendor untuk melakukan update progres fisik melalui sistem yang dilengkapi bukti multimedia.
+Akuntabilitas Visual: Setiap laporan progres harus disertai foto atau video bukti nyata yang dapat dipantau langsung oleh Auditor melalui dashboard khusus. Hal ini menciptakan transparansi total, di mana pembayaran termin anggaran hanya dapat diproses apabila sistem telah memverifikasi kesesuaian antara laporan administratif dengan bukti fisik yang diunggah.
+4. Sinkronisasi Global dengan SDG 16 (Institutional Strengthening)
+Melalui INAPROC+, solusi yang ditawarkan memiliki dimensi internasional. Proyek ini bertujuan untuk membawa standar pengadaan nasional menuju standar audit global.
+Mekanisme Kerja: Dengan menyediakan Audit Trail yang immutable (tidak dapat diubah) dan dashboard analitik yang transparan, INAPROC+ membantu lembaga publik dalam membangun struktur kelembagaan yang kuat, efektif, dan akuntabel.
+Dampak Nasional: Implementasi teknologi ini secara langsung berkontribusi pada peningkatan indeks persepsi korupsi dengan menunjukkan kepada dunia internasional bahwa Indonesia memiliki kemauan teknis untuk menjaga setiap rupiah uang rakyat melalui sistem yang proaktif terhadap pencegahan penyuapan dan manipulasi data.
+Pendekatan Arsitektur Solusi
+Secara teknis, solusi ini akan diimplementasikan menggunakan arsitektur web modern dengan framework Laravel. Pilihan ini didasarkan pada kebutuhan akan sistem yang memiliki standar keamanan tinggi (proteksi SQL Injection, CSRF, dan XSS) serta kemudahan dalam mengelola logika bisnis yang kompleks seperti algoritma skoring dan manajemen file multimedia yang masif. Dengan pendekatan ini, INAPROC+ tidak hanya menjadi solusi yang cerdas secara konseptual, tetapi juga tangguh dan aman secara implementasi teknis.
+
+Deskripsi Produk
+INAPROC+ hadir sebagai platform e-procurement terintegrasi yang dirancang untuk menjadi standar baru dalam transparansi pengadaan sektor publik. Secara arsitektural, sistem ini memanfaatkan kekuatan framework Laravel yang dikenal dengan ekosistem keamanannya yang matang dan kemampuannya menangani logika bisnis yang kompleks melalui Eloquent ORM dan Service Container.
+Filosofi pengembangan INAPROC+ berpusat pada "Active Integrity", di mana sistem tidak bersifat pasif menerima data, melainkan proaktif melakukan validasi melalui kecerdasan data (data intelligence). Hal ini bertujuan untuk menciptakan sebuah ekosistem pengadaan yang kebal terhadap manipulasi profil dan intervensi manual yang tidak akuntabel.
+
+2.2.1 Fungsi Utama dan Mekanisme Kerja
+Sistem INAPROC+ mengadopsi siklus hidup pengadaan tertutup (closed-loop procurement cycle) yang memastikan integritas data tetap terjaga mulai dari inisiasi anggaran hingga audit pasca-pengerjaan. Berikut adalah penjelasan mendalam mengenai mekanisme kerja fungsi-fungsi utamanya:
+1. Smart Budgeting & Pagu Control (Financial Gatekeeping)
+Mekanisme ini merupakan lini pertahanan pertama dalam mencegah pemborosan anggaran atau pengadaan fiktif.
+Logika Sistem
+Setiap unit kerja dalam organisasi memiliki entitas "Pagu" yang tersimpan di database. Saat seorang pemohon menginput pengajuan pengadaan, sistem secara otomatis memicu fungsi validation check yang membandingkan estimasi nilai proyek dengan sisa saldo anggaran unit tersebut.
+Mekanisme Kerja
+Jika nilai pengajuan melebihi saldo tersedia, sistem akan mengunci (lock) formulir pengajuan dan memberikan notifikasi penolakan secara real-time. Hal ini mencegah adanya "komitmen anggaran" di luar sistem dan memastikan setiap rupiah yang dikeluarkan telah memiliki landasan perencanaan yang sah, sehingga meminimalisir praktik mark-up atau pengadaan darurat yang tidak terencana.
+2. Virtual Vendor Room & Enhanced Profiling (EVP) - Digital Identity Validation
+Fitur ini dirancang untuk menghancurkan ekosistem "perusahaan cangkang" yang seringkali memenangkan tender secara administratif namun tidak kompeten secara operasional.
+Mekanisme Kerja
+Vendor diwajibkan melewati tahap On-Boarding yang ketat. Proses ini melibatkan fitur Geotagging di mana vendor harus memverifikasi titik koordinat kantor operasional mereka. Sistem akan mencocokkan koordinat tersebut dengan database alamat legal perusahaan.
+Visual Evidence Repository
+Berbeda dengan sistem konvensional, profil vendor di INAPROC+ dilengkapi dengan galeri portofolio berbasis multimedia. Vendor wajib mengunggah bukti nyata pekerjaan terdahulu dalam bentuk foto progres (0%, 50%, hingga 100%) dan video testimoni dari klien sebelumnya. Foto-foto ini diproses oleh sistem untuk mengekstrak metadata (GPS dan waktu pengambilan foto) guna menjamin bahwa bukti tersebut autentik dan bukan hasil rekayasa internet.
+3. Digital Tender & Sealed Bidding (Encryption-Based Confidentiality)
+Proses lelang dilakukan dalam lingkungan digital yang terenkripsi untuk menjamin persaingan yang sehat antar vendor.
+Mekanisme Kerja
+Saat periode tender dibuka, vendor dapat mengirimkan dokumen penawaran teknis dan finansial. Namun, nilai penawaran finansial akan disimpan dalam bentuk terenkripsi (encrypted string) di dalam database menggunakan kunci keamanan tingkat sistem.
+Integritas Harga
+Selama masa lelang berlangsung, baik admin maupun panitia tidak dapat melihat angka penawaran vendor manapun. Data harga hanya akan didekripsi dan ditampilkan secara otomatis oleh sistem sesaat setelah waktu lelang berakhir (closing time). Hal ini menutup celah bagi oknum panitia untuk membocorkan informasi harga kepada vendor favorit agar mereka bisa melakukan bidding lebih rendah di menit terakhir.
+4. Algoritma Decision Support System (DSS) untuk Scoring (Algorithmic Fairness)
+Penentuan pemenang dilakukan melalui mesin kalkulasi otomatis yang menghilangkan unsur subjektivitas manusia.
+Logika Kalkulasi
+Sistem menggunakan algoritma skoring berbasis bobot (Weighted Scoring) yang menggabungkan tiga variabel utama:
+Skor Administratif: Kelengkapan dan validitas dokumen hukum.
+Skor Teknis: Kualitas portofolio visual dan kelayakan profil lokasi yang diverifikasi sistem.
+Skor Finansial: Penawaran harga yang paling kompetitif namun masuk akal secara ekonomi.
+Hasil Akhir
+Sistem menghasilkan Matriks Komparasi Vendor secara instan. Matriks ini menyajikan alasan mengapa seorang vendor mendapatkan skor tertentu. Transparansi ini memudahkan proses sanggah dan memastikan bahwa pemenang tender dipilih karena keunggulan data, bukan karena kedekatan personal.
+5. Monitoring & Audit Trail Management (The Digital Witness)
+Fungsi ini adalah mekanisme pengawasan pasca-penetapan pemenang yang menjamin akuntabilitas berkelanjutan.
+Mekanisme Kerja
+Setelah kontrak berjalan, vendor memiliki kewajiban untuk melakukan pelaporan progres secara berkala langsung ke dalam sistem. Laporan ini harus disertai dengan bukti foto terkini yang memiliki timestamp sistem. Hal ini memastikan pengerjaan barang/jasa benar-benar berjalan sesuai jadwal yang disepakati.
+Audit Trail Tanpa Celah
+Sistem mencatat setiap aktivitas secara permanen (Log-Activity). Siapa pun yang melakukan perubahan data, menyetujui dokumen, atau membatalkan tender, identitas digital dan waktu eksekusinya akan terekam dalam tabel audit. Data ini bersifat read-only bagi admin biasa dan hanya dapat diakses oleh Auditor sebagai bukti forensik jika terjadi audit oleh lembaga pemeriksa keuangan (seperti BPK) di masa mendatang.
+
+2.2.2 Keunggulan Kompetitif Produk
+INAPROC+ tidak hanya hadir sebagai platform transaksi, melainkan sebagai sebuah sistem pertahanan integritas (integrity defense system). Keunggulan kompetitif yang ditawarkan oleh produk ini dirancang untuk menjawab kegagalan sistem konvensional dalam memvalidasi data penyedia jasa secara faktual. Berikut adalah penjelasan mendalam mengenai nilai-nilai unggul INAPROC+:
+1. Verifikasi Anti-Fiktif melalui Mekanisme "The GPS Wall"
+Keunggulan utama yang membedakan INAPROC+ dengan sistem e-procurement lainnya adalah kemampuannya dalam mendeteksi dan mengeliminasi perusahaan cangkang (shell companies).
+Analisis Masalah
+Dalam sistem konvensional, vendor seringkali dapat mendaftar hanya dengan alamat kantor virtual yang tidak memiliki aktivitas operasional riil.
+Solusi INAPROC+
+Melalui fitur The GPS Wall, setiap vendor diwajibkan melakukan pinpoint lokasi kantor pada peta digital yang terintegrasi. Sistem tidak hanya menyimpan koordinat tersebut, tetapi juga memiliki logika verifikasi yang membandingkan posisi GPS saat pengunggahan dokumen dengan titik koordinat terdaftar.
+Dampak
+Hal ini menciptakan "dinding penghalang" digital bagi vendor fiktif. Jika sebuah perusahaan tidak dapat membuktikan keberadaan fisik kantornya melalui koordinat satelit yang konsisten, sistem secara otomatis akan memberikan skor kredibilitas rendah, sehingga risiko proyek jatuh ke tangan vendor hantu dapat ditekan hingga ke level minimal.
+2. Integritas Multimedia (Visual Evidence Framework)
+INAPROC+ memperkenalkan standar baru dalam pembuktian kualifikasi melalui kerangka kerja bukti visual yang mandatori.
+Analisis Masalah
+Praktik "pinjam bendera" sering terjadi karena sistem hanya memverifikasi nama perusahaan di atas kertas, tanpa mengetahui siapa yang sebenarnya bekerja di lapangan.
+Solusi INAPROC+
+Berbeda dengan Inaproc standar, sistem ini mewajibkan unggahan portofolio dalam bentuk multimedia (foto dan video). Foto yang diunggah harus memiliki metadata asli (bukan hasil screenshot atau unduhan internet).
+Dampak
+Dengan adanya bukti visual personil di lokasi proyek dan progres fisik yang terdokumentasi, sistem memberikan lapisan keamanan tambahan. Hal ini memaksa vendor untuk menunjukkan wajah asli perusahaan mereka, sehingga memudahkan auditor untuk memverifikasi apakah perusahaan yang memenangkan tender benar-benar entitas yang mengerjakan proyek tersebut secara nyata di lapangan.
+3. Arsitektur Keamanan Kelas Enterprise (Laravel Security Suite)
+Dari sisi teknis, INAPROC+ dibangun dengan standar keamanan perbankan dan perusahaan besar, memanfaatkan fitur keamanan bawaan dari framework Laravel.
+Perlindungan Data Kontrak
+Penggunaan Eloquent ORM memastikan setiap kueri ke database dilakukan secara aman, otomatis memitigasi serangan SQL Injection yang sering mengincar data nilai kontrak.
+Integritas Sesi Pengguna
+Fitur CSRF (Cross-Site Request Forgery) Protection menjamin bahwa setiap aksi—seperti menyetujui penawaran atau mengubah status lelang—hanya bisa dilakukan oleh pengguna yang terautentikasi melalui sesi yang sah.
+Keamanan Kredensial
+Seluruh kata sandi dan data sensitif vendor dilindungi dengan algoritma enkripsi Bcrypt yang kuat. Hal ini menjamin bahwa meskipun terjadi upaya akses ilegal ke database, data kredensial tetap tidak dapat dibaca, menjaga kerahasiaan identitas digital seluruh pihak yang terlibat.
+4. Laporan Audit "Legally Ready" (Automated Audit Reporting)
+Keunggulan operasional yang paling signifikan bagi sisi manajemen adalah efisiensi luar biasa dalam proses pemeriksaan data.
+Analisis Masalah
+Proses audit manual biasanya membutuhkan waktu berminggu-minggu karena auditor harus mengumpulkan berkas fisik, mencocokkan foto, dan memeriksa log manual.
+Solusi INAPROC+
+Sistem ini memiliki modul eksportir laporan cerdas yang mampu mengonversi seluruh perjalanan pengadaan ke dalam satu paket dokumen PDF resmi. Laporan ini mencakup:
+Log aktivitas lengkap (Audit Trail).
+Koordinat GPS lokasi vendor pemenang.
+Galeri bukti visual progres pengerjaan.
+Matriks kalkulasi skor otomatis yang transparan.
+Dampak
+Keunggulan ini memangkas waktu proses audit secara drastis dari hitungan minggu menjadi hitungan detik. Dokumen yang dihasilkan sudah dalam format yang "siap sidang" (legally ready), memberikan kepercayaan diri penuh kepada lembaga pemerintah saat menghadapi pemeriksaan dari badan audit negara.
+
+Proses Bisnis
+Bagian ini memaparkan transformasi operasional pengadaan barang dan jasa secara fundamental, yang bergerak dari metodologi konvensional berbasis dokumen fisik menuju ekosistem sistem informasi terintegrasi melalui platform INAPROC+. Rekayasa ulang proses bisnis ini bukan sekadar digitalisasi dokumen, melainkan sebuah perubahan paradigma dalam manajemen rantai pasok publik. Dengan mengadopsi alur kerja digital yang tertutup, sistem ini memastikan bahwa setiap tahapan pengadaan memiliki validasi yang ketat dan tidak dapat dilewati secara ilegal, sehingga menciptakan standar operasional prosedur yang lebih responsif dan transparan.
+Fokus utama dari transformasi ini adalah untuk mengeliminasi celah manipulasi data yang sering terjadi pada titik-titik interaksi manual antara pemohon, panitia, dan penyedia jasa. Melalui penerapan fitur inovatif seperti Enhanced Vendor Profiling, Sealed Bidding, dan Audit Trail yang imutabel, INAPROC+ bertindak sebagai benteng pertahanan digital yang meminimalisir intervensi subjektif manusia. Setiap data yang masuk, mulai dari koordinat GPS kantor vendor hingga bukti multimedia hasil pekerjaan, divalidasi secara sistematis untuk memastikan bahwa hanya entitas yang nyata dan kompeten yang dapat berpartisipasi dalam penggunaan anggaran negara.
+Lebih jauh lagi, pengembangan proses bisnis usulan ini dirancang untuk meningkatkan akuntabilitas institusional yang selaras dengan prinsip SDG 16 mengenai perdamaian, keadilan, dan kelembagaan yang tangguh. Dengan menyediakan transparansi menyeluruh melalui dashboard analitik dan laporan audit otomatis, INAPROC+ memperkuat kepercayaan publik terhadap proses birokrasi. Transformasi ini menjadi bukti nyata pemanfaatan teknologi informasi untuk mencegah praktik penyuapan dan korupsi, sekaligus memastikan bahwa setiap alokasi anggaran memberikan dampak pembangunan yang nyata dan dapat dipertanggungjawabkan secara hukum maupun data.
+
+2.3.1 Proses Bisnis Eksisting (Konvensional)
+Sebelum implementasi teknologi INAPROC+, alur pengadaan barang dan jasa pada lembaga pemerintah maupun organisasi sektor publik masih sangat bergantung pada metodologi tradisional yang bersifat analog. Proses ini dicirikan oleh penggunaan dokumen kertas (paper-based) dan interaksi tatap muka yang intens, yang secara inheren membawa risiko tinggi terhadap transparansi dan akuntabilitas. Kebergantungan pada proses manual ini menciptakan birokrasi yang lamban dan sulit diaudit secara real-time. Kelemahan-kelemahan kritis dalam sistem konvensional tersebut dijabarkan secara mendetail sebagai berikut:
+Fragmentasi Pengajuan Pengadaan dan Kerentanan Anggaran 
+Proses dimulai pada level unit kerja melalui pembuatan nota dinas fisik yang harus melalui berbagai meja persetujuan secara manual. Masalah utama pada tahap ini adalah tidak adanya sinkronisasi otomatis antara permintaan barang dengan plafon anggaran yang tersedia. Pengecekan sisa anggaran dilakukan oleh bagian keuangan dengan merujuk pada buku besar atau lembar kerja (spreadsheet) mandiri yang sering kali tidak ter-update secara instan. Kondisi ini sering kali menyebabkan terjadinya "pengadaan darurat" di mana kontrak sudah ditandatangani namun ternyata saldo anggaran tidak mencukupi, atau sebaliknya, terjadi pemborosan dana karena kurangnya kontrol kontrol anggaran yang bersifat preventif di awal proses.
+Ketertutupan Informasi dan Risiko Kolusi dalam Penyebaran Lelang 
+Dalam sistem konvensional, penyebaran informasi mengenai paket lelang sering kali dilakukan melalui papan pengumuman fisik di kantor instansi atau melalui jalur komunikasi tertutup kepada vendor-vendor yang sudah dikenal sebelumnya. Keterbatasan akses informasi ini mengakibatkan partisipasi vendor menjadi sangat terbatas (hanya vendor "lingkaran dalam" yang mengetahui adanya tender). Hal ini menciptakan ekosistem yang eksklusif dan rawan akan praktik kolusi serta nepotisme. Tanpa adanya portal publik yang terbuka, persaingan sehat tidak dapat tercipta, sehingga negara sering kali harus membayar lebih mahal untuk kualitas barang yang tidak optimal akibat kurangnya pilihan penyedia jasa yang kompetitif.
+Inefisiensi Logistik dan Subjektivitas Penyerahan Dokumen
+Vendor yang ingin berpartisipasi diwajibkan untuk menyerahkan bundel dokumen penawaran fisik yang sangat tebal ke kantor panitia pengadaan. Proses ini tidak hanya membuang waktu dan biaya logistik bagi vendor, tetapi juga menjadi beban besar bagi panitia lelang. Panitia harus melakukan input ulang data secara manual dan melakukan komparasi spesifikasi antar vendor dengan cara membolak-balik kertas secara fisik. Metode ini sangat rentan terhadap kesalahan manusia (human error), risiko kehilangan dokumen, hingga manipulasi data dokumen yang sengaja disisipkan atau dihilangkan untuk memenangkan vendor tertentu. Selain itu, verifikasi terhadap keabsahan dokumen portofolio sulit dilakukan karena keterbatasan alat verifikasi faktual pada tumpukan berkas kertas.
+Bias Penetapan Pemenang dan Ketiadaan Standar Penilaian 
+Penetapan pemenang pada sistem lama sering kali dipenuhi oleh subjektivitas panitia pelaksana. Tanpa adanya algoritma penilaian yang terstandarisasi secara digital, parameter penilaian seperti kualitas teknis, pengalaman vendor, dan kewajaran harga dihitung secara manual berdasarkan interpretasi masing-masing personil panitia. Ketidakteraturan ini memberikan celah bagi oknum panitia untuk melakukan intervensi terhadap hasil nilai akhir demi memihak vendor "titipan". Kurangnya transparansi dalam metode penilaian (scoring) mengakibatkan proses sanggah menjadi tidak efektif karena vendor tidak diberikan rincian perbandingan nilai yang objektif dan terukur.
+Kendala Monitoring Real-Time dan Pelacakan Jejak Audit 
+Setelah kontrak ditandatangani, masalah berikutnya muncul pada tahap pengawasan. Pelacakan posisi barang atau progres pengerjaan jasa sulit dilakukan secara real-time karena laporan progres hanya dikirimkan secara periodik dalam bentuk kertas. Data transaksi dan riwayat perubahan kontrak tersebar di berbagai tumpukan berkas fisik yang disimpan di departemen berbeda. Hal ini mengakibatkan Auditor sangat kesulitan dalam melakukan pelacakan jejak audit (audit trail). Jika terjadi anomali atau dugaan penyimpangan di kemudian hari, proses rekonstruksi data untuk keperluan investigasi membutuhkan waktu yang sangat lama dan sering kali menemui jalan buntu karena hilangnya bukti-bukti fisik atau catatan aktivitas yang tidak lengkap.
+2.3.2.1 Fase 1: Pengajuan & Verifikasi (Requisition & Profiling)
+Proses bisnis usulan dirancang untuk menciptakan rantai digital yang utuh (end-to-end digital chain). Berikut adalah deskripsi alur kerja menggunakan logika BPMN (Business Process Model and Notation):
+A. Deskripsi Alur (Narasi)
+Proses ini merupakan pintu gerbang utama untuk menjamin integritas pengadaan. Dimulai dengan Pemohon (Unit Kerja) yang menginput kebutuhan barang/jasa. Sistem secara otomatis melakukan intervensi melalui fitur Pagu Check untuk memastikan anggaran tersedia. Secara paralel, vendor melakukan registrasi dengan standar Enhanced Profiling yang mewajibkan penyematan titik koordinat GPS kantor dan unggahan portofolio multimedia asli. Auditor kemudian melakukan audit digital terhadap metadata file tersebut untuk mendeteksi manipulasi. Jika ditemukan data yang meragukan, Auditor melakukan survey lapangan langsung ke titik koordinat GPS sebelum memberikan skor integritas final yang menjadi syarat keaktifan akun vendor.
+B. Identifikasi Aktor (Swimlane)
+Pemohon (Unit Kerja): Penginput kebutuhan proyek.
+Vendor: Penyedia yang melakukan pembuktian eksistensi melalui data multimedia dan GPS.
+Auditor: Verifikator data digital dan pelaksana survei lapangan fisik.
+Sistem (INAPROC+): Penjaga gerbang otomatis (Automatic Gatekeeper) dan pengekstraksi metadata.
+C. Aktivitas Lengkap & Notasi BPMN
+
+No
+Aktivitas (Activity)
+Aktor
+Notasi BPMN
+Deskripsi Teknis
+
+1
+Buat Draft Pengajuan
+Pemohon
+Start Event
+Pemohon mengisi detail barang dan mengunggah TOR/KAK.
+
+2
+Pagu Check (Otomatis)
+Sistem
+Service Task
+Sistem menghitung: Sisa Pagu - Total Pengajuan.
+
+3
+Registrasi & Pinpoint GPS
+Vendor
+User Task
+Vendor menandai lokasi kantor dan input data legalitas.
+
+4
+Unggah Portofolio Visual
+Vendor
+Task
+Mengunggah foto/video asli pengerjaan proyek sebelumnya.
+
+5
+Ekstraksi Metadata
+Sistem
+Service Task
+Sistem membaca koordinat GPS dan timestamp asli dari file vendor.
+
+6
+Manual Digital Audit
+Auditor
+User Task
+Auditor memeriksa keaslian visual video dan kesesuaian metadata.
+
+7
+Perlu Verifikasi Fisik?
+Auditor
+Exclusive Gateway
+Menentukan apakah data mencurigakan atau butuh validasi tambahan.
+
+8
+Penjadwalan Field Survey
+Auditor
+Task
+Menentukan waktu kunjungan fisik ke lokasi koordinat GPS.
+
+9
+Input Laporan Hasil Survey
+Auditor
+User Task
+Memasukkan hasil temuan lapangan ke dalam sistem.
+
+10
+Berikan Integrity Score
+Auditor
+Task
+Memberikan nilai integritas berdasarkan hasil audit & survey.
+
+11
+Aktivasi Akun (Verified)
+Sistem
+End Event
+Status vendor berubah menjadi "Verified & Surveyed".
+
+Pengajuan & Verifikasi
+2.3.2.2 Fase 2: Tender & Seleksi Otomatis (Smart Auction)
+A. Deskripsi Alur (Narasi)
+Fase ini dirancang untuk menghilangkan intervensi manual dalam pemilihan pemenang. Admin membuka paket tender berdasarkan pengajuan yang telah disetujui. Vendor yang telah terverifikasi di Fase 1 mengirimkan penawaran harga dan dokumen teknis. Sistem menerapkan mekanisme Sealed Bidding, di mana data harga langsung dienkripsi agar tidak bisa dilihat oleh siapapun hingga masa penawaran berakhir. Setelah timer lelang habis, sistem melakukan dekripsi otomatis dan menjalankan Auto-Scoring Engine untuk menghitung nilai agregat berdasarkan bobot administrasi, integritas, dan harga. Hasilnya disajikan dalam matriks komparasi untuk verifikasi akhir panitia sebelum SPK digital diterbitkan
+B. Identifikasi Aktor (Swimlane)
+Admin / Panitia: Pembuka tender dan pengambil keputusan final.
+Vendor: Peserta lelang yang mengirimkan penawaran terenkripsi.
+Sistem (INAPROC+): Pelaksana enkripsi, dekripsi, dan mesin skoring otomatis.
+
+C. Aktivitas Lengkap & Notasi BPMN.
+
+No
+Aktivitas (Activity)
+Aktor
+Notasi BPMN
+Deskripsi Teknis
+
+1
+Buka Paket Tender
+Admin
+Start Event
+Mengaktifkan status lelang untuk vendor terverifikasi.
+
+2
+Set Timer Lelang
+Admin
+Timer Event
+Menentukan batas waktu penutupan lelang secara otomatis.
+
+3
+Input Penawaran (Bidding)
+Vendor
+Task
+Mengisi formulir harga dan unggah proposal teknis.
+
+4
+Sealed Bidding Encryption
+Sistem
+Service Task
+Enkripsi otomatis pada tabel biddings dengan status "Sealed".
+
+5
+Timer Berakhir
+Sistem
+Timer Event
+Masa penawaran lelang resmi ditutup oleh sistem.
+
+6
+Decryption & Data Opening
+Sistem
+Service Task
+Sistem membuka gembok enkripsi harga secara otomatis.
+
+7
+Auto-Scoring Engine
+Sistem
+Service Task
+Algoritma menghitung skor berdasarkan bobot yang ditentukan.
+
+8
+Tampilkan Matriks
+Sistem
+User Task
+Menyajikan perbandingan vendor secara side-by-side.
+
+9
+Verifikasi Akhir Panitia
+Admin
+Task
+Memeriksa integritas hasil kalkulasi sistem.
+
+10
+Tetapkan Pemenang
+Admin
+Exclusive Gateway
+Memilih vendor terbaik atau membatalkan tender.
+
+11
+Generate SPK Digital
+Sistem
+End Event
+Dokumen kontrak PDF otomatis dikirim ke akun pemenang.
+
+Tender & Seleksi
+2.3.2.3 Fase 3: Monitoring, Audit & Pelaporan
+A. Deskripsi Alur (Narasi) 
+
+Setelah kontrak dimulai, sistem beralih fungsi menjadi alat pengawasan aktif. Vendor wajib mengunggah bukti progres fisik berupa foto dan video secara berkala langsung dari lokasi pengerjaan. Auditor memantau melalui dashboard untuk memastikan kesesuaian pengerjaan dengan spesifikasi. Jika ditemukan anomali pada visual pengerjaan, sistem memicu instruksi inspeksi lapangan fisik. Seluruh aktivitas ini dicatat dalam Audit Trail yang imutabel (tidak dapat dihapus). Proses diakhiri dengan pembuatan Laporan Audit Final secara otomatis dalam format PDF yang merangkum seluruh jejak digital dari Fase 1 hingga Fase 3.
+
+B. Identifikasi Aktor (Swimlane)
+Vendor: Pelaksana proyek yang memberikan laporan progres visual.
+Pemohon: Penerima manfaat yang memverifikasi kedatangan barang.
+Auditor: Pengawas independen yang melakukan tinjauan anomali.
+Sistem (INAPROC+): Pencatat jejak audit (Log) dan pembuat laporan otomatis.
+C. Aktivitas Lengkap & Notasi BPMN
+
+No
+Aktivitas (Activity)
+Aktor
+Notasi BPMN
+Deskripsi Teknis
+
+1
+Update Progres Visual
+Vendor
+Start Event
+Mengunggah bukti foto/video fisik pengerjaan proyek.
+
+2
+Logging Audit Trail
+Sistem
+Service Task
+Mencatat aksi vendor, waktu, dan IP ke tabel logs.
+
+3
+Review Dashboard Progres
+Auditor
+User Task
+Memantau kesesuaian visual dengan kontrak.
+
+4
+Anomali Terdeteksi?
+Auditor
+Exclusive Gateway
+Menentukan jika butuh inspeksi lapangan fisik mendadak.
+
+5
+Final Field Inspection
+Auditor
+Task
+Validasi fisik langsung hasil pengerjaan di lokasi.
+
+6
+Approval for Payment
+Auditor
+Task
+Persetujuan akhir bahwa proyek telah tuntas secara fisik.
+
+7
+Recap Final Data
+Sistem
+Service Task
+Merangkum data Fase 1, 2, dan 3 ke satu baris data.
+
+8
+Generate Final Audit PDF
+Sistem
+Service Task
+Menghasilkan dokumen laporan tahunan/proyek statis.
+
+9
+Notifikasi Keuangan
+Sistem
+Send Task
+Mengirim sinyal pencairan dana ke sistem eksternal.
+
+10
+Selesai & Arsip
+Auditor
+End Event
+Siklus selesai dan laporan terkunci di arsip digital.
+
+Monitoring & Audit
+
+Kebutuhan Sistem
+Kebutuhan Fungsional
+Kebutuhan fungsional merupakan sekumpulan layanan, fitur, dan fungsi spesifik yang wajib disediakan oleh sistem INAPROC+ agar tujuan utama aplikasi dalam memfasilitasi pengadaan barang yang transparan, akuntabel, dan bebas dari vendor fiktif dapat tercapai. Kebutuhan ini disusun secara sistematis berdasarkan alur kerja pengadaan cerdas, mulai dari validasi fisik penyedia hingga pelaporan audit hukum.Setiap butir kebutuhan di bawah ini merepresentasikan fungsionalitas yang memungkinkan interaksi multi-aktor, manajemen bukti multimedia, serta pengolahan algoritma Decision Support System (DSS) untuk seleksi otomatis. Hal ini memastikan seluruh 21 PBI dapat diimplementasikan dengan logika bisnis yang kuat dan dapat diuji secara otomatis menggunakan Laravel Dusk.
+Daftar Kebutuhan
+
+ID
+Kebutuhan Fungsional
+Deskripsi Rinci
+
+RF-01
+RBAC & Advanced Permission
+Sistem wajib menyediakan manajemen hak akses berbasis peran (Admin, Pemohon, Vendor, Auditor) menggunakan Middleware Laravel untuk memastikan setiap fitur integritas hanya dapat diakses aktor yang berwenang.
+
+RF-02
+Enhanced Vendor Profiling (EVP)
+Sistem harus memfasilitasi vendor untuk mengunggah dokumen legalitas serta bukti multimedia (foto/video) pengerjaan proyek asli yang dilengkapi koordinat GPS (Geotagging).
+
+RF-03
+Audit Multimedia & Metadata
+Sistem harus mampu mengekstraksi metadata file (waktu dan lokasi asli) untuk memvalidasi keaslian portofolio vendor guna mencegah manipulasi data digital.
+
+RF-04
+Field Survey Reporting System
+Sistem wajib menyediakan modul bagi Auditor untuk menginput hasil verifikasi lapangan fisik sebagai syarat pemberian status "Verified & Surveyed" pada profil vendor.
+
+RF-05
+Smart Budgeting (Pagu Check)
+Sistem harus secara otomatis menvalidasi setiap pengajuan pengadaan terhadap sisa saldo anggaran unit kerja (Pemohon) guna mencegah pengeluaran melampaui batas anggaran.
+
+RF-06
+Sealed Bidding Encryption
+Sistem wajib mengenkripsi data harga penawaran vendor secara one-way hashing di database hingga batas waktu lelang berakhir untuk menjaga kerahasiaan dan mencegah kebocoran informasi.
+
+RF-07
+Auto-Scoring & DSS Engine
+Sistem harus melakukan kalkulasi skor objektif berdasarkan algoritma bobot penilaian (Harga, Teknis, dan Integritas) untuk menghasilkan matriks komparasi vendor secara otomatis.
+
+RF-08
+Digital SPK & Signature
+Sistem harus mampu menghasilkan dokumen SPK otomatis dari data pemenang lelang dan menyediakan fitur tanda tangan digital untuk memvalidasi kontrak secara elektronik.
+
+RF-09
+Visual Progress Monitoring
+Sistem harus memfasilitasi vendor untuk mengunggah foto progres fisik pekerjaan di lapangan secara berkala sebagai bahan pemantauan real-time bagi Auditor dan Pemohon.
+
+RF-10
+Final Inspection & BAST
+Sistem wajib menyediakan modul unggah Berita Acara Serah Terima (BAST) yang harus divalidasi oleh Auditor melalui inspeksi fisik akhir sebelum status proyek dinyatakan selesai.
+
+RF-11
+Immutable Audit Trail Log
+Sistem wajib mencatat setiap aktivitas pengguna (Insert, Update, Delete) ke dalam log permanen yang tidak dapat diubah oleh siapapun untuk keperluan forensik digital.
+
+RF-12
+Legally Ready PDF Export
+Sistem harus mampu mengekspor seluruh riwayat lelang, bukti fisik, dan jejak audit menjadi satu file laporan PDF legal untuk kebutuhan pemeriksaan instansi hukum (BPK/KPK).
+
+Karakteristik Pengguna
+Identifikasi karakteristik pengguna dilakukan untuk menentukan batasan operasional dan tanggung jawab setiap aktor yang terlibat dalam ekosistem INAPROC+. Sistem ini dirancang dengan mekanisme Role-Based Access Control (RBAC) yang ketat untuk menjamin keamanan data dan akuntabilitas pada setiap tahapan pengadaan.
+Berikut adalah tabel klasifikasi pengguna beserta tanggung jawab dan hak aksesnya:
+
+Kategori Pengguna
+Deskripsi Peran dalam Sistem
+Hak Akses (Privilege)
+
+Admin / Panitia
+Mengelola master data, pagu anggaran, membuka paket lelang, dan menetapkan pemenang berdasarkan skor sistem.
+Full Access pada manajemen tender, bobot penilaian, dan validasi administrasi.
+
+Pemohon (Unit)
+Menginput pengajuan kebutuhan (PR) dan memantau progres pengerjaan barang/jasa hingga tahap serah terima.
+Insert pengajuan, Read status anggaran unit, dan Update konfirmasi penerimaan barang.
+
+Vendor (Penyedia)
+Mengelola profil perusahaan, mengunggah portofolio visual, dan mengirimkan penawaran harga terenkripsi.
+Insert/Update profil, Pinpoint GPS, Upload portofolio, dan mengirim penawaran lelang.
+
+Auditor
+Melakukan audit digital, inspeksi lapangan fisik, meninjau log aktivitas, dan memberikan approval akhir pembayaran.
+Read-Only pada semua data transaksi, akses penuh ke Audit Log, dan hak akses Update pada hasil inspeksi lapangan.
+
+Kebutuhan Non Fungsional
+Kebutuhan non-fungsional mendefinisikan atribut kualitas, batasan sistem, dan standar operasional yang harus dipenuhi agar INAPROC+ dapat berjalan dengan aman, stabil, dan efisien. Fokus utama pada bagian ini adalah menjaga integritas data pengadaan dan memastikan sistem memiliki tingkat keamanan yang tinggi terhadap potensi manipulasi data.
+Berikut adalah rincian kebutuhan non-fungsional sistem:
+
+ID
+Parameter
+Deskripsi Kebutuhan Teknis
+
+RNF-01
+Security
+Implementasi enkripsi Bcrypt untuk kata sandi, proteksi CSRF, dan pembersihan input untuk mencegah SQL Injection.
+
+RNF-02
+Reliability
+Menggunakan Database Transactions (Commit & Rollback) pada proses krusial seperti pengurangan pagu anggaran dan penetapan pemenang.
+
+RNF-03
+Availability
+Batasan ukuran file maksimal 5MB per file (PDF/JPG/MP4) untuk menjaga kecepatan loading dan kapasitas penyimpanan server.
+
+RNF-04
+Testability
+Alur Smart Auction dan Audit Trail wajib dapat diuji secara otomatis menggunakan Laravel Dusk untuk memastikan tidak ada celah logika bisnis.
+
+RNF-05
+Accuracy
+Akurasi perhitungan algoritma skoring dan sisa anggaran wajib presisi hingga 2 digit di belakang koma.
+
+Kebutuhan Teknis
+Kebutuhan teknis merinci spesifikasi perangkat lunak (software) dan perangkat keras (hardware) yang digunakan dalam pengembangan dan operasional sistem INAPROC+. Pemilihan teknologi ini didasarkan pada standar pengembangan aplikasi web modern yang mendukung skalabilitas, keamanan data, dan kemudahan dalam pengujian otomatis.
+
+ID
+Komponen
+Spesifikasi Teknis & Deskripsi
+
+RT-01
+Bahasa Pemrograman
+PHP 8.2+: Versi terbaru yang mendukung fitur Strict Typing dan performa eksekusi lebih cepat untuk logika bisnis pengadaan yang kompleks.
+
+RT-02
+Framework Utama
+Laravel 11.x: Menggunakan struktur MVC (Model-View-Controller) untuk menjamin kerapihan kode, keamanan rute, dan manajemen database melalui Eloquent ORM.
+
+RT-03
+Basis Data (DBMS)
+MySQL 8.0: Mendukung Atomic Transactions (Commit & Rollback) yang krusial untuk menjaga integritas data saat pengurangan pagu anggaran dan Sealed Bidding.
+
+RT-04
+Frontend Stack
+Tailwind CSS & Alpine.js: Untuk membangun antarmuka dashboard yang ringan, responsif, dan interaktif bagi Auditor maupun Vendor.
+
+RT-05
+Testing Framework
+Laravel Dusk: Digunakan untuk melakukan End-to-End (E2E) Testing guna mensimulasikan perilaku pengguna nyata pada browser untuk memvalidasi alur tender.
+
+RT-06
+PDF Engine
+Browsershot (Headless Chrome): Library untuk mengekspor laporan audit dan SPK Digital dari format HTML ke PDF dengan akurasi visual tinggi.
+
+RT-07
+Geospatial API
+Leaflet.js & OpenStreetMap: Digunakan untuk fitur pinpoint lokasi kantor vendor dan visualisasi sebaran koordinat penyedia pada dashboard Auditor.
+
+RT-08
+Multimedia Extractions
+Exiftool / PHP Exif Library: Digunakan untuk membaca metadata file (GPS koordinat & Timestamp asli) pada foto progres yang diunggah vendor guna mencegah manipulasi.
+
+RT-09
+Visualisasi Data
+ApexCharts.js: Library grafis untuk merender statistik efisiensi anggaran, tren pengadaan, dan deteksi anomali harga secara dinamis.
+
+RT-10
+Encryption Standard
+Bcrypt & OpenSSL: Untuk hashing kata sandi dan enkripsi data penawaran harga vendor sebelum masa lelang berakhir (Sealed Bidding).
+
+RT-11
+Web Server Environment
+Nginx / Apache (Laragon atau Docker): Sebagai web server lokal maupun produksi yang mendukung penanganan request dalam jumlah banyak secara simultan.
+
+RT-12
+Version Control
+Git (GitHub/GitLab): Wajib digunakan untuk kolaborasi tim berdua agar riwayat perubahan kode (commit) terdokumentasi dengan baik sesuai standar PPL.
+
+RT-13
+Mail Server Testing
+Mailtrap: Alat simulasi pengiriman email notifikasi (Pemenang lelang, revisi profil) tanpa perlu mengirim ke email asli selama masa pengembangan.
+
+RT-14
+API Documentation
+Scribe / Swagger: Dokumentasi otomatis untuk setiap endpoint sistem guna memudahkan skalabilitas jika ada integrasi dengan sistem keuangan eksternal di masa depan.
+
+3.4 Kebutuhan Perangkat Keras (Hardware)
+Selain perangkat lunak, diperlukan spesifikasi perangkat keras yang mumpuni agar proses pengembangan dan simulasi audit tidak mengalami kendala teknis:
+Sisi Pengembang (Developer Station):
+Processor: Minimal Intel Core i5 / AMD Ryzen 5 (Generasi terbaru).
+RAM: Minimal 8GB (Disarankan 16GB untuk menjalankan Laravel Dusk dan Docker secara bersamaan).
+Storage: Minimal 256GB SSD (Untuk kecepatan baca/tulis data database).
+Sisi Server (Hosting Simulation):
+VCPU: Minimal 2 Core.
+RAM: Minimal 2GB.
+Bandwidth: Koneksi internet stabil untuk integrasi API Maps dan pengunggahan bukti multimedia (Foto/Video).
+Rancangan Sistem
+Use Case Diagram
+
+Use Case Diagram
+Rancangan Use Case Diagram pada sistem INAPROC+ menggambarkan fungsionalitas sistem dari sudut pandang pengguna (aktor). Diagram ini mendefinisikan batasan sistem (system boundary) dan interaksi antara empat aktor utama. Melalui diagram ini, alur kontrol dan batasan akses antar aktor dipetakan secara jelas untuk menjamin tidak adanya tumpang tindih fungsi (segregation of duties) yang berisiko pada integritas data.
+
+4.1.1 Identifikasi Aktor dan Peran
+Berdasarkan diagram yang telah dirancang, berikut adalah karakteristik, tanggung jawab, dan batasan operasional setiap aktor dalam ekosistem digital INAPROC+:
+Admin / Panitia Pengadaan: Bertindak sebagai otoritas tertinggi dalam manajemen alur kerja lelang. Admin bertanggung jawab mengelola master data barang, mengonfigurasi plafon anggaran unit (Pagu), mempublikasikan paket tender, hingga melakukan eksekusi penetapan pemenang lelang. Admin berperan memastikan seluruh parameter seleksi telah diatur secara objektif sebelum kompetisi dimulai.
+Pemohon (Unit Kerja Internal): Mewakili departemen yang memiliki kebutuhan barang atau jasa. Peran utamanya adalah sebagai inisiator pengadaan (membuat pengajuan) yang secara langsung terikat pada validasi anggaran sistem. Pemohon juga bertugas melakukan verifikasi akhir pada dokumen serah terima (BAST) untuk memastikan barang yang diterima sesuai dengan spesifikasi yang diajukan.
+Vendor (Penyedia): Merupakan pihak eksternal yang berkompetisi dalam sistem. Vendor tidak hanya bertugas mengirimkan penawaran harga (Sealed Bidding), tetapi juga wajib melakukan pemeliharaan integritas profil melalui fitur Geotagging kantor dan pelaporan progres pengerjaan secara visual dan berkala melalui sistem.
+Auditor: Pengawas independen yang memegang peran krusial dalam aspek preventif dan detektif. Auditor memiliki wewenang untuk mengevaluasi keabsahan metadata multimedia vendor dan melakukan investigasi melalui audit trail. Auditor bertindak sebagai verifikator akhir yang menentukan apakah suatu transaksi pengadaan wajar atau terindikasi adanya fraud.
+
+4.1.2 Deskripsi Hubungan Fungsional
+Sistem INAPROC+ mengimplementasikan logika ketergantungan antar-fitur yang direpresentasikan melalui relasi Include dan Extend. Hal ini bertujuan untuk menciptakan alur kerja yang disiplin dan aman.
+A. Mekanisme Keamanan dan Autentikasi (Include Login)
+Sistem ini menggunakan mekanisme Role-Based Access Control (RBAC) yang sangat ketat. Seluruh use case transaksi utama memiliki relasi «Include» terhadap use case Login. Secara teknis, ini menunjukkan bahwa sistem menerapkan Middleware Security pada setiap rute aplikasi. Aktor tidak akan memiliki akses ke memory sistem atau database sebelum kredensialnya divalidasi. Hal ini menjamin bahwa setiap data yang masuk (seperti nilai bidding atau progres proyek) memiliki identitas pengirim yang sah dan dapat dipertanggungjawabkan secara hukum.
+B. Mekanisme Pengawasan Lapis Kedua (Extend Relationship)
+Satu fitur unggulan pada rancangan ini adalah relasi «Extend» antara use case Audit Metadata Multimedia dengan Input Laporan Field Survey.Extension Point (Inconsistency Detected): Relasi ini hanya akan aktif secara kondisional. Auditor secara normal melakukan audit secara digital melalui ekstraksi metadata. Namun, jika ditemukan ketidakkonsistenan data (seperti koordinat GPS palsu atau manipulasi foto), sistem menyediakan pintu perluasan fungsi (Extension Point) bagi Auditor untuk menginput laporan hasil kunjungan fisik lapangan. Ini memastikan bahwa sistem tidak hanya kuat secara digital, tetapi juga mampu melakukan validasi faktual di dunia nyata.
+C. Mekanisme Kecerdasan Sistem (Include Auto-Scoring)
+Pada use case Menetapkan Pemenang, terdapat relasi «Include» ke Kalkulasi Auto-Scoring. Ini menandakan prinsip System-Driven Decision. Admin dilarang secara sistematis untuk menetapkan pemenang secara subjektif. Tombol penetapan pemenang hanya akan aktif dan valid jika sistem telah selesai menjalankan algoritma penghitungan skor berdasarkan bobot teknis, harga, dan integritas yang telah dikunci sebelumnya.
+4.1.3 Analisis Aktivitas Aktor terhadap Use Case Kunci
+Berikut adalah rincian interaksi aktor terhadap use case kunci guna menjamin transparansi end-to-end:
+Mekanisme Transaksional (Admin): Berfokus pada pengelolaan sumber daya (Pagu Anggaran) dan moderasi lelang (Publikasi Tender). Admin memastikan bahwa setiap tender yang terbit telah melewati pengecekan ketersediaan dana secara otomatis oleh sistem.
+Mekanisme Kompetisi (Vendor): Berinteraksi melalui fitur Registrasi & Geotagging untuk membuktikan eksistensi fisik perusahaan, serta Mengirim Sealed Bidding di mana harga penawaran langsung dienkripsi oleh sistem agar tidak terjadi kebocoran informasi kepada pihak manapun.
+Mekanisme Akuntabilitas (Auditor & Pemohon): Auditor menggunakan Monitoring Log & PDF untuk melihat sejarah transaksi yang tidak dapat dihapus (Immutable). Sementara itu, Pemohon menggunakan Verifikasi BAST sebagai gerbang terakhir sebelum proses pembayaran dilakukan kepada vendor, memastikan hak negara terpenuhi dengan tepat kualitas dan tepat waktu.
+
+Arsitektur Sistem
+Sistem INAPROC+ dibangun menggunakan arsitektur Multi-Tier Client-Server dengan mengadopsi pola desain Model-View-Controller (MVC). Pemilihan arsitektur ini bertujuan untuk memisahkan logika bisnis, manajemen data, dan antarmuka pengguna, sehingga sistem menjadi lebih modular, mudah dikelola oleh tim pengembang (Firman & Devara), serta memiliki tingkat keamanan yang tinggi dalam menjaga data pengadaan negara.
+A. Penjelasan Komponen Arsitektur (Berdasarkan Deployment Diagram)
+Presentation Tier (Client Node):
+User Interface: Menggunakan Web Browser modern (Chrome, Edge) sebagai media interaksi utama bagi 4 aktor (Admin, Pemohon, Vendor, Auditor).
+Teknologi: HTML5, Tailwind CSS, dan Alpine.js (Blade Templating) untuk merender tampilan dashboard yang responsif dan ringan secara Client-Side.
+Application Tier (Application Node - Laravel Framework):
+Router & Middleware: Bertindak sebagai filter pertama untuk menjalankan RBAC (Role-Based Access Control) sesuai RF-01. Setiap permintaan divalidasi status login-nya sebelum diproses.
+Controller (Logic Layer): Mengelola logika bisnis utama, seperti mekanisme Sealed Bidding Encryption (RF-06) dan algoritma Auto-Scoring Engine (RF-07). Controller menerima request, memprosesnya, dan menentukan output data.
+Model (Data Mapping): Mengelola interaksi dengan database menggunakan Eloquent ORM. Bagian ini menangani aturan validasi data dan relasi antar tabel (seperti relasi data Tender terhadap data Bidding).
+Data Tier (Database Node):
+MySQL RDBMS: Digunakan untuk menyimpan seluruh data relasional secara permanen. Node ini terbagi menjadi beberapa klaster data utama seperti UserData, ProcurementData, dan AuditLogData (RF-11) untuk keperluan forensik digital.
+External Service Tier (External Service Node):
+Mail Server: Terintegrasi melalui protokol SMTP untuk mengirimkan notifikasi otomatis terkait status tender dan kontrak kepada aktor terkait.
+
+B. Gambar Arsitektur Sistem (Deployment Diagram)
+
+C. Analisis Pemilihan Arsitektur dan Platform
+Berdasarkan literatur pengembangan perangkat lunak modern (seperti "Clean Architecture" oleh Robert C. Martin), pemilihan platform Laravel dan arsitektur Multi-Tier untuk INAPROC+ didasarkan pada pertimbangan strategis berikut:
+
+Keamanan Terintegrasi (Security by Design): Laravel menyediakan fitur keamanan bawaan terhadap SQL Injection, Cross-Site Request Forgery (CSRF), dan Cross-Site Scripting (XSS). Hal ini krusial untuk menjaga integritas sistem pengadaan agar data harga dan dokumen vendor tidak dapat dimanipulasi melalui celah keamanan web (mendukung prinsip SDG 16).
+
+Integritas Transaksi Digital: Penggunaan MySQL mendukung Foreign Key Constraints dan Database Transactions (Commit/Rollback). Hal ini menjamin bahwa untuk proses kritis seperti Pagu Check (RF-05), tidak akan ada data yang "menggantung" atau tidak sinkron apabila terjadi kegagalan koneksi di tengah proses transaksi.
+
+Optimalisasi Kolaborasi Tim: Arsitektur MVC memungkinkan Firman dan Devara membagi tugas secara independen. Satu anggota tim dapat fokus pada Backend (Model & Controller) untuk memperkuat logika audit, sementara anggota lainnya fokus pada Frontend (View & UI) untuk Dashboard Analitik, sehingga progres pengerjaan 21 PBI dapat tercapai secara efektif.
+
+Verifikasi Otomatis melalui Laravel Dusk: Platform Laravel mendukung testing framework Laravel Dusk secara native. Hal ini memudahkan tim dalam melakukan pengujian End-to-End (E2E) pada alur transaksi yang sangat kompleks, seperti simulasi pengiriman Bidding terenkripsi dan proses Approval berjenjang pada dashboard Auditor.
+Rancangan ERD
+
+Rancangan basis data INAPROC+ disusun menggunakan metode Physical Data Model dengan notasi Crow’s Foot (Kaki Gagak). Pendekatan ini dipilih untuk memetakan hubungan antar entitas secara teknis yang akan diimplementasikan ke dalam RDBMS MySQL. Basis data ini dirancang untuk mendukung tiga pilar utama sistem: integritas anggaran, transparansi seleksi, dan akuntabilitas audit.
+Berikut adalah penjelasan mendalam mengenai struktur relasi dan fungsionalitas tabel utama:
+1. Mekanisme Kontrol Anggaran Otomatis (Automatic Budgetary Gatekeeper)
+Hubungan antara entitas UNITS, BUDGETS, dan REQUISITIONS merupakan fondasi teknis dari fitur Pagu Check (RF-05).
+Setiap unit kerja (UNITS) memiliki relasi One-to-One (1:1) dengan tabel BUDGETS, memastikan alokasi dana tersentralisasi dan tidak tumpang tindih.
+Relasi One-to-Many (1:N) antara BUDGETS dan REQUISITIONS memungkinkan sistem menjalankan logic validation secara real-time. Setiap pengajuan pengadaan baru akan memicu kalkulasi pada atribut sisa_pagu. Jika estimated_total pada pengajuan melebihi nilai sisa_pagu, database akan menolak transaksi tersebut guna mencegah defisit anggaran.
+2. Arsitektur Data Itemized Procurement
+Untuk menjaga normalisasi dan efisiensi penyimpanan, sistem memisahkan data barang ke dalam tabel ITEMS (Master Data) dan REQUISITION_ITEMS (Detail Transaksi).
+Melalui relasi ini, satu pengajuan (REQUISITIONS) dapat mencakup berbagai jenis barang tanpa terjadi redundansi data.
+Atribut base_price pada tabel ITEMS berperan sebagai parameter pembanding (benchmark) bagi Auditor untuk mendeteksi potensi mark-up harga saat dibandingkan dengan offered_price yang diajukan oleh vendor di kemudian hari.
+3. Ekosistem Smart Auction & Sealed Bidding
+Proses kompetisi vendor direpresentasikan secara kuat melalui relasi antara entitas TENDERS dan BIDDINGS.
+Satu paket lelang (TENDERS) dapat menampung banyak penawaran (BIDDINGS) dari berbagai vendor.
+Tabel BIDDINGS dirancang untuk menyimpan atribut offered_price (yang dienkripsi pada level aplikasi) dan scoring_result. Nilai skor ini merupakan hasil dari algoritma Auto-Scoring Engine (RF-07). Dengan demikian, entitas CONTRACTS hanya dapat terbentuk jika merujuk pada bidding_id yang memiliki validasi skor tertinggi, sehingga menghilangkan faktor subjektivitas manusia dalam pemilihan pemenang.
+4. Forensik Digital dan Jejak Audit (Immutable Audit Trail)
+Sesuai dengan target SDG 16, entitas AUDIT_LOGS berperan sebagai "kotak hitam" sistem yang mencatat setiap interaksi aktor.
+Setiap aksi (C-R-U-D) yang dilakukan oleh USERS (Admin, Pemohon, Vendor, Auditor) direkam secara otomatis.
+Atribut table_affected dan ip_address memastikan bahwa setiap perubahan data, sekecil apapun, memiliki jejak digital yang jelas. Hal ini menjamin transparansi penuh, di mana Auditor dapat melacak kronologi pengadaan jika ditemukan indikasi penyimpangan di masa depan.
+5. Normalisasi dan Konsistensi Referensial
+Sistem menerapkan Third Normal Form (3NF) untuk menghindari anomali data (seperti insert, update, atau delete anomalies). Penggunaan Foreign Key (FK) yang ketat pada setiap relasi menjamin referensi data yang konsisten. Sebagai contoh, sebuah kontrak tidak dapat diterbitkan (CONTRACTS) jika referensi penawaran (BIDDINGS) belum mencapai status final, yang memastikan bahwa seluruh proses pengadaan berjalan sesuai urutan legalitas yang sah.
+
+Class Diagram
+
+Rancangan Class Diagram pada sistem INAPROC+ disusun untuk merepresentasikan struktur logika program pada framework Laravel. Penjelasan berikut merinci fungsi dari setiap kelas, atribut yang dimiliki, serta metode (method) yang menjalankan operasional sistem secara terintegrasi:
+
+1. Kelompok Controller (Logic Handlers)
+Kelas-kelas ini berfungsi sebagai pengatur alur bisnis dan penghubung antara permintaan pengguna (request) dengan pengolahan data.
+AuthController: Kelas ini menangani seluruh proses keamanan akses. Method login() dan logout() mengatur sesi pengguna, sementara registerVendor() khusus digunakan untuk memvalidasi pendaftaran pihak eksternal dengan mengintegrasikan verifikasi dokumen legalitas.
+ProcurementController: Bertanggung jawab atas siklus pengajuan barang. Method createRequisition() digunakan untuk menginput draf kebutuhan, dan verifyRequisition() digunakan oleh Admin untuk memberikan persetujuan teknis. Fitur krusial di sini adalah checkPagu(), sebuah fungsi logika (RF-05) yang memvalidasi ketersediaan anggaran sebelum pengajuan dapat disimpan ke dalam basis data.
+TenderController: Merupakan inti dari proses lelang digital. Kelas ini memiliki method calculateAutoScoring() yang menjalankan algoritma penilaian otomatis (RF-07) terhadap penawaran vendor, serta assignWinner() untuk menetapkan pemenang lelang secara sistematis berdasarkan hasil matriks skor terbaik.
+BiddingController: Mengatur interaksi vendor dalam proses kompetisi. Method submitBid() menangani pengiriman harga penawaran yang terenkripsi (RF-06), sementara viewComparisonMatrix() berfungsi untuk menyajikan data perbandingan harga dan kualifikasi teknis antar vendor secara transparan kepada Admin dan Auditor.
+2. Kelompok Model (Data Entities)
+Kelas-kelas ini merepresentasikan objek data utama (Eloquent Models) dan aturan hubungan antar data di dalam sistem.
+User: Menyimpan identitas aktor (Admin, Pemohon, Vendor, Auditor). Memiliki atribut role yang menjadi basis utama dalam penerapan mekanisme Role-Based Access Control (RBAC) di seluruh rute aplikasi (RF-01).
+Requisition: Menyimpan data pengajuan pengadaan, termasuk estimated_total (perkiraan biaya) dan status yang melacak posisi pengajuan dalam alur birokrasi digital.
+Budget: Kelas ini mengelola data finansial unit kerja. Atribut sisa_pagu adalah data sensitif yang dikelola melalui method updateSisaPagu(), yang memastikan saldo anggaran selalu akurat dan sinkron setelah transaksi pengadaan dinyatakan sah.
+Bidding: Menyimpan detail penawaran dari vendor. Atribut offered_price menyimpan nilai penawaran finansial, dan scoring_result menyimpan hasil kalkulasi skor kualifikasi yang diberikan secara objektif oleh sistem.
+3. Kelompok Service (System Utility)
+Kelas ini menyediakan fungsi pendukung yang bersifat otomatis dan mendukung integritas sistem secara menyeluruh.
+AuditService: Kelas ini berperan penting dalam memenuhi standar transparansi SDG 16. Method logActivity() dipanggil secara otomatis oleh setiap controller setiap kali terjadi aktivitas penting (seperti penetapan pemenang atau perubahan anggaran) untuk mencatat jejak digital secara permanen (RF-11). Method generateReportPDF() berfungsi untuk mengonversi seluruh riwayat transaksi pengadaan menjadi dokumen laporan audit PDF yang statis dan legal (RF-12).
+4. Hubungan Antar Kelas (Relationships)
+Setiap kelas saling berinteraksi melalui dependency dan association. Sebagai contoh, TenderController memiliki ketergantungan terhadap kelas Bidding untuk melakukan evaluasi skor (evaluates), sementara kelas ProcurementController memvalidasi kelas Budget (validates) untuk memastikan setiap pengajuan memiliki basis pendanaan yang sah. Hubungan ini memastikan bahwa sistem INAPROC+ memiliki struktur kode yang modular, aman, dan mudah diuji menggunakan automated testing (Laravel Dusk).
+
+Mockup
+4.5.1 Dashboard Utama Admin (Control Center) 
+
+Halaman ini berfungsi sebagai pusat kendali bagi Admin untuk memantau sisa pagu anggaran secara real-time dan memverifikasi pengajuan dari unit kerja.
+4.5.2 Portal Pengajuan Unit Pemohon (Requisition Portal)
+
+Halaman ini merupakan antarmuka awal bagi unit kerja atau instansi pemohon untuk mengusulkan kebutuhan pengadaan barang dan jasa. Fokus utama dari desain ini adalah kemudahan pengisian data serta transparansi pelacakan dokumen.
+4.5.3 Portal Pengadaan & Form Bidding
+
+Antarmuka bagi Vendor untuk melihat paket lelang yang tersedia dan mengirimkan dokumen penawaran harga secara digital.
+4.5.4 Antarmuka Matriks Perbandingan & Auto-Scoring
+
+Menyajikan data perbandingan antar vendor secara side-by-side. Sistem secara otomatis memberikan nilai (score) berdasarkan parameter yang telah ditentukan untuk menjaga objektivitas seleksi.
+4.5.5 Dashboard Auditor & Audit Trail
+
+Halaman khusus bagi auditor yang menyajikan visualisasi data statistik pengadaan serta rekam jejak aktivitas pengguna (log) yang tidak dapat dimanipulasi.
+Metode Pengembangan
+Sistem INAPROC+ dikembangkan dengan menerapkan metodologi Agile Software Development menggunakan kerangka kerja (framework) Scrum. Pemilihan metode ini didasarkan pada kebutuhan pengembangan yang dinamis, di mana sistem memerlukan tingkat presisi logika yang tinggi namun tetap harus adaptif terhadap perubahan kebutuhan audit digital.Penggunaan Scrum memungkinkan tim kecil yang beranggotakan dua orang (Firman & Devara) untuk bekerja secara paralel dan fokus pada pengiriman nilai bisnis (business value) melalui tahapan yang terukur.
+
+Product Backlog Items (PBI)
+Dalam pengembangan sistem INAPROC+, seluruh kebutuhan fungsional yang telah diidentifikasi pada bab sebelumnya dipecah menjadi unit-unit kerja yang lebih kecil dan terukur yang disebut sebagai Product Backlog Items (PBI). Pendekatan ini dilakukan untuk memastikan setiap fitur dapat dikembangkan, diuji melalui automated testing, dan divalidasi secara sistematis dalam setiap siklus Sprint.
+Setiap item dirancang untuk memberikan nilai tambah (value) bagi aktor terkait serta mendukung ketercapaian target transparansi pengadaan (SDG 16). Daftar PBI ini mencakup aspek keamanan tingkat tinggi, manajemen bukti multimedia, hingga algoritma Decision Support System (DSS).
+
+ID PBI
+Nama Fitur / Backlog Item
+Aktor Terkait
+Prioritas
+
+PBI-01
+Sistem Autentikasi & Authorization (RBAC)
+Semua Aktor
+High
+
+PBI-02
+Manajemen Profil & Keamanan Akun
+Semua Aktor
+Medium
+
+PBI-03
+Konfigurasi Master Data Unit & Departemen
+Admin
+High
+
+PBI-04
+Alokasi & Inisialisasi Pagu Anggaran Tahunan
+Admin
+High
+
+PBI-05
+Master Data Barang & Jasa (Standard Price)
+Admin
+Medium
+
+PBI-06
+Form Pengajuan Pengadaan (Purchase Requisition)
+Pemohon
+High
+
+PBI-07
+Modul Unggah Dokumen TOR/KAK (Term of Reference)
+Pemohon
+High
+
+PBI-08
+Smart Budgeting: Auto-Check Saldo Pagu
+Sistem/Admin
+High
+
+PBI-09
+Workflow Persetujuan & Validasi Admin
+Admin
+High
+
+PBI-10
+Publikasi Paket Tender ke Portal Vendor
+Admin
+Medium
+
+PBI-11
+EVP: Perizinan & Pinpoint Geotagging Kantor
+Vendor
+High
+
+PBI-12
+Sealed Bidding: Form Input Harga Terenkripsi
+Vendor
+High
+
+PBI-13
+Modul Portofolio & Dokumen Penawaran Teknis
+Vendor
+High
+
+PBI-14
+Dashboard Monitoring Status Real-time
+Pemohon/Vendor
+Medium
+
+PBI-15
+DSS Engine: Algoritma Auto-Scoring Seleksi
+Admin
+High
+
+PBI-16
+Penerbitan SPK & Kontrak Digital (Auto-Generate)
+Admin
+High
+
+PBI-17
+Visual Progress: Upload Bukti Geotagging
+Vendor
+Medium
+
+PBI-18
+Final Inspection & Modul Unggah BAST
+Pemohon/Vendor
+Medium
+
+PBI-19
+Dashboard Analitik & Fraud Detection (Charts)
+Auditor
+High
+
+PBI-20
+Immutable Audit Trail Log (Activity Tracker)
+Auditor
+High
+
+PBI-21
+Forensic Report Export (Format PDF Legal)
+Auditor
+Low
+
+Daftar PBI di atas disusun berdasarkan tingkat urgensi terhadap keberhasilan sistem INAPROC+. Penentuan prioritas dilakukan dengan pertimbangan sebagai berikut:
+Prioritas Tinggi (High): Mencakup fungsionalitas inti (core functionality) yang berkaitan langsung dengan integritas anggaran, seleksi otomatis vendor, dan keamanan data. Fitur seperti Auto-Check Pagu, Sealed Bidding, dan Auto-Scoring dikerjakan pada tahap awal (Sprint awal) karena merupakan nilai jual utama aplikasi.
+Prioritas Sedang (Medium): Mencakup fitur pendukung manajemen operasional, pelaporan progres, dan kelengkapan profil vendor. Fitur ini akan dikerjakan setelah fondasi transaksi utama dinyatakan stabil.
+Prioritas Rendah (Low): Mencakup fitur pelaporan administratif tingkat lanjut yang bersifat output akhir, seperti ekspor laporan PDF untuk kebutuhan eksternal.
+Seluruh PBI ini dipetakan secara mendetail ke dalam jadwal pengembangan per Sprint guna memastikan distribusi beban kerja antara anggota (fokus pada logic & securit dan fokus pada front-end & UX) berjalan secara efektif dan sinkron dengan arsitektur MVC yang telah dirancang.
+
+Jadwal Pengembangan
+Pengerjaan 21 Product Backlog Items (PBI) dipadatkan ke dalam 3 fase Sprint utama. Pembagian ini dirancang untuk memastikan bahwa setiap iterasi menghasilkan increment (potongan fitur) yang dapat diuji integritas logikanya menggunakan automated testing sebelum melangkah ke fitur berikutnya.
+
+Sprint
+Fokus PBI
+Output Utama (Deliverables)
+
+Sprint 1: Foundation & Resource Planning
+PBI-01 s/d PBI-08
+Pondasi sistem yang mencakup RBAC (Role-Based Access Control), manajemen unit, inisialisasi pagu anggaran, serta modul pengajuan (Requisition) yang sudah terintegrasi dengan fungsi Auto-Check Saldo Pagu.
+
+Sprint 2: Core Smart Auction Engine
+PBI-09 s/d PBI-16
+Siklus utama lelang cerdas yang mencakup modul EVP (Enhanced Vendor Profiling) dengan geotagging, enkripsi Sealed Bidding, implementasi algoritma Auto-Scoring Engine, matriks komparasi vendor, hingga otomasi penerbitan SPK Digital.
+
+Sprint 3: Monitoring, Forensic Audit & Reporting
+PBI-17 s/d PBI-21
+Modul pasca-lelang yang mencakup pelaporan progres visual, verifikasi BAST, Dashboard Analitik Fraud Detection, aktivasi Immutable Audit Trail, dan generator laporan PDF Forensic.
+
+Tim Pengembang
+Untuk memastikan pengerjaan 3 Sprint berjalan sesuai jadwal, dilakukan pembagian spesialisasi tugas yang berfokus pada keseimbangan antara arsitektur logika back-end yang aman dan pengalaman pengguna (user experience) yang interaktif.
+1. Firman Zuhdi Affandi (102022300382)
+Spesialisasi: Backend Architect & Security Engineer
+Sprint 1: Merancang Physical Data Model pada MySQL, membangun sistem keamanan Middleware berbasis RBAC, serta mengembangkan logika Smart Budgeting melalui fungsi checkPagu() pada Controller.
+Sprint 2: Mengembangkan algoritma inti DSS (Decision Support System) melalui fungsi calculateAutoScoring() dan mengimplementasikan enkripsi one-way hashing untuk mekanisme Sealed Bidding.
+Sprint 3: Mengimplementasikan Immutable Audit Trail untuk pencatatan aktivitas aktor secara permanen, melakukan ekstraksi metadata multimedia, dan mengoptimalkan query data kompleks untuk kebutuhan integrasi laporan audit.
+2. Muhammad Devara (102022300345)
+Spesialisasi: Frontend Developer & System Integrator
+Sprint 1: Mendesain antarmuka dashboard responsif menggunakan Tailwind CSS, membangun form input pengajuan cerdas, dan mengelola state management untuk proses upload dokumen TOR/KAK.
+Sprint 2: Mengembangkan komponen visual Matriks Komparasi Vendor, integrasi API Geotagging untuk pemetaan lokasi kantor penyedia, serta membangun fitur Digital Signature untuk penerbitan SPK otomatis.
+Sprint 3: Membangun komponen grafik analitik dinamis menggunakan ApexCharts.js, mengintegrasikan sistem notifikasi via SMTP Mail Server, dan mengonfigurasi PDF Engine untuk merender laporan Forensic PDF Export.
