@@ -7,6 +7,8 @@ use App\Http\Controllers\SurveyReportController;
 use App\Http\Controllers\ProcurementRequestController;
 use App\Http\Controllers\Admin\TenderConfigController;
 use App\Http\Controllers\BidController; 
+use App\Http\Controllers\ProjectProgressController;
+use App\Http\Controllers\BastSubmissionController;
 use App\Http\Controllers\AuditorController;
 use App\Models\Bid;
 use App\Models\Portfolio;
