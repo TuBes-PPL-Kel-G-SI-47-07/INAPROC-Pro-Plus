@@ -151,4 +151,22 @@ class ProcurementRequestController extends Controller
         
         return $pdf->stream($fileName);
     }
+
+    /**
+     * PBI-14: Verifikasi keaslian dokumen SPK secara publik berdasarkan UUID.
+     */
+    public function verifySpk($uuid)
+    {
+        $procurement = ProcurementRequest::with(['user', 'budget', 'vendor', 'tender.bids'])->where('uuid', $uuid)->first();
+
+        // Dokumen valid jika pengadaan ada, status approved, dan vendor pemenang sudah ditentukan
+        $isValid = $procurement && $procurement->status === 'approved' && $procurement->vendor_id !== null;
+
+        $winnerBid = null;
+        if ($isValid && $procurement->tender) {
+            $winnerBid = $procurement->tender->bids()->where('status', 'winner')->first();
+        }
+
+        return view('procurement.verify_spk', compact('isValid', 'procurement', 'winnerBid'));
+    }
 }

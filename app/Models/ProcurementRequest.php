@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Auditable;
 use App\Models\User;
 use App\Models\Budget;
 use App\Models\Tender;
@@ -32,9 +33,10 @@ use App\Models\BastSubmission;
  */
 class ProcurementRequest extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $fillable = [
+        'uuid',
         'user_id',
         'budget_id',
         'item_name',
@@ -45,6 +47,16 @@ class ProcurementRequest extends Model
         'status',
         'vendor_id',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
 
     public function user()
     {

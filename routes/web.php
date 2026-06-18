@@ -10,6 +10,7 @@ use App\Http\Controllers\BidController;
 use App\Http\Controllers\ProjectProgressController;
 use App\Http\Controllers\BastSubmissionController;
 use App\Http\Controllers\AuditorAnalyticsController;
+use App\Http\Controllers\AuditorController;
 use App\Models\Bid;
 use App\Models\Portfolio;
 use App\Models\ActivityLog;
@@ -27,6 +28,9 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// PBI-14: Public Digital Signature Verification Route
+Route::get('/verify/spk/{uuid}', [ProcurementRequestController::class, 'verifySpk'])->name('procurement.verify_spk');
 
 /**
  * DASHBOARD UTAMA (Integrasi PBI-03 & PBI-12)
@@ -116,6 +120,13 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
     // Validasi Laporan Survey
     Route::get('/auditor/surveys', [SurveyReportController::class, 'index'])->name('auditor.surveys.index');
     Route::patch('/auditor/surveys/{survey}/verify', [SurveyReportController::class, 'verify'])->name('auditor.surveys.verify');
+    
+    // PBI-16: Auditor Monitoring Dashboard
+    Route::get('/auditor/monitoring', [App\Http\Controllers\AuditorController::class, 'monitoring'])->name('auditor.monitoring');
+    
+    // PBI-19: Immutable Audit Trail Log
+    Route::get('/auditor/audit-trail', [\App\Http\Controllers\AuditTrailController::class, 'index'])->name('auditor.audit-trail.index');
+    Route::post('/auditor/audit-trail/verify', [\App\Http\Controllers\AuditTrailController::class, 'verify'])->name('auditor.audit-trail.verify');
     
     // Audit Portofolio Vendor
     Route::get('/auditor/portfolios', [PortfolioController::class, 'auditorIndex'])->name('auditor.portfolios.index');
