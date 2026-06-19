@@ -37,30 +37,55 @@ Route::get('/verify/spk/{uuid}', [ProcurementRequestController::class, 'verifySp
  * Menggabungkan data Portfolio (Vendor) dan Competitive Matrix (Admin)
  */
 Route::get('/dashboard', function (\Illuminate\Http\Request $request) {
-    // Data untuk Vendor: Menampilkan hasil kerja mereka sendiri (PBI-03)
-    $portfolios = Portfolio::query()->where('user_id', Auth::id())->get();
+    $user = Auth::user();
 
-    // Ambil parameter filter tender_id
-    $filterTenderId = $request->query('tender_id');
+    // Default variables (empty/null) for all roles
+    $portfolios = collect();
+    $competitiveMatrix = collect();
+    $activityLogs = collect();
+    $allTenders = collect();
+    $filterTenderId = null;
+    $approvedProcurements = collect();
+    $total_pagu_awal = 0;
+    $total_sisa_saldo = 0;
+    $total_terpakai = 0;
+    $recent_requests = collect();
+    $openTenders = collect();
+    $myBids = collect();
+    $myRequests = collect();
 
-    // Data untuk Admin/Auditor: Menampilkan peringkat vendor berdasarkan skor DSS (PBI-12)
-    $competitiveMatrix = Bid::query()->with('user.surveyReport')
-        ->when($filterTenderId, function(\Illuminate\Database\Eloquent\Builder $query) use ($filterTenderId) {
-            return $query->where('tender_id', $filterTenderId);
-        })
-        ->orderBy('final_score', 'desc')
-        ->get();
+    if ($user->hasRole(['admin', 'auditor'])) {
+        // Fetch data untuk Admin & Auditor
+        $filterTenderId = $request->query('tender_id');
+        $competitiveMatrix = Bid::query()->with('user.surveyReport')
+            ->when($filterTenderId, function(\Illuminate\Database\Eloquent\Builder $query) use ($filterTenderId) {
+                return $query->where('tender_id', $filterTenderId);
+            })
+            ->orderBy('final_score', 'desc')
+            ->get();
+        $activityLogs = ActivityLog::query()->with('user')->latest()->take(5)->get();
+        $allTenders = Tender::query()->latest()->get();
+        $approvedProcurements = ProcurementRequest::query()->doesntHave('tender')->where('status', 'approved')->get();
+        $total_pagu_awal = \App\Models\Budget::sum('nominal_awal');
+        $total_sisa_saldo = \App\Models\Budget::sum('sisa_pagu');
+        $total_terpakai = $total_pagu_awal - $total_sisa_saldo;
+        $recent_requests = ProcurementRequest::with('budget', 'user')->latest()->take(5)->get();
+    } elseif ($user->hasRole('vendor')) {
+        // Fetch data untuk Vendor
+        $portfolios = Portfolio::query()->where('user_id', $user->id)->get();
+        $openTenders = Tender::where('status', 'open')->get();
+        $myBids = Bid::where('user_id', $user->id)->with('tender')->get();
+    } elseif ($user->hasRole('pemohon')) {
+        // Fetch data untuk Pemohon
+        $myRequests = ProcurementRequest::where('user_id', $user->id)->with('budget')->latest()->take(5)->get();
+    }
 
-    // Data Log Aktivitas Sistem (Untuk Auditor & Admin)
-    $activityLogs = ActivityLog::query()->with('user')->latest()->take(5)->get();
-
-    // Data semua tender aktif atau tertutup untuk dropdown filter
-    $allTenders = Tender::query()->latest()->get();
-
-    // Data pengadaan yang sudah diapprove tapi belum dibuatkan tender
-    $approvedProcurements = ProcurementRequest::query()->doesntHave('tender')->where('status', 'approved')->get();
-
-    return view('dashboard', compact('portfolios', 'competitiveMatrix', 'activityLogs', 'allTenders', 'filterTenderId', 'approvedProcurements'));
+    return view('dashboard', compact(
+        'portfolios', 'competitiveMatrix', 'activityLogs', 
+        'allTenders', 'filterTenderId', 'approvedProcurements',
+        'total_pagu_awal', 'total_sisa_saldo', 'total_terpakai', 'recent_requests',
+        'openTenders', 'myBids', 'myRequests'
+    ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // GROUP: AUTH (Fitur General & Operasional)

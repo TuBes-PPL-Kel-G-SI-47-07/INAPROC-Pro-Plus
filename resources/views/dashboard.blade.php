@@ -32,6 +32,63 @@
                 <div class="p-8 md:p-12 text-slate-900">
                     
                     {{-- ========================================== --}}
+                    {{-- SEKSI PEMOHON                              --}}
+                    {{-- ========================================== --}}
+                    @role('pemohon')
+                        <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Dashboard Pemohon</h1>
+                                <p class="text-slate-500 mt-1 text-sm">Pantau status pengajuan pengadaan barang/jasa Anda.</p>
+                            </div>
+                            <div>
+                                <a href="{{ route('procurement.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg transition-all">
+                                    + Buat Pengajuan Baru
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden mb-12">
+                            <h3 class="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
+                                {{ __('Pengajuan Terakhir Saya') }}
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead class="bg-slate-50 border-b border-slate-200">
+                                        <tr>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Nama Barang/Jasa</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Kuantitas</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Total Estimasi</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        @forelse($myRequests as $req)
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-6 py-4 whitespace-nowrap font-bold text-slate-800">{{ $req->item_name }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-slate-700">{{ $req->quantity }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800">Rp {{ number_format($req->total_price, 0, ',', '.') }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    @if($req->status == 'pending')
+                                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">Pending</span>
+                                                    @elseif($req->status == 'approved')
+                                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Approved</span>
+                                                    @else
+                                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">Rejected</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4" class="px-6 py-8 text-center text-slate-500 text-sm italic">Anda belum memiliki riwayat pengajuan.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endrole
+
+                    {{-- ========================================== --}}
                     {{-- SEKSI ADMINISTRATOR (PBI 04, 08, 09, 11, 12) --}}
                     {{-- ========================================== --}}
                     @hasanyrole('admin|auditor')
@@ -44,6 +101,88 @@
                                 <span class="bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-blue-200">
                                     System Controller Active
                                 </span>
+                            </div>
+                        </div>
+
+                        {{-- SUMMARY METRICS --}}
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center">
+                                <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">Total Pagu Awal</p>
+                                <h2 class="text-3xl font-black text-slate-800">Rp {{ number_format($total_pagu_awal, 0, ',', '.') }}</h2>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center">
+                                <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">Total Terpakai</p>
+                                <h2 class="text-3xl font-black text-amber-600">Rp {{ number_format($total_terpakai, 0, ',', '.') }}</h2>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center">
+                                <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">Total Sisa Saldo</p>
+                                <h2 class="text-3xl font-black text-emerald-600">Rp {{ number_format($total_sisa_saldo, 0, ',', '.') }}</h2>
+                            </div>
+                        </div>
+
+                        {{-- PERMINTAAN TERBARU --}}
+                        <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden mb-12">
+                            <h3 class="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
+                                {{ __('Permintaan Terbaru') }}
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead class="bg-slate-50 border-b border-slate-200">
+                                        <tr>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Nama Barang/Jasa</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Unit Pemohon</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Total Harga</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Status</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider text-right">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 bg-white">
+                                        @forelse($recent_requests as $request)
+                                        <tr class="hover:bg-slate-50 transition-colors">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="font-bold text-slate-800">{{ $request->item_name }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-slate-700">{{ $request->user->name ?? 'N/A' }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="font-semibold text-slate-800">Rp {{ number_format($request->total_price, 0, ',', '.') }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                @if($request->status == 'pending')
+                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200">Pending</span>
+                                                @elseif($request->status == 'approved')
+                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">Approved</span>
+                                                @else
+                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">Rejected</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right">
+                                                @if($request->status == 'pending')
+                                                    <form action="{{ route('procurement.verify', $request->id) }}" method="POST" class="inline">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="status" value="rejected">
+                                                        <button type="submit" class="text-xs font-bold text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors mr-2">Reject</button>
+                                                    </form>
+                                                    <form action="{{ route('procurement.verify', $request->id) }}" method="POST" class="inline">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="status" value="approved">
+                                                        <button type="submit" class="text-xs font-bold text-emerald-600 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors">Approve</button>
+                                                    </form>
+                                                @else
+                                                    <span class="text-xs text-slate-500 italic">{{ ucfirst($request->status) }}</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="5" class="px-6 py-8 text-center text-slate-500 text-sm italic">Belum ada permintaan pengadaan.</td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -312,7 +451,6 @@
                     {{-- SEKSI VENDOR (PBI 03, 06, 07, 10)          --}}
                     {{-- ========================================== --}}
                     @role('vendor')
-                        {{-- VENDOR SECTION REMAINS UNCHANGED AS IT WAS DECLARED FINAL BEFORE --}}
                         <div class="mb-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 via-indigo-950 to-black rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden group">
                                 <div class="relative z-10 h-full flex flex-col justify-between">
@@ -356,6 +494,64 @@
                             </div>
                         </div>
 
+                        {{-- TABEL PELELANGAN AKTIF --}}
+                        <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden mb-12">
+                            <h3 class="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
+                                {{ __('Daftar Pelelangan Aktif (Open Tenders)') }}
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead class="bg-slate-50 border-b border-slate-200">
+                                        <tr>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">ID / Judul Tender</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Pagu Anggaran</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider">Tenggat Waktu</th>
+                                            <th class="px-6 py-4 text-xs uppercase font-semibold text-slate-500 tracking-wider text-right">Aksi Penawaran</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        @forelse($openTenders as $tender)
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="font-bold text-slate-800">{{ $tender->title }}</div>
+                                                    <div class="text-xs text-slate-500 font-mono mt-1">TDR-{{ $tender->id }}</div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="font-semibold text-emerald-600">Rp {{ number_format($tender->budget ?? 0, 0, ',', '.') }}</div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
+                                                    {{ $tender->end_date ? \Carbon\Carbon::parse($tender->end_date)->format('d M Y') : 'N/A' }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right">
+                                                    @php
+                                                        $hasBid = $myBids->where('tender_id', $tender->id)->first();
+                                                    @endphp
+                                                    @if($hasBid)
+                                                        <a href="{{ route('vendor.bids') }}" class="inline-flex items-center px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold border border-slate-200 hover:bg-slate-200 transition-colors">
+                                                            Telah Submit Bid
+                                                        </a>
+                                                    @else
+                                                        <form action="{{ route('bid.store') }}" method="POST" class="inline flex items-center justify-end gap-2">
+                                                            @csrf
+                                                            <input type="hidden" name="tender_id" value="{{ $tender->id }}">
+                                                            <input type="number" name="offered_price" placeholder="Harga (Rp)" required class="text-xs border-slate-300 rounded-lg w-32 px-3 py-2">
+                                                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+                                                                Input Penawaran
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4" class="px-6 py-8 text-center text-slate-500 text-sm italic">Saat ini tidak ada tender yang terbuka.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                         {{-- SEALED BIDDING PORTAL (PBI-10) --}}
                         <div class="bg-gray-900 p-10 rounded-[3rem] text-white shadow-2xl border border-white/5 relative overflow-hidden mb-12">
                             <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4 relative z-10">
@@ -382,13 +578,13 @@
                                                 })->get();
                                         @endphp
 
-                                        <select name="tender_id" class="w-full bg-white/5 border-white/10 rounded-2xl text-white py-5 px-6 focus:ring-2 focus:ring-indigo-500 transition-all appearance-none" required @if($availableTenders->isEmpty()) disabled @endif>
+                                        <select name="tender_id" class="w-full bg-slate-800 border-slate-700 rounded-2xl text-white py-5 px-6 focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer" required @if($availableTenders->isEmpty()) disabled @endif>
                                             @if($availableTenders->isEmpty())
-                                                <option value="" class="text-black">-- Semua tender aktif sudah Anda ajukan penawaran --</option>
+                                                <option value="">-- Semua tender aktif sudah Anda ajukan penawaran --</option>
                                             @else
-                                                <option value="" class="text-black">-- Select Tender --</option>
+                                                <option value="">-- Select Tender --</option>
                                                 @foreach($availableTenders as $tender)
-                                                    <option value="{{ $tender->id }}" class="text-black">{{ $tender->title }}</option>
+                                                    <option value="{{ $tender->id }}">{{ $tender->title }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -405,32 +601,6 @@
                                     🔒 Submit Sealed Bid
                                 </button>
                                 <p class="text-center text-[10px] text-slate-400 font-medium italic">Semua data harga akan dikunci seketika menggunakan algoritma AES-256-CBC Encryption Engine.</p>
-                            </form>
-                        </div>
-
-                        {{-- SMART PROCUREMENT FORM (PBI 06 & 07) --}}
-                        <div class="bg-gray-50 p-12 rounded-[4rem] border-2 border-dashed border-gray-200">
-                            <h3 class="text-2xl font-black text-gray-900 flex items-center mb-10 tracking-tight">
-                                <span class="mr-4 bg-white p-3 rounded-2xl shadow-sm text-indigo-600">📦</span> {{ __('Smart Procurement Request') }}
-                            </h3>
-                            <form action="{{ route('procurement.store') }}" method="POST" class="space-y-8">
-                                @csrf
-                                <div class="max-w-md mb-10 p-8 bg-white rounded-[2rem] shadow-xl shadow-gray-100 border border-gray-50">
-                                    <x-input-label for="budget_id" :value="__('Gunakan Plafon Pagu (Budget Guard)')" class="font-bold mb-3" />
-                                    <select name="budget_id" id="budget_id" class="mt-1 block w-full border-gray-100 rounded-xl py-4 focus:ring-2 focus:ring-indigo-500 bg-gray-50 font-bold" required>
-                                        @foreach(\App\Models\Budget::all() as $budget)
-                                            <option value="{{ $budget->id }}">{{ $budget->nama_pagu }} (Sisa: Rp {{ number_format($budget->sisa_pagu) }})</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <x-text-input name="item_name" placeholder="Item / Jasa" required class="rounded-2xl border-none shadow-lg py-5 px-6" />
-                                    <x-text-input name="quantity" type="number" placeholder="Kuantitas" required class="rounded-2xl border-none shadow-lg py-5 px-6" />
-                                    <x-text-input name="price" type="number" placeholder="Harga Satuan" required class="rounded-2xl border-none shadow-lg py-5 px-6" />
-                                </div>
-                                <div class="flex justify-end">
-                                    <x-primary-button class="bg-indigo-600 py-5 px-16 rounded-2xl text-base font-black shadow-xl shadow-indigo-100">SUBMIT REQUEST</x-primary-button>
-                                </div>
                             </form>
                         </div>
                     @endrole

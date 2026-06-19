@@ -13,56 +13,53 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Dasbor') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('progress.index')" :active="request()->routeIs('progress.index') || request()->routeIs('progress.show')">
-                        {{ __('Progres Proyek') }}
+                    @if(Auth::user()->roles()->where('name', 'admin')->exists())
+                    <x-nav-link :href="route('procurement.index')" :active="request()->routeIs('procurement.index')">
+                        {{ __('Permintaan / Pengadaan') }}
                     </x-nav-link>
-                    
-                    @role('admin')
                     <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
-                        {{ __('Manajemen User') }}
+                        {{ __('Kelola Pengguna') }}
                     </x-nav-link>
-                    @endrole
+                    @endif
 
-                    @role('auditor')
-                    <x-nav-link :href="route('auditor.surveys.index')" :active="request()->routeIs('auditor.surveys.index')">
-                        {{ __('Monitoring') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('auditor.portfolios.index')" :active="request()->routeIs('auditor.portfolios.index')">
-                        {{ __('Portfolio') }}
-                    </x-nav-link>
+                    @if(Auth::user()->roles()->where('name', 'auditor')->exists())
                     <x-nav-link :href="route('procurement.index')" :active="request()->routeIs('procurement.index')">
-                        {{ __('Persetujuan Pengadaan') }}
+                        {{ __('Monitoring Pengadaan') }}
                     </x-nav-link>
-                    @endrole
-
-                    @hasanyrole('admin|auditor')
                     <x-nav-link :href="route('auditor.analytics')" :active="request()->routeIs('auditor.analytics')">
-                        {{ __('Executive Analytics') }}
+                        {{ __('Analytics Dashboard') }}
                     </x-nav-link>
-                    @endhasanyrole
+                    <x-nav-link :href="route('auditor.audit-trail.index')" :active="request()->routeIs('auditor.audit-trail.index')">
+                        {{ __('Audit Trail Log') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('auditor.surveys.index')" :active="request()->routeIs('auditor.surveys.index')">
+                        {{ __('Validasi Survey Fisik') }}
+                    </x-nav-link>
+                    @endif
 
-                    @role('vendor')
-                    <x-nav-link :href="route('vendor.setup')" :active="request()->routeIs('vendor.setup')">
-                        {{ __('Profile Perusahaan') }}
-                    </x-nav-link>
-                    
+                    @if(Auth::user()->roles()->where('name', 'vendor')->exists())
                     <x-nav-link :href="route('vendor.bids')" :active="request()->routeIs('vendor.bids')">
-                        {{ __('Riwayat Penawaran') }}
+                        {{ __('Riwayat Bidding / Penawaran') }}
                     </x-nav-link>
-                    @endrole
-
-                    @role('pemohon')
-                    <x-nav-link :href="route('procurement.create')" :active="request()->routeIs('procurement.create')">
-                        {{ __('Ajukan Pengadaan') }}
+                    <x-nav-link :href="route('progress.index')" :active="request()->routeIs('progress.index') || request()->routeIs('progress.show')">
+                        {{ __('Progress Proyek & BAST') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('vendor.setup')" :active="request()->routeIs('vendor.setup')">
+                        {{ __('Profil EVP') }}
+                    </x-nav-link>
+                    @endif
 
+                    @if(Auth::user()->roles()->where('name', 'pemohon')->exists())
                     <x-nav-link :href="route('procurement.index')" :active="request()->routeIs('procurement.index')">
-                        {{ __('Riwayat Pengadaan') }}
+                        {{ __('Daftar Pengajuan Saya') }}
                     </x-nav-link>
-                    @endrole
+                    <x-nav-link :href="route('procurement.create')" :active="request()->routeIs('procurement.create')">
+                        {{ __('Buat Pengajuan Baru') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -116,16 +113,53 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Dasbor') }}
+            </x-responsive-nav-link>
+
+            @if(Auth::check() && (Auth::user()->hasRole('admin') || Auth::user()->email === 'admin@gmail.com'))
+            <x-responsive-nav-link :href="route('procurement.index')" :active="request()->routeIs('procurement.index')">
+                {{ __('Permintaan / Pengadaan') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
+                {{ __('Kelola Pengguna') }}
+            </x-responsive-nav-link>
+            @endif
+
+            @if(Auth::check() && (Auth::user()->hasRole('auditor') || Auth::user()->email === 'auditor@gmail.com'))
+            <x-responsive-nav-link :href="route('procurement.index')" :active="request()->routeIs('procurement.index')">
+                {{ __('Monitoring Pengadaan') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('auditor.analytics')" :active="request()->routeIs('auditor.analytics')">
+                {{ __('Analytics Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('auditor.audit-trail.index')" :active="request()->routeIs('auditor.audit-trail.index')">
+                {{ __('Audit Trail Log') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('auditor.surveys.index')" :active="request()->routeIs('auditor.surveys.index')">
+                {{ __('Validasi Survey Fisik') }}
+            </x-responsive-nav-link>
+            @endif
+
+            @if(Auth::check() && (Auth::user()->hasRole('vendor') || Auth::user()->email === 'vendor@gmail.com'))
+            <x-responsive-nav-link :href="route('vendor.bids')" :active="request()->routeIs('vendor.bids')">
+                {{ __('Riwayat Bidding / Penawaran') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('progress.index')" :active="request()->routeIs('progress.index') || request()->routeIs('progress.show')">
-                {{ __('Progres Proyek') }}
+                {{ __('Progress Proyek & BAST') }}
             </x-responsive-nav-link>
-            @hasanyrole('admin|auditor')
-            <x-responsive-nav-link :href="route('auditor.analytics')" :active="request()->routeIs('auditor.analytics')">
-                {{ __('Executive Analytics') }}
+            <x-responsive-nav-link :href="route('vendor.setup')" :active="request()->routeIs('vendor.setup')">
+                {{ __('Profil EVP') }}
             </x-responsive-nav-link>
-            @endhasanyrole
+            @endif
+
+            @if(Auth::check() && (Auth::user()->hasRole('pemohon') || Auth::user()->email === 'pemohon@gmail.com'))
+            <x-responsive-nav-link :href="route('procurement.index')" :active="request()->routeIs('procurement.index')">
+                {{ __('Daftar Pengajuan Saya') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('procurement.create')" :active="request()->routeIs('procurement.create')">
+                {{ __('Buat Pengajuan Baru') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
