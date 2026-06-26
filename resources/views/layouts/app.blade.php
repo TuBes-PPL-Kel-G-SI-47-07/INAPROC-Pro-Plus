@@ -36,16 +36,71 @@
 
             <!-- Sidebar Navigation -->
             <nav class="flex-1 overflow-y-auto py-4 space-y-1">
+                {{-- GENERAL MENU --}}
                 <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
                     <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                    <span x-show="sidebarOpen" class="ml-3 font-medium">Dashboard</span>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Dasbor</span>
                 </a>
 
-                <!-- Add other menu items here progressively as we move through PBI tasks -->
-                <a href="#" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 text-blue-100 hover:bg-blue-700/50 hover:text-white">
+                {{-- MENU ADMIN --}}
+                @if(Auth::user()->hasRole('admin'))
+                <a href="{{ route('procurement.index') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('procurement.index') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
                     <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <span x-show="sidebarOpen" class="ml-3 font-medium">Pengadaan</span>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Permintaan / Pengadaan</span>
                 </a>
+                <a href="{{ route('admin.users') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.users') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Kelola Pengguna</span>
+                </a>
+                @endif
+
+                {{-- MENU AUDITOR --}}
+                @if(Auth::user()->hasRole('auditor'))
+                <a href="{{ route('procurement.index') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('procurement.index') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Monitoring Pengadaan</span>
+                </a>
+                <a href="{{ route('auditor.analytics') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('auditor.analytics') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Analytics Dashboard</span>
+                </a>
+                <a href="{{ route('auditor.audit-trail.index') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('auditor.audit-trail.index') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Audit Trail Log</span>
+                </a>
+                <a href="{{ route('auditor.surveys.index') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('auditor.surveys.index') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Validasi Survey</span>
+                </a>
+                @endif
+
+                {{-- MENU VENDOR --}}
+                @if(Auth::user()->hasRole('vendor'))
+                <a href="{{ route('vendor.bids') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('vendor.bids') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Riwayat Bidding</span>
+                </a>
+                <a href="{{ route('progress.index') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('progress.index') || request()->routeIs('progress.show') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Progress & BAST</span>
+                </a>
+                <a href="{{ route('vendor.setup') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('vendor.setup') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Profil EVP</span>
+                </a>
+                @endif
+
+                {{-- MENU PEMOHON --}}
+                @if(Auth::user()->hasRole('pemohon'))
+                <a href="{{ route('procurement.index') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('procurement.index') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Daftar Pengajuan</span>
+                </a>
+                <a href="{{ route('procurement.create') }}" class="flex items-center px-4 py-3 mx-2 rounded-lg transition-colors duration-200 {{ request()->routeIs('procurement.create') ? 'bg-blue-700 text-white shadow' : 'text-blue-100 hover:bg-blue-700/50 hover:text-white' }}">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Buat Pengajuan Baru</span>
+                </a>
+                @endif
             </nav>
             
             <!-- User Info (Bottom of sidebar) -->
